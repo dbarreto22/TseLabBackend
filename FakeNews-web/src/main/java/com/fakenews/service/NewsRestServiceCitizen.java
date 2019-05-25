@@ -2,6 +2,7 @@ package com.fakenews.service;
 
 import java.util.List;
 
+import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -16,23 +17,26 @@ import javax.ws.rs.Produces;
 //import com.mynews.model.Publicacion;
 import javax.ws.rs.core.MediaType;
 
-@Path("/")
-public class NewsRestService {
+import com.fakenews.datatypes.DTLoginResponse;
+import com.fakenews.datatypes.DTRespuesta;
+import com.fakenews.datatypes.EnumRoles;
+
+@Path("/citizen")
+public class NewsRestServiceCitizen {
 	
 //	@EJB
 //	private NewsEJBLocal newsEJB;
 	
-
-	@GET
-	@Path("prueba")
-	public String prueba(){
-		return "Hello ppl";
+	@POST
+    @Path("login")
+    @PermitAll
+    public DTLoginResponse login(String json) {
+		return new DTLoginResponse("aqui estaria el token. Saludos", EnumRoles.CITIZEN);
 	}
 	
-//	@GET
-//	@Path("getNoticia/{idNoticia}")
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public Noticia getNoticia(@PathParam("idNoticia") Long id) {
+//	@POST
+//	@Path("addHecho")
+//	public DTRespuesta addHecho(Hecho hec) {
 //		return newsEJB.getNoticia(id);
 //	}
 //	
