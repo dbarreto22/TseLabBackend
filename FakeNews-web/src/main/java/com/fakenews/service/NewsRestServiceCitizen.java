@@ -30,6 +30,7 @@ public class NewsRestServiceCitizen {
 	@POST
     @Path("login")
     @PermitAll
+    @Produces(MediaType.APPLICATION_JSON)
     public DTLoginResponse login(String json) {
 		return new DTLoginResponse("aqui estaria el token. Saludos", EnumRoles.CITIZEN);
 	}

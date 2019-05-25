@@ -38,6 +38,7 @@ public class NewsRestServiceBckend {
 	@POST
     @Path("backend/login")
     @PermitAll
+    @Produces(MediaType.APPLICATION_JSON)
     public DTLoginResponse login(String json) {
 		return new DTLoginResponse("aqui estaria el token.Saludos", EnumRoles.ADMIN);
 	}
