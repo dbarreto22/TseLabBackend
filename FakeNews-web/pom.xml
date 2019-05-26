@@ -43,15 +43,19 @@
 
       <!-- Dependency on the EJB module so we can use it's services if needed -->
        
-       <!-- https://mvnrepository.com/artifact/org.primefaces/primefaces -->
-<!-- 		<dependency> -->
-<!--          <groupId>com.fakenews</groupId> -->
-<!--          <artifactId>FakeNews-ejb</artifactId> -->
-<!--          <type>ejb</type> -->
-<!--          <scope>provided</scope> -->
-<!--       </dependency> -->
+		<dependency>
+         <groupId>com</groupId>
+         <artifactId>FakeNews-ejb</artifactId>
+         <type>ejb</type>
+         <scope>provided</scope>
+      </dependency>
 		
-      
+    	<!-- https://mvnrepository.com/artifact/com.google.api-client/google-api-client-appengine -->
+<dependency>
+    <groupId>com.google.api-client</groupId>
+    <artifactId>google-api-client-appengine</artifactId>
+    <version>1.29.0</version>
+</dependency>
       <!-- https://mvnrepository.com/artifact/javax.annotation/javax.annotation-api -->
       <dependency>
             <groupId>com.auth0</groupId>
@@ -95,14 +99,6 @@
          <scope>provided</scope>
       </dependency>
         
-
-      <!-- Import the JPA API, we use provided scope as the API is included in JBoss WildFly -->
-      <dependency>
-         <groupId>org.hibernate.javax.persistence</groupId>
-         <artifactId>hibernate-jpa-2.1-api</artifactId>
-         <scope>provided</scope>
-      </dependency>
-
        <!-- JSR-303 (Bean Validation) Implementation -->
        <!-- Provides portable constraints such as @Email -->
        <!-- Hibernate Validator is shipped in JBoss WildFly -->

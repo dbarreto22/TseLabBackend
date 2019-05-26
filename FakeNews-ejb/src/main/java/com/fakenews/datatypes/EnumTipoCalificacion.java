@@ -1,6 +1,6 @@
-package com.fakenews.data;
+package com.fakenews.datatypes;
 
-public enum TipoCalificacion {
+public enum EnumTipoCalificacion {
 	VERDADERO("Verdadero"),
     VERD_A_MEDIAS("Verdadero a medias"),
     INFLADO("Inflado"),
@@ -10,7 +10,7 @@ public enum TipoCalificacion {
    
     private String tipoCalificacionStr;
     
-    TipoCalificacion(String tipoCalificacionStr){
+    EnumTipoCalificacion(String tipoCalificacionStr){
         this.tipoCalificacionStr = tipoCalificacionStr;
     }
     

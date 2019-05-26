@@ -24,6 +24,11 @@ public class Citizen extends Usuario implements Serializable {
 		super(email, nickname, telefono);
 		this.suscripto = suscripto;
 	}
+	
+	public Citizen(String email) {
+		super(email, email, "");
+		this.suscripto = false;
+	}
 
 	public Boolean getSuscripto() {
 		return suscripto;

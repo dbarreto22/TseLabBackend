@@ -12,8 +12,8 @@ import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import com.fakenews.data.HechoEstado;
-import com.fakenews.data.TipoCalificacion;
+import com.fakenews.datatypes.EnumHechoEstado;
+import com.fakenews.datatypes.EnumTipoCalificacion;
 
 @Entity
 public class Hecho implements Serializable {
@@ -29,7 +29,7 @@ public class Hecho implements Serializable {
 	private String url;
 	
 	@Basic
-	private TipoCalificacion calificacion;
+	private EnumTipoCalificacion calificacion;
 	
 	@Basic
 	private Date fechaInicioVerificacion;
@@ -41,7 +41,7 @@ public class Hecho implements Serializable {
 	private String justificacion;
 	
 	@Basic
-	private HechoEstado estado;
+	private EnumHechoEstado estado;
 		
 	@ManyToOne(targetEntity = Submitter.class)
 	private Submitter submitter;
@@ -93,11 +93,11 @@ public class Hecho implements Serializable {
 		this.url = url;
 	}
 
-	public TipoCalificacion getCalificacion() {
+	public EnumTipoCalificacion getCalificacion() {
 		return calificacion;
 	}
 
-	public void setCalificacion(TipoCalificacion calificacion) {
+	public void setCalificacion(EnumTipoCalificacion calificacion) {
 		this.calificacion = calificacion;
 	}
 
@@ -125,11 +125,11 @@ public class Hecho implements Serializable {
 		this.justificacion = justificacion;
 	}
 
-	public HechoEstado getEstado() {
+	public EnumHechoEstado getEstado() {
 		return estado;
 	}
 
-	public void setEstado(HechoEstado estado) {
+	public void setEstado(EnumHechoEstado estado) {
 		this.estado = estado;
 	}
 

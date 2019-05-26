@@ -17,5 +17,4 @@ public enum EnumRoles {
     public String rolStr() {
         return rolStr;
     }
-    
 }

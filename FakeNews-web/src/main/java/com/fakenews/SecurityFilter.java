@@ -4,7 +4,13 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
+import com.fakenews.datatypes.EnumParam;
+import com.fakenews.datatypes.EnumRoles;
+import com.fakenews.ejb.NewsEJBLocal;
 import com.fakenews.interfaces.SecurityMgt;
+import com.fakenews.model.Admin;
+import com.fakenews.model.Checker;
+import com.fakenews.model.Submitter;
 
 import java.lang.reflect.Method;
 import java.util.Arrays;
@@ -42,6 +48,8 @@ import org.jboss.resteasy.util.Base64;
 public class SecurityFilter implements javax.ws.rs.container.ContainerRequestFilter {
  
     SecurityMgt securityMgt = ManagersFactory.getInstance().getSecurityMgt();
+    @EJB
+	private NewsEJBLocal newsEJB;
 
     private static final String AUTHORIZATION_PROPERTY = "Authorization";
     private static final String AUTHENTICATION_SCHEME = "Basic";
@@ -125,8 +133,31 @@ public class SecurityFilter implements javax.ws.rs.container.ContainerRequestFil
     }
 
     private boolean isUserAllowed(final String username, final String password) {
-        boolean isAllowed = false;
-        return isAllowed;
+        //Chequeo rol. 
+        //Si rol = CITIZEN. Tomo password como token_id y verifico con google.
+        //Si rol = OTRO. Chequeo contra la password guardada.
+        EnumRoles rol = newsEJB.getRol(username);
+        if (rol == EnumRoles.CITIZEN) {
+        	return securityMgt.verifyTokenGoogle(password, newsEJB.getParam(EnumParam.CLIENT_ID));
+        }else {
+        	if (rol == EnumRoles.ADMIN) {
+        		Admin admin = newsEJB.getAdmin(username);
+        		return admin.getPassword().equals(password);
+        	}else {
+        		if (rol == EnumRoles.CHECKER) {
+            		Checker checker = newsEJB.getChecker(username);
+            		return checker.getPassword().equals(password);
+        		}else {
+        			if(rol == EnumRoles.SUBMITTER) {
+        				Submitter sub = newsEJB.getSubmitter(username);
+                		return sub.getPassword().equals(password);
+        			}else {
+        				return false;
+        			}
+        		}
+        	}
+        	
+        }
         //Step 1. Fetch password from database and match with password in argument
         //If both match then get the defined role for user from database and continue; else return isAllowed [false]
         //Access the database and do this part yourself

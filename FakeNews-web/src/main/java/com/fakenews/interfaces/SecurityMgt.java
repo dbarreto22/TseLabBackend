@@ -10,5 +10,5 @@ package com.fakenews.interfaces;
 	    
 	    public String createAndSignToken(String username, String password);
 	    
-//	    public 
+	    public Boolean verifyTokenGoogle(String token_id, String client_id);
 }

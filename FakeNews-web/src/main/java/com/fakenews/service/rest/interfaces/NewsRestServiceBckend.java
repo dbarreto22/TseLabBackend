@@ -1,4 +1,4 @@
-package com.fakenews.service;
+package com.fakenews.service.rest.interfaces;
 
 import java.util.List;
 
@@ -20,24 +20,27 @@ import javax.ws.rs.core.MediaType;
 import com.fakenews.datatypes.DTLoginResponse;
 import com.fakenews.datatypes.DTRespuesta;
 import com.fakenews.datatypes.EnumRoles;
+import com.fakenews.datatypes.DTLoginBackendRequest;
 
-@Path("/citizen")
-public class NewsRestServiceCitizen {
+@Path("/")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
+public interface NewsRestServiceBckend {
 	
-//	@EJB
-//	private NewsEJBLocal newsEJB;
+	@GET
+	@Path("prueba")
+	@PermitAll
+	public String prueba();
 	
 	@POST
-    @Path("login")
+    @Path("backend/login")
     @PermitAll
-    @Produces(MediaType.APPLICATION_JSON)
-    public DTLoginResponse login(String json) {
-		return new DTLoginResponse("aqui estaria el token. Saludos", EnumRoles.CITIZEN);
-	}
+    public DTLoginResponse login(DTLoginBackendRequest request);
 	
-//	@POST
-//	@Path("addHecho")
-//	public DTRespuesta addHecho(Hecho hec) {
+//	@GET
+//	@Path("getNoticia/{idNoticia}")
+//	@Produces(MediaType.APPLICATION_JSON)
+//	public Noticia getNoticia(@PathParam("idNoticia") Long id) {
 //		return newsEJB.getNoticia(id);
 //	}
 //	

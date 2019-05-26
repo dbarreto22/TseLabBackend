@@ -1,4 +1,4 @@
-package com.fakenews.service;
+package com.fakenews.service.soap.impl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,6 +6,8 @@ import java.util.List;
 import javax.ejb.EJB;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
+
+import com.fakenews.service.soap.interfaces.NewsSOAPService;
 
 //import com.mynews.ejb.NewsEJBLocal;
 //import com.mynews.model.Noticia;

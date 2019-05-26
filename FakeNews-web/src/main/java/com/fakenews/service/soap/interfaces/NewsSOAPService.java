@@ -1,4 +1,4 @@
-package com.fakenews.service;
+package com.fakenews.service.soap.interfaces;
 
 import java.util.List;
 import javax.jws.WebMethod;

@@ -1,6 +1,6 @@
-package com.fakenews.data;
+package com.fakenews.datatypes;
 
-public enum HechoEstado {
+public enum EnumHechoEstado {
 	
 	A_COMPROBAR("A comprobar"),
     NUEVO("Nuevo"),
@@ -11,7 +11,7 @@ public enum HechoEstado {
    
     private String estadoStr;
     
-    HechoEstado(String estadoStr){
+    EnumHechoEstado(String estadoStr){
         this.estadoStr = estadoStr;
     }
     

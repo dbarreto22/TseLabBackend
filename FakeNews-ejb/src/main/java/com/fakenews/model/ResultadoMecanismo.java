@@ -11,7 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import com.fakenews.data.TipoCalificacion;
+import com.fakenews.datatypes.EnumTipoCalificacion;
 
 @Entity
 public class ResultadoMecanismo implements Serializable {
@@ -21,7 +21,7 @@ public class ResultadoMecanismo implements Serializable {
     private Long id;
 	
 	@Basic
-	private TipoCalificacion calificacion;
+	private EnumTipoCalificacion calificacion;
 	
 	@ManyToOne(targetEntity = MecanismoVerificacion.class)
 	private MecanismoVerificacion mecanismo;
@@ -30,12 +30,12 @@ public class ResultadoMecanismo implements Serializable {
 		
 	}
 
-	public ResultadoMecanismo(Long id, TipoCalificacion calificacion) {
+	public ResultadoMecanismo(Long id, EnumTipoCalificacion calificacion) {
 		this.id = id;
 		this.calificacion = calificacion;
 	}
 	
-	public ResultadoMecanismo(TipoCalificacion calificacion) {
+	public ResultadoMecanismo(EnumTipoCalificacion calificacion) {
 		this.calificacion = calificacion;
 	}
 
@@ -47,11 +47,11 @@ public class ResultadoMecanismo implements Serializable {
 		this.id = id;
 	}
 
-	public TipoCalificacion getCalificacion() {
+	public EnumTipoCalificacion getCalificacion() {
 		return calificacion;
 	}
 
-	public void setCalificacion(TipoCalificacion calificacion) {
+	public void setCalificacion(EnumTipoCalificacion calificacion) {
 		this.calificacion = calificacion;
 	}
 
