@@ -111,7 +111,7 @@ public class Security implements SecurityLocal {
     }
     
     @Override
-    public Boolean isUserAllowed(String username, String password) {
+    public Boolean isUserAllowed(String username, String password){
     	EnumRoles rol = newsEJB.getRol(username);
         
         switch (rol) {
@@ -132,12 +132,14 @@ public class Security implements SecurityLocal {
         	default:
         		return false;
         }
+    	return rol;
     }
     
     @Override
-    public EnumRoles getRolIfAllowed(String username, String password) {
+    public EnumRoles getRolIfAllowed(String username, String password){
     	System.out.print("getRolIfAllowed");
-    	EnumRoles rol = newsEJB.getRol(username);
+    	EnumRoles rol = EnumRoles.ERROR;
+    	rol = newsEJB.getRol(username);
         System.out.println("ROL: " + rol.rolStr());
         switch (rol) {
         	case CITIZEN: 
@@ -147,24 +149,28 @@ public class Security implements SecurityLocal {
         		
         	case ADMIN:
         		Admin admin = newsEJB.getAdmin(username);
-        		if (admin.getPassword().equals(password)) {
+        		if (admin != null && admin.getPassword().equals(password)) {
         			return rol;
         		}
         		
         	case CHECKER:
         		Checker checker = newsEJB.getChecker(username);
-        		if (checker.getPassword().equals(password)) {
+        		if (checker != null && checker.getPassword().equals(password)) {
         			return rol;
         		}
         		        		
         	case SUBMITTER:	
         		Submitter sub = newsEJB.getSubmitter(username);
-        		if(sub.getPassword().equals(password)) {
+        		if(sub != null && sub.getPassword().equals(password)) {
         			return rol;
         		}
+        	
+        	case ERROR:
+        		return rol;
         		
         }
         return EnumRoles.ERROR;
+        
     }
 	    
 }

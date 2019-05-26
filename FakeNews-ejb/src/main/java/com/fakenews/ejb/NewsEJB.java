@@ -52,7 +52,23 @@ public class NewsEJB implements NewsEJBRemote, NewsEJBLocal {
 	
 	@Override
 	public EnumRoles getRol(String mail) {
-		return newsDataEJB.getRol(mail);
+		if (newsDataEJB.getCitizen(mail) != null) {
+			return EnumRoles.CITIZEN;
+		}else {
+			if (newsDataEJB.getChecker(mail) != null) {
+				return EnumRoles.CHECKER;
+			}else {
+				if (newsDataEJB.getSubmitter(mail) != null) {
+					return EnumRoles.SUBMITTER;
+				}else {
+					if (newsDataEJB.getAdmin(mail) != null) {
+						return EnumRoles.ADMIN;
+					}else {
+						return EnumRoles.ERROR;
+					}
+				}
+			}
+		}
 	}
 	
 	@Override

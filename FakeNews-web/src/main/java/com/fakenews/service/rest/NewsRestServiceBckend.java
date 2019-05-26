@@ -18,6 +18,7 @@ import com.fakenews.datatypes.DTRespuesta;
 import com.fakenews.datatypes.EnumRoles;
 import com.fakenews.ejb.NewsEJBLocal;
 import com.fakenews.ejb.SecurityLocal;
+import com.fakenews.model.Hecho;
 import com.fakenews.datatypes.DTLoginBackendRequest;
 
 @Path("/")
@@ -38,6 +39,12 @@ public class NewsRestServiceBckend {
 		return "Todos trabajando";
 	}
 	
+	@GET
+	@Path("pruebaToken")
+	public String pruebaToken() {
+		return "EL TOKEN EN TU CARA";
+	}
+	
 	@POST
     @Path("backend/login")
     @PermitAll
@@ -56,6 +63,18 @@ public class NewsRestServiceBckend {
 		return new DTLoginResponse(token, rol);
 	}
 	
+	@GET
+	@Path("getHechos")
+	public List<Hecho> getAllHechos(){
+		List<Hecho> hechos = null;
+		try {
+			hechos = newsEJB.getAllHechos();
+		}catch (Exception ex) {
+			System.out.println("backend/getHechos " + ex.getMessage());
+		}
+		return hechos;
+	}
+	
 //	@GET
 //	@Path("getNoticia/{idNoticia}")
 //	@Produces(MediaType.APPLICATION_JSON)
@@ -63,12 +82,7 @@ public class NewsRestServiceBckend {
 //		return newsEJB.getNoticia(id);
 //	}
 //	
-//	@GET
-//	@Path("getAllPublicaciones")
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public List<Publicacion> getAllPublicaciones(){
-//		return newsEJB.getAllPublicaciones();
-//	}
+
 //	
 //	@GET
 //	@Produces(MediaType.APPLICATION_JSON)

@@ -130,7 +130,7 @@ public class SecurityFilter implements javax.ws.rs.container.ContainerRequestFil
         }
     }
 
-    private boolean isUserAllowed(final String username, final String password) {
+    private boolean isUserAllowed(final String username, final String password) throws Exception {
     	System.out.println("LO ENCUENTRA O NO LO ENCUENTRA");
     	return securityMgt.isUserAllowed(username,password);
     }

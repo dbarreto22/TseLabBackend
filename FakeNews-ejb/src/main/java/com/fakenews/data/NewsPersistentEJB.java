@@ -1,6 +1,9 @@
 package com.fakenews.data;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.ejb.Stateless;
 import javax.persistence.Query;
 import javax.persistence.EntityManager;
@@ -96,21 +99,16 @@ public class NewsPersistentEJB
   @Override
   public Admin getAdmin(String mail) {
 	  Admin admin = null;
+	  System.out.println("getAdmin mail Filtro: " + mail);
 	  try {
 		  admin = (Admin)em.find(Admin.class, mail);
+		  System.out.println("VERDADERO ADMIN: " + admin.getEmail());
 	  }catch(Exception e) {
 		  System.out.print(e.getMessage());
 	  }
 	  return admin;
   }
   
-  @Override
-  public EnumRoles getRol(String mail) {
-	  Query q = em.createNamedQuery(Usuario.GET_ROL).setParameter("email", mail);
-	  String rol = (String) q.getSingleResult();
-	  System.out.println(rol);
-	  return EnumRoles.valueOf(rol);
-  }
  
 //  public void addPublicacion(Publicacion publicacion, Long idNoticia)
 //  {
@@ -144,4 +142,5 @@ public class NewsPersistentEJB
 //    Noticia noticia = (Noticia)em.find(Noticia.class, idNoticia);
 //    return noticia.getPublicaciones();
 //  }
+  
 }

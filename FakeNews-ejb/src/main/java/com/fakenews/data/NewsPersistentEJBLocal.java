@@ -29,8 +29,7 @@ public abstract interface NewsPersistentEJBLocal
   public Admin getAdmin(String mail);
   
   public EnumRoles saveCitizen(Citizen citizen);
-  
-  public EnumRoles getRol(String mail);
+ 
   
 //  public abstract void addPublicacion(Publicacion paramPublicacion, Long idNoticia);
 //  
