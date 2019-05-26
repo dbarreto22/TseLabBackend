@@ -1,4 +1,4 @@
-package com.fakenews.impl;
+package com.fakenews.ejb;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -6,7 +6,7 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 import com.fakenews.datatypes.DTLoginResponse;
 import com.fakenews.datatypes.EnumRoles;
 import com.fakenews.ejb.NewsEJBLocal;
-import com.fakenews.interfaces.*;
+import com.fakenews.ejb.SecurityLocal;
 import com.fakenews.model.Admin;
 import com.fakenews.model.Checker;
 import com.fakenews.model.Submitter;
@@ -27,6 +27,7 @@ import java.util.Date;
 import java.util.UUID;
 
 import javax.ejb.EJB;
+import javax.ejb.Stateless;
 
 import org.jboss.resteasy.util.Base64;
 
@@ -34,7 +35,9 @@ import org.jboss.resteasy.util.Base64;
  *
  * @author rmoreno
  */
-public class SecurityMgr implements SecurityMgt {
+
+@Stateless
+public class Security implements SecurityLocal {
     
     private final String secret = "telofirmoasinomas";
     

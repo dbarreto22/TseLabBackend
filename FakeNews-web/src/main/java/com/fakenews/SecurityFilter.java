@@ -6,7 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fakenews.datatypes.EnumRoles;
 import com.fakenews.ejb.NewsEJBLocal;
-import com.fakenews.interfaces.SecurityMgt;
+import com.fakenews.ejb.SecurityLocal;
 import com.fakenews.model.Admin;
 import com.fakenews.model.Checker;
 import com.fakenews.model.Submitter;
@@ -46,7 +46,8 @@ import org.jboss.resteasy.util.Base64;
 @Priority(Priorities.AUTHENTICATION)
 public class SecurityFilter implements javax.ws.rs.container.ContainerRequestFilter {
  
-    SecurityMgt securityMgt = ManagersFactory.getInstance().getSecurityMgt();
+    @EJB 
+    private SecurityLocal securityMgt;
     
     private static final String AUTHORIZATION_PROPERTY = "Authorization";
     private static final String AUTHENTICATION_SCHEME = "Basic";
@@ -130,6 +131,7 @@ public class SecurityFilter implements javax.ws.rs.container.ContainerRequestFil
     }
 
     private boolean isUserAllowed(final String username, final String password) {
+    	System.out.println("LO ENCUENTRA O NO LO ENCUENTRA");
     	return securityMgt.isUserAllowed(username,password);
     }
 

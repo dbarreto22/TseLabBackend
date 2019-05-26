@@ -13,13 +13,12 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-import com.fakenews.ManagersFactory;
 import com.fakenews.datatypes.DTLoginCitizenRequest;
 import com.fakenews.datatypes.DTLoginResponse;
 import com.fakenews.datatypes.DTRespuesta;
 import com.fakenews.datatypes.EnumRoles;
 import com.fakenews.ejb.NewsEJBLocal;
-import com.fakenews.interfaces.SecurityMgt;
+import com.fakenews.ejb.SecurityLocal;
 
 @Path("/citizen")
 @Produces(MediaType.APPLICATION_JSON)
@@ -27,8 +26,10 @@ import com.fakenews.interfaces.SecurityMgt;
 public class NewsRestServiceCitizen {
 	
 	@EJB
-	private NewsEJBLocal newsEJB; 
-	SecurityMgt securityMgt = ManagersFactory.getInstance().getSecurityMgt();
+	private NewsEJBLocal newsEJB;
+	
+	@EJB
+	private SecurityLocal securityMgt;
 	
 	@POST
     @Path("login")

@@ -17,8 +17,7 @@ import com.fakenews.datatypes.DTLoginResponse;
 import com.fakenews.datatypes.DTRespuesta;
 import com.fakenews.datatypes.EnumRoles;
 import com.fakenews.ejb.NewsEJBLocal;
-import com.fakenews.interfaces.SecurityMgt;
-import com.fakenews.ManagersFactory;
+import com.fakenews.ejb.SecurityLocal;
 import com.fakenews.datatypes.DTLoginBackendRequest;
 
 @Path("/")
@@ -27,8 +26,10 @@ import com.fakenews.datatypes.DTLoginBackendRequest;
 public class NewsRestServiceBckend {
 	
 	@EJB
-	private NewsEJBLocal newsEJB; 
-	SecurityMgt securityMgt = ManagersFactory.getInstance().getSecurityMgt();
+	private NewsEJBLocal newsEJB;
+
+	@EJB
+	private SecurityLocal securityMgt;
 	
 	@GET
 	@Path("prueba")
