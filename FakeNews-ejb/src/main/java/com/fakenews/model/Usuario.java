@@ -4,13 +4,19 @@ import java.io.Serializable;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 /**
- * @author santiago
+ * @author romina
  */
 @Entity
+@NamedQueries({
+    @NamedQuery(name = Usuario.GET_ROL, query = "SELECT TYPE(a) FROM Usuario a WHERE a.email = :email")})
 public abstract class Usuario implements Serializable {
         
+	public final static String GET_ROL = "Usuario.GET_ROL";
+	
 	@Id
     @Basic
     private String email;

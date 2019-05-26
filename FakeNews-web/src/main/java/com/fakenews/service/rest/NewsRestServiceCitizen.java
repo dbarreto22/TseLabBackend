@@ -1,19 +1,9 @@
-package com.fakenews.service.rest.impl;
+package com.fakenews.service.rest;
 
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-import java.util.Collections;
 import java.util.List;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken.Payload;
-import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.json.jackson2.JacksonFactory;
-import com.google.api.client.extensions.appengine.http.UrlFetchTransport;
 
 import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
-import javax.net.ssl.ManagerFactoryParameters;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.HeaderParam;
@@ -21,48 +11,50 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-//
-import com.fakenews.ejb.NewsEJBLocal;
-import com.fakenews.interfaces.SecurityMgt;
-
-//import com.mynews.model.Noticia;
-//import com.mynews.model.Publicacion;
 import javax.ws.rs.core.MediaType;
 
 import com.fakenews.ManagersFactory;
 import com.fakenews.datatypes.DTLoginCitizenRequest;
 import com.fakenews.datatypes.DTLoginResponse;
 import com.fakenews.datatypes.DTRespuesta;
-import com.fakenews.datatypes.EnumParam;
 import com.fakenews.datatypes.EnumRoles;
+import com.fakenews.ejb.NewsEJBLocal;
+import com.fakenews.interfaces.SecurityMgt;
 
 @Path("/citizen")
-public class NewsRestServiceCitizenImpl {
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
+public class NewsRestServiceCitizen {
 	
 	@EJB
 	private NewsEJBLocal newsEJB; 
 	SecurityMgt securityMgt = ManagersFactory.getInstance().getSecurityMgt();
 	
+	@POST
+    @Path("login")
+    @PermitAll	
     public DTLoginResponse login(DTLoginCitizenRequest request) {
-    	
-    	String client_id = newsEJB.getParam(EnumParam.CLIENT_ID);
-    	
-    	Boolean loginOk = securityMgt.verifyTokenGoogle(request.getToken_id(), client_id);
-    	  
-    	if (loginOk) {
-    	  EnumRoles rol = newsEJB.citizenLogin(request.getMail());
-    	  if (rol == EnumRoles.ERROR){
-    		  return new DTLoginResponse("", rol);
-    	  }else {
-    		  String jwt = securityMgt.createAndSignToken(request.getMail(), request.getToken_id());
-    		  return new DTLoginResponse(jwt, rol);
-    	  }
-    	} else {
-    	  System.out.println("Invalid ID token.");
-    	  return new DTLoginResponse("", EnumRoles.ERROR);
-    	}
+		String token = "";
+		EnumRoles rol = EnumRoles.ERROR;
+		System.out.println("/citizen/login");
+		System.out.println("mail: " + request.getMail() + " token_id: " + request.getToken_id());
+		
+		try { 		    	
+	    	Boolean loginOk = securityMgt.verifyTokenGoogle(request.getToken_id());
+	    	System.out.println("loginOk: " + loginOk.toString());
+	    	  
+	    	if (loginOk) {
+	    	  rol = newsEJB.citizenLogin(request.getMail());
+	    	  if (rol != EnumRoles.ERROR){
+	    		  token = securityMgt.createAndSignToken(request.getMail(), request.getToken_id());
+	    	  }
+	    	}
+	    	
+		} catch (Exception ex) {
+            System.out.println("citizen/login " + ex.getMessage());
+        }
+		return new DTLoginResponse(token, rol);
 	}
-     
 	
 //	@POST
 //	@Path("addHecho")

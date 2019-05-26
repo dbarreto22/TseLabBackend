@@ -7,6 +7,10 @@ public class DTLoginResponse implements Serializable{
 	private String jwt;
 	private EnumRoles rol;
 	
+	public DTLoginResponse() {
+		
+	}
+	
 	public DTLoginResponse(String jwt, EnumRoles rol) {
 		this.jwt = jwt;
 		this.rol = rol;

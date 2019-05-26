@@ -7,7 +7,6 @@ import java.util.logging.Logger;
 
 import com.fakenews.data.NewsPersistentEJBLocal;
 import com.fakenews.datatypes.DTRespuesta;
-import com.fakenews.datatypes.EnumParam;
 import com.fakenews.datatypes.EnumRoles;
 import com.fakenews.model.Admin;
 import com.fakenews.model.Checker;
@@ -26,18 +25,23 @@ public class NewsEJB implements NewsEJBRemote, NewsEJBLocal {
 	@EJB
 	private NewsPersistentEJBLocal newsDataEJB;
 	
+	@Override
 	public List<Hecho> getAllHechos(){
 		return newsDataEJB.getAllHechos();
 	}
 	
+	@Override
 	public DTRespuesta saveHecho(Hecho hecho) {
 		return newsDataEJB.saveHecho(hecho);	
 	}	
 	
-	public String getParam(EnumParam name) {
+	@Override
+	public String getParam(String name) {
+		System.out.println("getParam: " + name);
 		return newsDataEJB.getParam(name);
 	}
 	
+	@Override
 	public EnumRoles citizenLogin(String email) {
 		if (newsDataEJB.getCitizen(email) != null) {
 			return EnumRoles.CITIZEN;
@@ -46,34 +50,22 @@ public class NewsEJB implements NewsEJBRemote, NewsEJBLocal {
 		}
 	}
 	
+	@Override
 	public EnumRoles getRol(String mail) {
-		if (newsDataEJB.getCitizen(mail) != null) {
-			return EnumRoles.CITIZEN;
-		}else {
-			if (newsDataEJB.getChecker(mail) != null) {
-				return EnumRoles.CHECKER;
-			}else {
-				if (newsDataEJB.getSubmitter(mail) != null) {
-					return EnumRoles.SUBMITTER;
-				}else {
-					if (newsDataEJB.getAdmin(mail) != null) {
-						return EnumRoles.ADMIN;
-					}else {
-						return EnumRoles.ERROR;
-					}
-				}
-			}
-		}
+		return newsDataEJB.getRol(mail);
 	}
 	
+	@Override
 	public Admin getAdmin(String mail) {
 		return newsDataEJB.getAdmin(mail);
 	}
 	
+	@Override
 	public Checker getChecker(String mail) {
 		return newsDataEJB.getChecker(mail);
 	}
 	
+	@Override
 	public Submitter getSubmitter(String mail) {
 		return newsDataEJB.getSubmitter(mail);
 	}

@@ -2,6 +2,7 @@ package com.fakenews.data;
 
 import java.util.List;
 import javax.ejb.Stateless;
+import javax.persistence.Query;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -9,7 +10,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 
 import com.fakenews.datatypes.DTRespuesta;
-import com.fakenews.datatypes.EnumParam;
 import com.fakenews.datatypes.EnumRoles;
 import com.fakenews.model.Admin;
 import com.fakenews.model.Checker;
@@ -17,6 +17,7 @@ import com.fakenews.model.Citizen;
 import com.fakenews.model.Hecho;
 import com.fakenews.model.Parametro;
 import com.fakenews.model.Submitter;
+import com.fakenews.model.Usuario;
 
 @Stateless
 public class NewsPersistentEJB
@@ -25,12 +26,14 @@ public class NewsPersistentEJB
   @PersistenceContext(unitName="fakenews")
   private EntityManager em;
   
+  @Override
   public DTRespuesta saveHecho(Hecho hecho)
   {
     em.persist(hecho);
     return new DTRespuesta("OK", "El hecho se ha agregado correctamente.");
   }
   
+  @Override
   public List<Hecho> getAllHechos()
   {
     CriteriaBuilder cb = em.getCriteriaBuilder();
@@ -39,11 +42,13 @@ public class NewsPersistentEJB
     return em.createQuery(cq).getResultList();
   }
   
-  public String getParam(EnumParam name) {
-	  Parametro param = em.find(Parametro.class, name.paramStr());
+  @Override
+  public String getParam(String name) {
+	  Parametro param = em.find(Parametro.class, name);
 	  return param.getValue();
   }
   
+  @Override
   public Citizen getCitizen(String mail) {
 	  Citizen citizen = null;
 	  try {
@@ -54,6 +59,7 @@ public class NewsPersistentEJB
 	  return citizen;
   }
   
+  @Override
   public EnumRoles saveCitizen(Citizen citizen) {
 	  EnumRoles rol = EnumRoles.CITIZEN;
 	  try {
@@ -65,6 +71,7 @@ public class NewsPersistentEJB
 	  return rol;
   }
   
+  @Override
   public Checker getChecker(String mail) {
 	  Checker checker = null;
 	  try {
@@ -75,6 +82,7 @@ public class NewsPersistentEJB
 	  return checker;
   }
   
+  @Override
   public Submitter getSubmitter(String mail) {
 	  Submitter sub = null;
 	  try {
@@ -85,6 +93,7 @@ public class NewsPersistentEJB
 	  return sub;
   }
   
+  @Override
   public Admin getAdmin(String mail) {
 	  Admin admin = null;
 	  try {
@@ -93,6 +102,14 @@ public class NewsPersistentEJB
 		  System.out.print(e.getMessage());
 	  }
 	  return admin;
+  }
+  
+  @Override
+  public EnumRoles getRol(String mail) {
+	  Query q = em.createNamedQuery(Usuario.GET_ROL).setParameter("email", mail);
+	  String rol = (String) q.getSingleResult();
+	  System.out.println(rol);
+	  return EnumRoles.valueOf(rol);
   }
  
 //  public void addPublicacion(Publicacion publicacion, Long idNoticia)

@@ -5,7 +5,6 @@ import java.util.List;
 import javax.ejb.Local;
 
 import com.fakenews.datatypes.DTRespuesta;
-import com.fakenews.datatypes.EnumParam;
 import com.fakenews.datatypes.EnumRoles;
 import com.fakenews.model.Admin;
 import com.fakenews.model.Checker;
@@ -17,7 +16,7 @@ public abstract interface NewsEJBLocal {
 
 	public List<Hecho> getAllHechos();
 	public DTRespuesta saveHecho(Hecho hecho);
-	public String getParam(EnumParam name);
+	public String getParam(String name);
 	public EnumRoles citizenLogin(String email);
 	public EnumRoles getRol(String email);
 	public Admin getAdmin(String mail);

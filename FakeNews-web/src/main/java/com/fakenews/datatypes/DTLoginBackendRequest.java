@@ -7,6 +7,10 @@ public class DTLoginBackendRequest implements Serializable{
 	private String username;
 	private String password;
 	
+	public DTLoginBackendRequest() {
+	
+	}
+	
 	public DTLoginBackendRequest(String username, String password) {
 		this.username = username;
 		this.password = password;

@@ -7,7 +7,7 @@ import javax.ejb.EJB;
 import javax.jws.WebMethod;
 import javax.jws.WebService;
 
-import com.fakenews.service.soap.interfaces.NewsSOAPService;
+import com.fakenews.service.soap.NewsSOAPService;
 
 //import com.mynews.ejb.NewsEJBLocal;
 //import com.mynews.model.Noticia;

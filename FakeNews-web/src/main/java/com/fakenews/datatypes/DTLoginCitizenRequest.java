@@ -7,6 +7,10 @@ public class DTLoginCitizenRequest implements Serializable{
 	private String mail;
 	private String token_id;
 	
+	public DTLoginCitizenRequest() {
+		
+	}
+
 	public DTLoginCitizenRequest(String mail, String token_id) {
 		this.mail = mail;
 		this.token_id = token_id;

@@ -4,7 +4,6 @@ import java.util.List;
 import javax.ejb.Local;
 
 import com.fakenews.datatypes.DTRespuesta;
-import com.fakenews.datatypes.EnumParam;
 import com.fakenews.datatypes.EnumRoles;
 import com.fakenews.model.Admin;
 import com.fakenews.model.Checker;
@@ -19,7 +18,7 @@ public abstract interface NewsPersistentEJBLocal
   
   public List<Hecho> getAllHechos();
   
-  public String getParam(EnumParam name);
+  public String getParam(String name);
   
   public Citizen getCitizen(String mail);
   
@@ -30,6 +29,8 @@ public abstract interface NewsPersistentEJBLocal
   public Admin getAdmin(String mail);
   
   public EnumRoles saveCitizen(Citizen citizen);
+  
+  public EnumRoles getRol(String mail);
   
 //  public abstract void addPublicacion(Publicacion paramPublicacion, Long idNoticia);
 //  
