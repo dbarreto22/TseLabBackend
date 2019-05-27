@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
@@ -50,7 +51,7 @@ public class Hecho implements Serializable {
 	private Checker checker;
 	
 	
-	@OneToMany(targetEntity = ResultadoMecanismo.class)
+	@OneToMany(fetch = FetchType.EAGER, targetEntity = ResultadoMecanismo.class)
 	private List<ResultadoMecanismo> resultadosMecanismos;
 	
 
@@ -63,10 +64,41 @@ public class Hecho implements Serializable {
 		this.titulo = titulo;
 		this.url = url;
 	}
-	
+		
 	public Hecho(String titulo, String url) {
 		this.titulo = titulo;
 		this.url = url;
+	}
+
+	public Hecho(Long id, String titulo, String url, EnumTipoCalificacion calificacion, Date fechaInicioVerificacion,
+			Date fechaFinVerificacion, String justificacion, EnumHechoEstado estado, Submitter submitter,
+			Checker checker) {
+		this.id = id;
+		this.titulo = titulo;
+		this.url = url;
+		this.calificacion = calificacion;
+		this.fechaInicioVerificacion = fechaInicioVerificacion;
+		this.fechaFinVerificacion = fechaFinVerificacion;
+		this.justificacion = justificacion;
+		this.estado = estado;
+		this.submitter = submitter;
+		this.checker = checker;
+	}
+
+	public Hecho(Long id, String titulo, String url, EnumTipoCalificacion calificacion, Date fechaInicioVerificacion,
+			Date fechaFinVerificacion, String justificacion, EnumHechoEstado estado, Submitter submitter,
+			Checker checker, List<ResultadoMecanismo> resultadosMecanismos) {
+		this.id = id;
+		this.titulo = titulo;
+		this.url = url;
+		this.calificacion = calificacion;
+		this.fechaInicioVerificacion = fechaInicioVerificacion;
+		this.fechaFinVerificacion = fechaFinVerificacion;
+		this.justificacion = justificacion;
+		this.estado = estado;
+		this.submitter = submitter;
+		this.checker = checker;
+		this.resultadosMecanismos = resultadosMecanismos;
 	}
 
 	public Long getId() {
