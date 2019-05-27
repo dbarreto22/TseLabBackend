@@ -107,6 +107,24 @@ public class NewsPersistentEJB
 	  return admin;
   }
   
+  @Override
+  public DTRespuesta updateHecho(Hecho hecho) {
+	  DTRespuesta respuesta = new DTRespuesta("ERROR", "Ha ocurrido un error al verificar el hecho.");
+	  try {
+		  Object object = em.merge(hecho);
+		  if (object instanceof Hecho) {
+			  Hecho nuevoHecho = (Hecho)object;
+			  if (nuevoHecho != null && nuevoHecho.getCalificacion() != null) {
+				  respuesta.setResultado("OK");
+				  respuesta.setMensaje("Se ha verificado el hecho correctamente. "
+				  		+ "Calificado como " + nuevoHecho.getCalificacion());
+			  }
+		  }
+	  }catch (Exception e) {
+		  System.out.print(e.getMessage());
+	  }
+	  return respuesta; 
+  }
  
 //  public void addPublicacion(Publicacion publicacion, Long idNoticia)
 //  {

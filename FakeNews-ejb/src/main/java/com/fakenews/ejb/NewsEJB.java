@@ -85,34 +85,10 @@ public class NewsEJB implements NewsEJBRemote, NewsEJBLocal {
 	public Submitter getSubmitter(String mail) {
 		return newsDataEJB.getSubmitter(mail);
 	}
-	
-//	public Noticia getNoticia(Long id){
-//		return newsDataEJB.getNoticia(id);
-//	}
-//	
-//	public List<Publicacion> getAllPublicaciones(){
-//		return newsDataEJB.getAllPublicaciones();
-//	}
-//	
-//	public List<Publicacion> findAllPublicacionesByNoticia(Long idNoticia){
-//		return newsDataEJB.findPublicacionesByNoticia(idNoticia);	
-//	}
-//	
-//	public String addPublicacion(Publicacion publicacion, Long idNoticia) {
-//		List<Publicacion> publicaciones = newsDataEJB.findPublicacionesByNoticia(idNoticia);
-//		if (publicaciones == null) {
-//			newsDataEJB.addPublicacion(publicacion, idNoticia);
-//			return "La publicación fue correctamente agregada.";
-//		}else {
-//			if (publicaciones.size() < 10) {
-//				newsDataEJB.addPublicacion(publicacion, idNoticia);
-//				return "La publicación fue correctamente agregada.";
-//				}else {
-//					return "Esta noticia ya tiene 10 publicaciones. No es posible agregar más.";
-//			}
-//		}
-//	}	
-//	
-
+		
+	@Override
+	public DTRespuesta verificarHecho(Hecho hecho) {
+		return newsDataEJB.updateHecho(hecho);
+	}
 }
 

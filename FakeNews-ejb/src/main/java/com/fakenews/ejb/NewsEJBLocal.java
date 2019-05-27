@@ -22,9 +22,5 @@ public abstract interface NewsEJBLocal {
 	public Admin getAdmin(String mail);
 	public Checker getChecker(String mail);
 	public Submitter getSubmitter(String mail);
-//	public Noticia getNoticia(Long id);
-//	public List<Publicacion> getAllPublicaciones();
-//	public List<Publicacion> findAllPublicacionesByNoticia(Long idNoticia);
-//	public String addPublicacion(Publicacion publicacion, Long idNoticia);
-
+	public DTRespuesta verificarHecho(Hecho hecho);
 }

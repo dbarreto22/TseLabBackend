@@ -15,9 +15,6 @@ public interface NewsEJBRemote {
 	public String getParam(String name);
 	public EnumRoles citizenLogin(String email);
 	public EnumRoles getRol(String email);
-//	public Noticia getNoticia(Long id);
-//	public List<Publicacion> getAllPublicaciones();
-//	public List<Publicacion> findAllPublicacionesByNoticia(Long idNoticia);
-//	public String addPublicacion(Publicacion publicacion, Long idNoticia);
+	public DTRespuesta verificarHecho(Hecho hecho);
 
 }

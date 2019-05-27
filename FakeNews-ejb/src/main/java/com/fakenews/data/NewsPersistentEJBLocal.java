@@ -30,15 +30,5 @@ public abstract interface NewsPersistentEJBLocal
   
   public EnumRoles saveCitizen(Citizen citizen);
  
-  
-//  public abstract void addPublicacion(Publicacion paramPublicacion, Long idNoticia);
-//  
-//  
-//  public abstract List<Publicacion> getAllPublicaciones();
-//  
-//  public abstract Noticia getNoticia(Long id);
-//  
-//  public abstract Publicacion getPublicacion(Long id);
-//  
-//  public abstract List<Publicacion> findPublicacionesByNoticia(Long idNoticia);
+  public DTRespuesta updateHecho(Hecho hecho);
 }

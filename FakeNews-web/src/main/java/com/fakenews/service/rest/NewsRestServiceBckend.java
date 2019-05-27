@@ -75,6 +75,14 @@ public class NewsRestServiceBckend {
 		return hechos;
 	}
 	
+	@POST
+	@Path("checker/verificarHecho")
+	public DTRespuesta verificarHecho(Hecho hecho) {
+		DTRespuesta respuesta = new DTRespuesta("ERROR", "Ha ocurrido un error al verificar el hecho.");
+		respuesta = newsEJB.verificarHecho(hecho);
+		return respuesta;
+	}
+	
 //	@GET
 //	@Path("getNoticia/{idNoticia}")
 //	@Produces(MediaType.APPLICATION_JSON)
@@ -91,18 +99,6 @@ public class NewsRestServiceBckend {
 //		return newsEJB.findAllPublicacionesByNoticia(idNoticia);
 //	}
 //	
-//	@POST
-//	@Path("addPublicacion")
-//	@Consumes(MediaType.APPLICATION_JSON)
-//	public String addPublicacion(@HeaderParam("idNoticia") Long idNoticia,Publicacion publicacion) {
-//		return newsEJB.addPublicacion(publicacion, idNoticia);
-//	}
-//
-//	@POST
-//	@Path("addNoticia")
-//	@Consumes(MediaType.APPLICATION_JSON)
-//	public String addNoticia(Noticia noticia) {
-//		return newsEJB.addNoticia(noticia.getTitulo(),noticia.getDescripcion());
-//	}
+
 	
 }
