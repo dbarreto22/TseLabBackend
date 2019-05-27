@@ -99,10 +99,8 @@ public class NewsPersistentEJB
   @Override
   public Admin getAdmin(String mail) {
 	  Admin admin = null;
-	  System.out.println("getAdmin mail Filtro: " + mail);
 	  try {
 		  admin = (Admin)em.find(Admin.class, mail);
-		  System.out.println("VERDADERO ADMIN: " + admin.getEmail());
 	  }catch(Exception e) {
 		  System.out.print(e.getMessage());
 	  }

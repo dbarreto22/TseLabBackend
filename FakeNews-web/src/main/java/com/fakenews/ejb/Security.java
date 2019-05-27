@@ -114,62 +114,68 @@ public class Security implements SecurityLocal {
     public Boolean isUserAllowed(String username, String password){
     	EnumRoles rol = newsEJB.getRol(username);
         
-        switch (rol) {
-        	case CITIZEN: 
-        		return this.verifyTokenGoogle(password);
-        		
-        	case ADMIN:
-        		Admin admin = newsEJB.getAdmin(username);
-        		return admin.getPassword().equals(password);
-        		
-        	case CHECKER:
-        		Checker checker = newsEJB.getChecker(username);
-        		return checker.getPassword().equals(password);
-        		
-        	case SUBMITTER:	
-        		Submitter sub = newsEJB.getSubmitter(username);
-        		return sub.getPassword().equals(password);
-        	default:
-        		return false;
-        }
-    	return rol;
+    	switch (rol) {
+    	case CITIZEN: 
+    		return this.verifyTokenGoogle(password);
+    		
+    	case ADMIN:
+    		Admin admin = newsEJB.getAdmin(username);
+    		if (admin != null && admin.getPassword().equals(password)) {
+    			return true;
+    		}
+    		
+    	case CHECKER:
+    		Checker checker = newsEJB.getChecker(username);
+    		if (checker != null && checker.getPassword().equals(password)) {
+    			return true;
+    		}
+    		        		
+    	case SUBMITTER:	
+    		Submitter sub = newsEJB.getSubmitter(username);
+    		if(sub != null && sub.getPassword().equals(password)) {
+    			return true;
+    		}
+    	
+    	default:
+    		return false;
+    		
+    }
     }
     
     @Override
     public EnumRoles getRolIfAllowed(String username, String password){
     	System.out.print("getRolIfAllowed");
-    	EnumRoles rol = EnumRoles.ERROR;
-    	rol = newsEJB.getRol(username);
+    	EnumRoles rolSalida = EnumRoles.ERROR;
+    	EnumRoles rol = newsEJB.getRol(username);
         System.out.println("ROL: " + rol.rolStr());
         switch (rol) {
         	case CITIZEN: 
         		if (this.verifyTokenGoogle(password)) {
-        			return rol;
+        			rolSalida = rol;
         		};
         		
         	case ADMIN:
         		Admin admin = newsEJB.getAdmin(username);
         		if (admin != null && admin.getPassword().equals(password)) {
-        			return rol;
+        			System.out.println("ES IGUAL LA PASSWORD");
+        			rolSalida = rol;
         		}
         		
         	case CHECKER:
         		Checker checker = newsEJB.getChecker(username);
         		if (checker != null && checker.getPassword().equals(password)) {
-        			return rol;
+        			rolSalida = rol;
         		}
         		        		
         	case SUBMITTER:	
         		Submitter sub = newsEJB.getSubmitter(username);
         		if(sub != null && sub.getPassword().equals(password)) {
-        			return rol;
-        		}
-        	
-        	case ERROR:
-        		return rol;
-        		
+        			rolSalida = rol;
+        		}        		
         }
-        return EnumRoles.ERROR;
+        
+        System.out.println("rolSalida: " + rolSalida.rolStr());
+        return rolSalida;
         
     }
 	    
