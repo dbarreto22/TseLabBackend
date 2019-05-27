@@ -113,7 +113,7 @@ public class Security implements SecurityLocal {
     @Override
     public Boolean isUserAllowed(String username, String password){
     	EnumRoles rol = newsEJB.getRol(username);
-        
+    	
     	switch (rol) {
     	case CITIZEN: 
     		return this.verifyTokenGoogle(password);

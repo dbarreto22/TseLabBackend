@@ -19,6 +19,7 @@ import com.fakenews.datatypes.DTRespuesta;
 import com.fakenews.datatypes.EnumRoles;
 import com.fakenews.ejb.NewsEJBLocal;
 import com.fakenews.ejb.SecurityLocal;
+import com.fakenews.model.Hecho;
 
 @Path("/citizen")
 @Produces(MediaType.APPLICATION_JSON)
@@ -57,11 +58,17 @@ public class NewsRestServiceCitizen {
 		return new DTLoginResponse(token, rol);
 	}
 	
-//	@POST
-//	@Path("addHecho")
-//	public DTRespuesta addHecho(Hecho hec) {
-//		return newsEJB.getNoticia(id);
-//	}
+	@POST
+	@Path("addHecho")
+	public DTRespuesta addHecho(Hecho hecho) {
+		DTRespuesta respuesta = new DTRespuesta("ERROR", "Ha ocurrido un error.");
+		try {
+			respuesta = newsEJB.saveHecho(hecho);
+		}catch (Exception e) {
+			System.out.println("citizen/addHecho " + e.getMessage());
+		}
+		return respuesta;
+	}
 //	
 //	@GET
 //	@Path("getAllPublicaciones")
