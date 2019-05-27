@@ -23,8 +23,7 @@ import com.fakenews.model.Submitter;
 import com.fakenews.model.Usuario;
 
 @Stateless
-public class NewsPersistentEJB
-  implements NewsPersistentEJBLocal
+public class NewsPersistentEJB implements NewsPersistentEJBLocal
 {
   @PersistenceContext(unitName="fakenews")
   private EntityManager em;
@@ -126,31 +125,41 @@ public class NewsPersistentEJB
 	  return respuesta; 
   }
  
-//  public void addPublicacion(Publicacion publicacion, Long idNoticia)
-//  {
-//	System.out.println("tipo: " + publicacion.getTipo());  
-//	System.out.println("url: " + publicacion.getUrl()); 
-//	Noticia noticia = (Noticia)em.find(Noticia.class, idNoticia);
-//    noticia.addPublicacion(publicacion);
-//    em.merge(noticia);
-//  }
-//  
-//  public List<Publicacion> getAllPublicaciones()
-//  {
-//    CriteriaBuilder cb = em.getCriteriaBuilder();
-//    CriteriaQuery<Publicacion> cq = cb.createQuery(Publicacion.class);
-//    cq.select(cq.from(Publicacion.class));
-//    return em.createQuery(cq).getResultList();
-//  }
+  @Override
+  public DTRespuesta asignarHecho(Long idHecho, String mail) {
+	  System.out.println("AsignarHecho");
+	  System.out.println("idHecho: " + idHecho.toString());
+	  System.out.println("mail: " + mail);
+	  
+	  DTRespuesta respuesta = new DTRespuesta("ERROR", "Ha ocurrido un error al asignar el Hecho.");
+	  Hecho hecho = null;
+	  Checker checker = null;
+	  Object object = em.find(Hecho.class, idHecho);
+	  if (object instanceof Hecho) {
+		  hecho = (Hecho)object;
+		  System.out.println(hecho.getId());
+	  }
+	  
+	  object = em.find(Checker.class, mail);
+	  if (object instanceof Checker) {
+		  checker = (Checker)object;
+		  System.out.println(checker.getEmail());
+	  }
+	
+	  if (hecho != null && checker != null) {
+		  hecho.setChecker(checker);
+		  em.merge(hecho);
+		  respuesta.setResultado("OK");
+		  respuesta.setMensaje("Se ha asignado el hecho correctamente.");
+	  }else {
+		  respuesta.setMensaje("No existe hecho o checker asociado a los datos");
+	  }
+	  return respuesta;
+  }
 //  
 //  public Noticia getNoticia(Long id)
 //  {
 //    return (Noticia)em.find(Noticia.class, id);
-//  }
-//  
-//  public Publicacion getPublicacion(Long id)
-//  {
-//    return (Publicacion)em.find(Publicacion.class, id);
 //  }
 //  
 //  public List<Publicacion> findPublicacionesByNoticia(Long idNoticia)

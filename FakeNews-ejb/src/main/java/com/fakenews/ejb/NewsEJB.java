@@ -90,5 +90,10 @@ public class NewsEJB implements NewsEJBRemote, NewsEJBLocal {
 	public DTRespuesta verificarHecho(Hecho hecho) {
 		return newsDataEJB.updateHecho(hecho);
 	}
+	
+	@Override
+	public DTRespuesta asignarHecho(Long idHecho, String mail) {
+		return newsDataEJB.asignarHecho(idHecho, mail);
+	}
 }
 

@@ -23,4 +23,5 @@ public abstract interface NewsEJBLocal {
 	public Checker getChecker(String mail);
 	public Submitter getSubmitter(String mail);
 	public DTRespuesta verificarHecho(Hecho hecho);
+	public DTRespuesta asignarHecho(Long idHecho, String mail);
 }

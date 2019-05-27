@@ -31,4 +31,7 @@ public abstract interface NewsPersistentEJBLocal
   public EnumRoles saveCitizen(Citizen citizen);
  
   public DTRespuesta updateHecho(Hecho hecho);
+  
+  public DTRespuesta asignarHecho(Long idHecho, String mail);
+
 }

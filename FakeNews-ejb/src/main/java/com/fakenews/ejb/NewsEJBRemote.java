@@ -16,5 +16,5 @@ public interface NewsEJBRemote {
 	public EnumRoles citizenLogin(String email);
 	public EnumRoles getRol(String email);
 	public DTRespuesta verificarHecho(Hecho hecho);
-
+	public DTRespuesta asignarHecho(Long idHecho, String mail);
 }

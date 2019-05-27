@@ -19,6 +19,7 @@ import com.fakenews.datatypes.EnumRoles;
 import com.fakenews.ejb.NewsEJBLocal;
 import com.fakenews.ejb.SecurityLocal;
 import com.fakenews.model.Hecho;
+import com.fakenews.datatypes.DTAsignarHecho;
 import com.fakenews.datatypes.DTLoginBackendRequest;
 
 @Path("/")
@@ -83,6 +84,14 @@ public class NewsRestServiceBckend {
 		return respuesta;
 	}
 	
+	@POST
+	@Path("submitter/asignarHecho")
+	public DTRespuesta asignarHecho(DTAsignarHecho asignaHecho) {
+		DTRespuesta respuesta = new DTRespuesta("ERROR", "Ha ocurrido un error al asignar el hecho.");
+		respuesta = newsEJB.asignarHecho(asignaHecho.getIdHecho(),asignaHecho.getMail());
+		return respuesta;
+	}
+	
 //	@GET
 //	@Path("getNoticia/{idNoticia}")
 //	@Produces(MediaType.APPLICATION_JSON)
@@ -90,15 +99,5 @@ public class NewsRestServiceBckend {
 //		return newsEJB.getNoticia(id);
 //	}
 //	
-
-//	
-//	@GET
-//	@Produces(MediaType.APPLICATION_JSON)
-//	@Path("findAllPublicacionesByNoticia/{idNoticia}")
-//	public List<Publicacion> findAllPublicacionesByNoticia(@PathParam("idNoticia") Long idNoticia){
-//		return newsEJB.findAllPublicacionesByNoticia(idNoticia);
-//	}
-//	
-
 	
 }
