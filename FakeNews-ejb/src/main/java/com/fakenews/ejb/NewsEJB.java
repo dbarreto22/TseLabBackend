@@ -12,6 +12,8 @@ import com.fakenews.model.Admin;
 import com.fakenews.model.Checker;
 import com.fakenews.model.Citizen;
 import com.fakenews.model.Hecho;
+import com.fakenews.model.MecanismoPeriferico;
+import com.fakenews.model.MecanismoVerificacion;
 import com.fakenews.model.Submitter;
 
 import java.util.logging.Level;
@@ -92,8 +94,33 @@ public class NewsEJB implements NewsEJBRemote, NewsEJBLocal {
 	}
 	
 	@Override
+	public DTRespuesta suscription(String mail) {
+		return newsDataEJB.suscription(mail);
+	}
+	
+	@Override
 	public DTRespuesta asignarHecho(Long idHecho, String mail) {
 		return newsDataEJB.asignarHecho(idHecho, mail);
+	}
+	
+	@Override
+	public MecanismoPeriferico getMecanismoPeriferico(String username) {
+		return newsDataEJB.getMecanismoPeriferico(username);
+	}
+	
+	@Override
+	public List<Checker> getCheckers(){
+		return newsDataEJB.getCheckers();
+	}
+	
+	@Override
+	public List<MecanismoVerificacion> getMecanismosVerificacion(){
+		return newsDataEJB.getMecanismosVerificacion();
+	}
+	
+	@Override
+	public List<Hecho> getHechosByChecker(String mail){
+		return newsDataEJB.getHechosByChecker(mail);
 	}
 }
 

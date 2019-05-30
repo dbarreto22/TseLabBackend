@@ -9,6 +9,7 @@ import com.fakenews.ejb.NewsEJBLocal;
 import com.fakenews.ejb.SecurityLocal;
 import com.fakenews.model.Admin;
 import com.fakenews.model.Checker;
+import com.fakenews.model.MecanismoPeriferico;
 import com.fakenews.model.Submitter;
 import com.google.api.client.extensions.appengine.http.UrlFetchTransport;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
@@ -22,6 +23,7 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.UUID;
@@ -78,13 +80,17 @@ public class Security implements SecurityLocal {
     	String client_id1 = newsEJB.getParam("CLIENT_ID1");
     	System.out.println("client_id: " + client_id1);
     	
+    	String client_id2 = newsEJB.getParam("CLIENT_ID2");
+    	System.out.println("client_id: " + client_id2);
+    	
+    	String client_id3 = newsEJB.getParam("CLIENT_ID3");
+    	System.out.println("client_id: " + client_id3);
+    	   	
     	
     	JacksonFactory jsonFactory = new JacksonFactory();
     	HttpTransport transport = new NetHttpTransport();
     	GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(transport, jsonFactory)
-	    .setAudience(Collections.singletonList(client_id1))
-	    // Or, if multiple clients access the backend:
-	    //.setAudience(Arrays.asList(CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3))
+	    .setAudience(Arrays.asList(client_id1, client_id2,client_id3))
 	    .build();
     	
     	System.out.println("token_id: " + token_id);
@@ -112,34 +118,43 @@ public class Security implements SecurityLocal {
     
     @Override
     public Boolean isUserAllowed(String username, String password){
-    	EnumRoles rol = newsEJB.getRol(username);
     	
-    	switch (rol) {
-    	case CITIZEN: 
-    		return this.verifyTokenGoogle(password);
-    		
-    	case ADMIN:
-    		Admin admin = newsEJB.getAdmin(username);
-    		if (admin != null && admin.getPassword().equals(password)) {
-    			return true;
-    		}
-    		
-    	case CHECKER:
-    		Checker checker = newsEJB.getChecker(username);
-    		if (checker != null && checker.getPassword().equals(password)) {
-    			return true;
-    		}
-    		        		
-    	case SUBMITTER:	
-    		Submitter sub = newsEJB.getSubmitter(username);
-    		if(sub != null && sub.getPassword().equals(password)) {
-    			return true;
-    		}
+    	MecanismoPeriferico periferico = newsEJB.getMecanismoPeriferico(username);
     	
-    	default:
-    		return false;
-    		
-    }
+    	if(periferico != null) {
+    		return periferico.getPassword().equals(password);
+    				
+    	}else {
+    		EnumRoles rol = newsEJB.getRol(username);
+        	
+        	switch (rol) {
+        	case CITIZEN: 
+        		return this.verifyTokenGoogle(password);
+        		
+        	case ADMIN:
+        		Admin admin = newsEJB.getAdmin(username);
+        		if (admin != null && admin.getPassword().equals(password)) {
+        			return true;
+        		}
+        		
+        	case CHECKER:
+        		Checker checker = newsEJB.getChecker(username);
+        		if (checker != null && checker.getPassword().equals(password)) {
+        			return true;
+        		}
+        		        		
+        	case SUBMITTER:	
+        		Submitter sub = newsEJB.getSubmitter(username);
+        		if(sub != null && sub.getPassword().equals(password)) {
+        			return true;
+        		}
+        	
+        	default:
+        		return false;
+        		
+        	}
+    	}
+    	
     }
     
     @Override

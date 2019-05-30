@@ -4,9 +4,16 @@ import java.io.Serializable;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 @Entity
+@NamedQueries({
+    @NamedQuery(name = MecanismoPeriferico.getByUsuario, 
+    		query = "SELECT a FROM MecanismoPeriferico a WHERE a.usuario = :username")})
 public class MecanismoPeriferico extends MecanismoVerificacion implements Serializable {
+	
+	public final static String getByUsuario = "MecanismoPeriferico.getByUsuario";
 	
 	@Basic
 	private String usuario;

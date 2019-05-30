@@ -15,6 +15,10 @@ public class DTLoginResponse implements Serializable{
 		this.jwt = jwt;
 		this.rol = rol;
 	}
+	
+	public DTLoginResponse(String jwt) {
+		this.jwt = jwt;
+	}
 
 	public String getJwt() {
 		return jwt;

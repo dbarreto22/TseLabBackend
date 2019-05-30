@@ -69,13 +69,20 @@ public class NewsRestServiceCitizen {
 		}
 		return respuesta;
 	}
-//	
-//	@GET
-//	@Path("getAllPublicaciones")
-//	@Produces(MediaType.APPLICATION_JSON)
-//	public List<Publicacion> getAllPublicaciones(){
-//		return newsEJB.getAllPublicaciones();
-//	}
+	
+	@POST
+	@Path("suscripcion")
+	public DTRespuesta suscripcion(String mail) {
+		DTRespuesta respuesta = new DTRespuesta("ERROR", "Ha ocurrido un error.");
+		try {
+			respuesta = newsEJB.suscription(mail);
+		}catch (Exception e) {
+			System.out.println("citizen/suscripcion " + e.getMessage());
+		}
+		return respuesta;
+	}
+	
+	
 //	
 //	@GET
 //	@Produces(MediaType.APPLICATION_JSON)
@@ -84,18 +91,5 @@ public class NewsRestServiceCitizen {
 //		return newsEJB.findAllPublicacionesByNoticia(idNoticia);
 //	}
 //	
-//	@POST
-//	@Path("addPublicacion")
-//	@Consumes(MediaType.APPLICATION_JSON)
-//	public String addPublicacion(@HeaderParam("idNoticia") Long idNoticia,Publicacion publicacion) {
-//		return newsEJB.addPublicacion(publicacion, idNoticia);
-//	}
-//
-//	@POST
-//	@Path("addNoticia")
-//	@Consumes(MediaType.APPLICATION_JSON)
-//	public String addNoticia(Noticia noticia) {
-//		return newsEJB.addNoticia(noticia.getTitulo(),noticia.getDescripcion());
-//	}
 	
 }

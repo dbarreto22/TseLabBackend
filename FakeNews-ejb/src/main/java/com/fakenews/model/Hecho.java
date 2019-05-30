@@ -12,13 +12,20 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 import com.fakenews.datatypes.EnumHechoEstado;
 import com.fakenews.datatypes.EnumTipoCalificacion;
 
 @Entity
+@NamedQueries({
+    @NamedQuery(name = Hecho.getByChecker, 
+    		query = "SELECT a FROM Hecho a WHERE a.checker = :checker")})
 public class Hecho implements Serializable {
+	
+	public final static String getByChecker = "Hecho.getByChecker";
 	
 	@Id
     @GeneratedValue (strategy=GenerationType.AUTO)

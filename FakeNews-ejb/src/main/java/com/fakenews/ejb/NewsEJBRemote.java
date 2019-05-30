@@ -13,8 +13,8 @@ public interface NewsEJBRemote {
 	public List<Hecho> getAllHechos();
 	public DTRespuesta saveHecho(Hecho hecho);
 	public String getParam(String name);
-	public EnumRoles citizenLogin(String email);
 	public EnumRoles getRol(String email);
 	public DTRespuesta verificarHecho(Hecho hecho);
 	public DTRespuesta asignarHecho(Long idHecho, String mail);
+	public DTRespuesta suscription(String mail);
 }
