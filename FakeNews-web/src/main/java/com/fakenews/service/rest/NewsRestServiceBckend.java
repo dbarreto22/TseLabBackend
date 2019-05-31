@@ -14,6 +14,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.fakenews.datatypes.DTLoginResponse;
+import com.fakenews.datatypes.DTMailRequest;
 import com.fakenews.datatypes.DTRespuesta;
 import com.fakenews.datatypes.EnumRoles;
 import com.fakenews.ejb.NewsEJBLocal;
@@ -99,11 +100,11 @@ public class NewsRestServiceBckend {
 	
 	@GET
 	@Path("getHechosByChecker")
-	public List<Hecho> getHechosByChecker(String mail) {
-		System.out.println("mail: " + mail);
+	public List<Hecho> getHechosByChecker(DTMailRequest mail) {
+		System.out.println("mail: " + mail.getMail());
 		List<Hecho> hechos = null;
 		try {
-			hechos = newsEJB.getHechosByChecker(mail);
+			hechos = newsEJB.getHechosByChecker(mail.getMail());
 		}catch (Exception ex) {
 			System.out.println("getHechosByChecker" + ex.getMessage());
 		}

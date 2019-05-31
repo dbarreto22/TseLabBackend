@@ -15,6 +15,7 @@ import javax.ws.rs.core.MediaType;
 
 import com.fakenews.datatypes.DTLoginCitizenRequest;
 import com.fakenews.datatypes.DTLoginResponse;
+import com.fakenews.datatypes.DTMailRequest;
 import com.fakenews.datatypes.DTRespuesta;
 import com.fakenews.datatypes.EnumRoles;
 import com.fakenews.ejb.NewsEJBLocal;
@@ -72,24 +73,14 @@ public class NewsRestServiceCitizen {
 	
 	@POST
 	@Path("suscripcion")
-	public DTRespuesta suscripcion(String mail) {
+	public DTRespuesta suscripcion(DTMailRequest mail) {
 		DTRespuesta respuesta = new DTRespuesta("ERROR", "Ha ocurrido un error.");
 		try {
-			respuesta = newsEJB.suscription(mail);
+			respuesta = newsEJB.suscription(mail.getMail());
 		}catch (Exception e) {
 			System.out.println("citizen/suscripcion " + e.getMessage());
 		}
 		return respuesta;
 	}
-	
-	
-//	
-//	@GET
-//	@Produces(MediaType.APPLICATION_JSON)
-//	@Path("findAllPublicacionesByNoticia/{idNoticia}")
-//	public List<Publicacion> findAllPublicacionesByNoticia(@PathParam("idNoticia") Long idNoticia){
-//		return newsEJB.findAllPublicacionesByNoticia(idNoticia);
-//	}
-//	
-	
+		
 }

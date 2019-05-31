@@ -76,6 +76,7 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 	public Checker getChecker(String mail) {
 		Checker checker = null;
 		try {
+			System.out.println("mail: " + mail);
 			checker = (Checker) em.find(Checker.class, mail);
 		} catch (Exception e) {
 			System.out.print(e.getMessage());
@@ -200,8 +201,7 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 	@Override
 	public List<Hecho> getHechosByChecker(String mail){
 		System.out.println("getHechosByChecker");
-		System.out.println("mail: " + mail);
-		
+	
 		Checker checker = this.getChecker(mail);
 	
 		Query q = em.createNamedQuery(Hecho.getByChecker).setParameter("checker", checker);
