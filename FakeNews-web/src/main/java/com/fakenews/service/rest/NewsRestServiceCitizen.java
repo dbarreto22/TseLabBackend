@@ -38,16 +38,17 @@ public class NewsRestServiceCitizen {
     @PermitAll	
     public DTLoginResponse login(DTLoginCitizenRequest request) {
 		String token = "";
+		String nombre = "";
 		EnumRoles rol = EnumRoles.ERROR;
 		System.out.println("/citizen/login");
 		System.out.println("mail: " + request.getMail() + " token_id: " + request.getToken_id());
 		
 		try { 		    	
-	    	Boolean loginOk = securityMgt.verifyTokenGoogle(request.getToken_id());
+	    	Boolean loginOk = securityMgt.verifyTokenGoogle(request.getToken_id(),nombre);
 	    	System.out.println("loginOk: " + loginOk.toString());
 	    	  
 	    	if (loginOk) {
-	    	  rol = newsEJB.citizenLogin(request.getMail());
+	    	  rol = newsEJB.citizenLogin(request.getMail(),nombre);
 	    	  if (rol != EnumRoles.ERROR){
 	    		  token = securityMgt.createAndSignToken(request.getMail(), request.getToken_id());
 	    	  }

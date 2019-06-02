@@ -15,8 +15,8 @@ public class Checker extends Usuario implements Serializable {
 		
 	}
 
-	public Checker(String email, String nickname, String telefono, String password) {
-		super(email, nickname, telefono);
+	public Checker(String email, String nickname, String telefono, String nombre, String password) {
+		super(email, nickname, telefono, nombre);
 		this.password = password;
 	}
 

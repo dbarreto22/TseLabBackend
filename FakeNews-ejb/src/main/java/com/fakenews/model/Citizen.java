@@ -20,13 +20,13 @@ public class Citizen extends Usuario implements Serializable {
 		
 	}
 
-	public Citizen(String email, String nickname, String telefono, Boolean suscripto) {
-		super(email, nickname, telefono);
+	public Citizen(String email, String nickname, String telefono, String nombre, Boolean suscripto) {
+		super(email, nickname, telefono,nombre);
 		this.suscripto = suscripto;
 	}
 	
-	public Citizen(String email) {
-		super(email, email, "");
+	public Citizen(String email, String nombre) {
+		super(email, email, "", nombre);
 		this.suscripto = false;
 	}
 

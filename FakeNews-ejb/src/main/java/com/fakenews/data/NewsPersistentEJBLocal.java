@@ -47,4 +47,12 @@ public abstract interface NewsPersistentEJBLocal
 	
 	public List<MecanismoVerificacion> getMecanismosVerificacion();
 
+	public DTRespuesta saveAdmin(Admin admin);
+
+	public DTRespuesta saveChecker(Checker checker);
+
+	public DTRespuesta saveSubmitter(Submitter submitter);
+
+	public List<MecanismoPeriferico> getMecanismosPerifericos();
+
 }

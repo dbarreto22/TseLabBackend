@@ -22,15 +22,19 @@ public abstract class Usuario implements Serializable {
 
     @Basic
     private String telefono;
+    
+    @Basic
+    private String nombre;
 
     public Usuario() {
     	
     }
 
-	public Usuario(String email, String nickname, String telefono) {
+	public Usuario(String email, String nickname, String telefono, String nombre) {
 		this.email = email;
 		this.nickname = nickname;
 		this.telefono = telefono;
+		this.nombre   = nombre;
 	}
 
 	public String getEmail() {
@@ -56,6 +60,14 @@ public abstract class Usuario implements Serializable {
 	public void setTelefono(String telefono) {
 		this.telefono = telefono;
 	}
+	
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
 
 	@Override
 	public int hashCode() {
@@ -63,6 +75,7 @@ public abstract class Usuario implements Serializable {
 		int result = 1;
 		result = prime * result + ((email == null) ? 0 : email.hashCode());
 		result = prime * result + ((nickname == null) ? 0 : nickname.hashCode());
+		result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
 		result = prime * result + ((telefono == null) ? 0 : telefono.hashCode());
 		return result;
 	}
@@ -85,6 +98,11 @@ public abstract class Usuario implements Serializable {
 			if (other.nickname != null)
 				return false;
 		} else if (!nickname.equals(other.nickname))
+			return false;
+		if (nombre == null) {
+			if (other.nombre != null)
+				return false;
+		} else if (!nombre.equals(other.nombre))
 			return false;
 		if (telefono == null) {
 			if (other.telefono != null)

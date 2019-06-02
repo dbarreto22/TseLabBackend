@@ -15,8 +15,8 @@ public class Submitter extends Usuario implements Serializable {
 		
 	}
 
-	public Submitter(String email, String nickname, String telefono, String password) {
-		super(email, nickname, telefono);
+	public Submitter(String email, String nickname, String telefono, String nombre, String password) {
+		super(email, nickname, telefono,nombre);
 		this.password = password;
 	}
 
@@ -26,7 +26,6 @@ public class Submitter extends Usuario implements Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-		
+	}	
 	
 }

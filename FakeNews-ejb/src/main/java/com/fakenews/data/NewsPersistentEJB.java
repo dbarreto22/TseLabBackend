@@ -215,5 +215,31 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 		cq.select(cq.from(MecanismoVerificacion.class));
 		return em.createQuery(cq).getResultList();
 	}
+	
+	@Override
+	public DTRespuesta saveAdmin(Admin admin) {
+		em.persist(admin);
+		return new DTRespuesta("OK", "El usuario se ha registrado correctamente.");
+	}
+
+	@Override
+	public DTRespuesta saveChecker(Checker checker) {
+		em.persist(checker);
+		return new DTRespuesta("OK", "El usuario se ha registrado correctamente.");
+	}
+
+	@Override
+	public DTRespuesta saveSubmitter(Submitter submitter) {
+		em.persist(submitter);
+		return new DTRespuesta("OK", "El usuario se ha registrado correctamente.");
+	}
+	
+	@Override
+	public List<MecanismoPeriferico> getMecanismosPerifericos(){
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<MecanismoPeriferico> cq = cb.createQuery(MecanismoPeriferico.class);
+		cq.select(cq.from(MecanismoPeriferico.class));
+		return em.createQuery(cq).getResultList();
+	}
 
 }

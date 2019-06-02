@@ -16,7 +16,7 @@ public interface SecurityLocal {
     
     public String createAndSignToken(String username, String password);
     
-    public Boolean verifyTokenGoogle(String token_id);
+    public Boolean verifyTokenGoogle(String token_id, String nombre);
     
     public EnumRoles getRolIfAllowed(String username, String password);
     

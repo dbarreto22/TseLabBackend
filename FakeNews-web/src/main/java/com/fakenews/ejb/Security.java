@@ -73,7 +73,7 @@ public class Security implements SecurityLocal {
     }
     
     @Override
-    public Boolean verifyTokenGoogle(String token_id) {
+    public Boolean verifyTokenGoogle(String token_id, String nombre) {
     	System.out.println("verifyTokenGoogle");
     	Boolean loginOk = false;
     	
@@ -105,6 +105,7 @@ public class Security implements SecurityLocal {
 
 	    	  // Print user identifier
 	    	  String userId = payload.getSubject();
+	    	  nombre = (String) payload.get("name");
 	    	  System.out.println("User ID: " + userId);
 	    	  loginOk = true;
 	    	}
@@ -118,7 +119,7 @@ public class Security implements SecurityLocal {
     
     @Override
     public Boolean isUserAllowed(String username, String password){
-    	
+    	String nombre = "";
     	MecanismoPeriferico periferico = newsEJB.getMecanismoPeriferico(username);
     	
     	if(periferico != null) {
@@ -129,7 +130,7 @@ public class Security implements SecurityLocal {
         	
         	switch (rol) {
         	case CITIZEN: 
-        		return this.verifyTokenGoogle(password);
+        		return this.verifyTokenGoogle(password, nombre);
         		
         	case ADMIN:
         		Admin admin = newsEJB.getAdmin(username);
@@ -163,9 +164,10 @@ public class Security implements SecurityLocal {
     	EnumRoles rolSalida = EnumRoles.ERROR;
     	EnumRoles rol = newsEJB.getRol(username);
         System.out.println("ROL: " + rol.rolStr());
+        String nombre = "";
         switch (rol) {
         	case CITIZEN: 
-        		if (this.verifyTokenGoogle(password)) {
+        		if (this.verifyTokenGoogle(password,nombre)) {
         			rolSalida = rol;
         		};
         		

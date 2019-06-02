@@ -16,11 +16,13 @@ import javax.ws.rs.core.MediaType;
 import com.fakenews.datatypes.DTLoginResponse;
 import com.fakenews.datatypes.DTMailRequest;
 import com.fakenews.datatypes.DTRespuesta;
+import com.fakenews.datatypes.DTUsuarioBcknd;
 import com.fakenews.datatypes.EnumRoles;
 import com.fakenews.ejb.NewsEJBLocal;
 import com.fakenews.ejb.SecurityLocal;
 import com.fakenews.model.Checker;
 import com.fakenews.model.Hecho;
+import com.fakenews.model.MecanismoPeriferico;
 import com.fakenews.model.MecanismoVerificacion;
 import com.google.appengine.repackaged.com.google.common.flogger.backend.system.SystemClock;
 import com.fakenews.datatypes.DTAsignarHecho;
@@ -129,5 +131,15 @@ public class NewsRestServiceBckend {
 		return newsEJB.getMecanismosVerificacion();
 	}
 	
+	@POST
+	@Path("backend/registro")
+	public DTRespuesta registrarUsuarioBackend(DTUsuarioBcknd usuario) {
+		return newsEJB.registrarUsuarioBackend(usuario);
+	}
 	
+	@GET
+	@Path("admin/getNodosPerifericos")
+	public List<MecanismoPeriferico> getMecanismosPerifericos(){
+		return newsEJB.getMecanismosPerifericos();
+	}
 }
