@@ -15,6 +15,7 @@ import javax.ws.rs.core.MediaType;
 
 import com.fakenews.datatypes.DTLoginResponse;
 import com.fakenews.datatypes.DTMailRequest;
+import com.fakenews.datatypes.DTMecanismoVerificacion;
 import com.fakenews.datatypes.DTRespuesta;
 import com.fakenews.datatypes.DTUsuarioBcknd;
 import com.fakenews.datatypes.EnumRoles;
@@ -26,6 +27,7 @@ import com.fakenews.model.MecanismoPeriferico;
 import com.fakenews.model.MecanismoVerificacion;
 import com.google.appengine.repackaged.com.google.common.flogger.backend.system.SystemClock;
 import com.fakenews.datatypes.DTAsignarHecho;
+import com.fakenews.datatypes.DTHechoMecanismo;
 import com.fakenews.datatypes.DTLoginBackendRequest;
 
 @Path("/")
@@ -142,4 +144,24 @@ public class NewsRestServiceBckend {
 	public List<MecanismoPeriferico> getMecanismosPerifericos(){
 		return newsEJB.getMecanismosPerifericos();
 	}
+	
+	@POST
+	@Path("admin/addMecanismoVerificacion")
+	public DTRespuesta addMecanismoVerificacion(DTMecanismoVerificacion mecanismo) {
+		return newsEJB.addMecanismoVerificacion(mecanismo);
+	}
+	
+	@POST
+	@Path("admin/modificarMecanismoVerificacion")
+	public DTRespuesta updateMecanismoVerificacion(DTMecanismoVerificacion mecanismo) {
+		return newsEJB.updateMecanismoVerificacion(mecanismo);
+	}
+	
+	@POST
+	@Path("checker/verificarHechoMecanismo")
+	public DTRespuesta verificarHechoMecanismo(DTHechoMecanismo hechoMecanismo) {
+		return newsEJB.verificarHechoMecanismo(hechoMecanismo);
+	}
+	
+	
 }

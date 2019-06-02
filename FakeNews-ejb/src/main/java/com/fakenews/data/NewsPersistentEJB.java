@@ -12,15 +12,19 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 
+import com.fakenews.datatypes.DTMecanismoVerificacion;
 import com.fakenews.datatypes.DTRespuesta;
 import com.fakenews.datatypes.EnumRoles;
 import com.fakenews.model.Admin;
 import com.fakenews.model.Checker;
 import com.fakenews.model.Citizen;
 import com.fakenews.model.Hecho;
+import com.fakenews.model.MecanismoExterno;
+import com.fakenews.model.MecanismoInterno;
 import com.fakenews.model.MecanismoPeriferico;
 import com.fakenews.model.MecanismoVerificacion;
 import com.fakenews.model.Parametro;
+import com.fakenews.model.ResultadoMecanismo;
 import com.fakenews.model.Submitter;
 import com.fakenews.model.Usuario;
 
@@ -240,6 +244,95 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 		CriteriaQuery<MecanismoPeriferico> cq = cb.createQuery(MecanismoPeriferico.class);
 		cq.select(cq.from(MecanismoPeriferico.class));
 		return em.createQuery(cq).getResultList();
+	}
+	
+	@Override
+	public DTRespuesta saveMecanismoInterno(MecanismoInterno mecanismo) {
+		em.persist(mecanismo);
+		return new DTRespuesta("OK", "El mecanismo se ha registrado correctamente.");
+	}
+	
+	@Override
+	public DTRespuesta saveMecanismoExterno(MecanismoExterno mecanismo) {
+		em.persist(mecanismo);
+		return new DTRespuesta("OK", "El mecanismo se ha registrado correctamente.");
+	}
+	
+	@Override
+	public DTRespuesta saveMecanismoPeriferico(MecanismoPeriferico mecanismo) {
+		em.persist(mecanismo);
+		return new DTRespuesta("OK", "El mecanismo se ha registrado correctamente.");
+	}
+		
+	@Override
+	public DTRespuesta updateMecanismoPeriferico(MecanismoPeriferico mecanismo) {
+		DTRespuesta respuesta = new DTRespuesta("ERROR", "Ha ocurrido un error al actualizar el periférico.");
+		try {
+			em.merge(mecanismo);
+			respuesta.setResultado("OK");
+			respuesta.setMensaje("El periférico se ha actualizado correctamente.");
+		} catch (Exception e) {
+			System.out.print(e.getMessage());
+		}
+		return respuesta;
+	}
+	
+	@Override
+	public DTRespuesta updateMecanismoInterno(MecanismoInterno mecanismoInterno) {
+		DTRespuesta respuesta = new DTRespuesta("ERROR", "Ha ocurrido un error al actualizar el mecanismo.");
+		try {
+			em.merge(mecanismoInterno);
+			respuesta.setResultado("OK");
+			respuesta.setMensaje("El mecanismo se ha actualizado correctamente.");
+		} catch (Exception e) {
+			System.out.print(e.getMessage());
+		}
+		return respuesta;
+	}
+
+	@Override
+	public DTRespuesta updateMecanismoExterno(MecanismoExterno mecanismoExterno) {
+		DTRespuesta respuesta = new DTRespuesta("ERROR", "Ha ocurrido un error al actualizar el mecanismo.");
+		try {
+			em.merge(mecanismoExterno);
+			respuesta.setResultado("OK");
+			respuesta.setMensaje("El mecanismo se ha actualizado correctamente.");
+		} catch (Exception e) {
+			System.out.print(e.getMessage());
+		}
+		return respuesta;
+	}
+	
+	@Override
+	public DTRespuesta verificarHechoMecanismo(Long idHecho, Long idMecanismoVerificacion) {
+		System.out.println("VerificarHechoMecanismo");
+		System.out.println("idHecho: " + idHecho.toString());
+		System.out.println("mail: " + idMecanismoVerificacion.toString());
+
+		DTRespuesta respuesta = new DTRespuesta("ERROR", "Ha ocurrido un error al asignar el Hecho.");
+		Hecho hecho = null;
+		MecanismoVerificacion mecanismo = null;
+		Object object = em.find(Hecho.class, idHecho);
+		if (object instanceof Hecho) {
+			hecho = (Hecho) object;
+		}
+
+		object = em.find(MecanismoVerificacion.class, idMecanismoVerificacion);
+		if (object instanceof MecanismoVerificacion) {
+			mecanismo = (MecanismoVerificacion) object;
+		}
+		
+		if (hecho != null && mecanismo != null) {
+			ResultadoMecanismo resultado = new ResultadoMecanismo(mecanismo);
+			em.persist(resultado);
+			hecho.getResultadosMecanismos().add(resultado);
+			em.merge(hecho);
+			respuesta.setResultado("OK");
+			respuesta.setMensaje("Se ha agregado el mecanismo correctamente.");
+		} else {
+			respuesta.setMensaje("No existe el hecho o mecanismo");
+		}
+		return respuesta;
 	}
 
 }

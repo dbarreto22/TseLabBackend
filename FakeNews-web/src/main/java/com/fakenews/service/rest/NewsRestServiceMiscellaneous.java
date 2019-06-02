@@ -54,4 +54,6 @@ public class NewsRestServiceMiscellaneous {
 		return new DTLoginResponse(token);
 	}
 	
+	
+	
 }

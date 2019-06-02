@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.ejb.Local;
 
+import com.fakenews.datatypes.DTHechoMecanismo;
+import com.fakenews.datatypes.DTMecanismoVerificacion;
 import com.fakenews.datatypes.DTRespuesta;
 import com.fakenews.datatypes.DTUsuarioBcknd;
 import com.fakenews.datatypes.EnumRoles;
@@ -34,4 +36,7 @@ public abstract interface NewsEJBLocal {
 	public List<Hecho> getHechosByChecker(String mail);
 	public DTRespuesta registrarUsuarioBackend(DTUsuarioBcknd usuario);
 	public List<MecanismoPeriferico> getMecanismosPerifericos();
+	public DTRespuesta addMecanismoVerificacion(DTMecanismoVerificacion mecanismo);
+	public DTRespuesta updateMecanismoVerificacion(DTMecanismoVerificacion mecanismo);
+	public DTRespuesta verificarHechoMecanismo(DTHechoMecanismo hechoMecanismo);
 }

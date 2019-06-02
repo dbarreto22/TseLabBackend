@@ -3,12 +3,15 @@ package com.fakenews.data;
 import java.util.List;
 import javax.ejb.Local;
 
+import com.fakenews.datatypes.DTMecanismoVerificacion;
 import com.fakenews.datatypes.DTRespuesta;
 import com.fakenews.datatypes.EnumRoles;
 import com.fakenews.model.Admin;
 import com.fakenews.model.Checker;
 import com.fakenews.model.Citizen;
 import com.fakenews.model.Hecho;
+import com.fakenews.model.MecanismoExterno;
+import com.fakenews.model.MecanismoInterno;
 import com.fakenews.model.MecanismoPeriferico;
 import com.fakenews.model.MecanismoVerificacion;
 import com.fakenews.model.Submitter;
@@ -54,5 +57,19 @@ public abstract interface NewsPersistentEJBLocal
 	public DTRespuesta saveSubmitter(Submitter submitter);
 
 	public List<MecanismoPeriferico> getMecanismosPerifericos();
+
+	public DTRespuesta saveMecanismoInterno(MecanismoInterno mecanismoInterno);
+	
+	public DTRespuesta saveMecanismoExterno(MecanismoExterno mecanismo);
+	
+	public DTRespuesta saveMecanismoPeriferico(MecanismoPeriferico mecanismo);
+
+	public DTRespuesta updateMecanismoInterno(MecanismoInterno mecanismoInterno);
+
+	public DTRespuesta updateMecanismoExterno(MecanismoExterno mecanismoExterno);
+
+	public DTRespuesta updateMecanismoPeriferico(MecanismoPeriferico mecanismoPeriferico);
+
+	public DTRespuesta verificarHechoMecanismo(Long idHecho, Long idMecanismoVerificacion);
 
 }
