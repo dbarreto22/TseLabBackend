@@ -16,4 +16,8 @@ public class MecanismoInterno extends MecanismoVerificacion implements Serializa
 		super(descripcion, habilitado);
 	}
 	
+	public MecanismoInterno(Long id, String descripcion, Boolean habilitado) {
+		super(id, descripcion, habilitado);
+	}
+	
 }

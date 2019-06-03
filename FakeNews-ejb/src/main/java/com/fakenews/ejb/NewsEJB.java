@@ -202,15 +202,15 @@ public class NewsEJB implements NewsEJBRemote, NewsEJBLocal {
 			switch (mecanismo.getMecanismo()) {
 
 			case INTERNO:
-				return newsDataEJB.updateMecanismoInterno(new MecanismoInterno(mecanismo.getDescripcion(), 
+				return newsDataEJB.updateMecanismoInterno(new MecanismoInterno(mecanismo.getId(),mecanismo.getDescripcion(), 
 						mecanismo.getHabilitado()));
 
 			case EXTERNO:
-				return newsDataEJB.updateMecanismoExterno(new MecanismoExterno(mecanismo.getDescripcion(), 
+				return newsDataEJB.updateMecanismoExterno(new MecanismoExterno(mecanismo.getId(),mecanismo.getDescripcion(), 
 						mecanismo.getHabilitado(), mecanismo.getUrl()));
 
 			case PERIFERICO:
-				return newsDataEJB.updateMecanismoPeriferico(new MecanismoPeriferico(mecanismo.getDescripcion(), 
+				return newsDataEJB.updateMecanismoPeriferico(new MecanismoPeriferico(mecanismo.getId(),mecanismo.getDescripcion(), 
 						mecanismo.getHabilitado(), mecanismo.getUsuario(), mecanismo.getPassword()));
 
 			default:

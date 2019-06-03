@@ -19,6 +19,11 @@ public class MecanismoExterno extends MecanismoVerificacion implements Serializa
 		super(descripcion, habilitado);
 		this.url = url;
 	}
+	
+	public MecanismoExterno(Long id, String descripcion, Boolean habilitado, String url) {
+		super(id, descripcion, habilitado);
+		this.url = url;
+	}
 
 	public String getUrl() {
 		return url;

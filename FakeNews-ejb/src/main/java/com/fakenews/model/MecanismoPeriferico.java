@@ -30,6 +30,12 @@ public class MecanismoPeriferico extends MecanismoVerificacion implements Serial
 		this.usuario = usuario;
 		this.password = password;
 	}
+	
+	public MecanismoPeriferico(Long id, String descripcion, Boolean habilitado, String usuario, String password) {
+		super(id, descripcion, habilitado);
+		this.usuario = usuario;
+		this.password = password;
+	}
 
 	public String getUsuario() {
 		return usuario;
