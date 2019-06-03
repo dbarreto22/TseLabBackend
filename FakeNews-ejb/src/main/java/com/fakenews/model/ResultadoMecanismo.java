@@ -39,6 +39,12 @@ public class ResultadoMecanismo implements Serializable {
 		this.calificacion = calificacion;
 		this.mecanismo = mecanismo;
 	}
+	
+	public ResultadoMecanismo(Long id, EnumTipoCalificacion calificacion, MecanismoVerificacion mecanismo) {
+		this.id = id;
+		this.calificacion = calificacion;
+		this.mecanismo = mecanismo;
+	}
 
 	public Long getId() {
 		return id;

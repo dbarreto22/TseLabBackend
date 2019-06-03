@@ -118,12 +118,15 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 	public DTRespuesta updateHecho(Hecho hecho) {
 		DTRespuesta respuesta = new DTRespuesta("ERROR", "Ha ocurrido un error al verificar el hecho.");
 		try {
-			hecho.setEstado(EnumHechoEstado.VERIFICADO);
 			Date date = new Date(System.currentTimeMillis());
-			hecho.setFechaFinVerificacion(date);
-			Object object = em.merge(hecho);
+			Object object = em.find(Hecho.class, hecho.getId());
 			if (object instanceof Hecho) {
 				Hecho nuevoHecho = (Hecho) object;
+				nuevoHecho.setFechaFinVerificacion(date);
+				nuevoHecho.setEstado(EnumHechoEstado.VERIFICADO);
+				nuevoHecho.setCalificacion(hecho.getCalificacion());
+				nuevoHecho.setJustificacion(hecho.getJustificacion());
+				em.merge(nuevoHecho);
 				if (nuevoHecho != null && nuevoHecho.getCalificacion() != null) {
 					respuesta.setResultado("OK");
 					respuesta.setMensaje("Se ha verificado el hecho correctamente. " + "Calificado como "

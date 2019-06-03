@@ -6,7 +6,7 @@ public enum EnumTipoCalificacion {
     INFLADO("Inflado"),
     ENGANOSO("Engañoso"),
     FALSO("Falso"),
-    RIDICULO("Rídiculo");
+    RIDICULO("Ridículo");
    
     private String tipoCalificacionStr;
     
