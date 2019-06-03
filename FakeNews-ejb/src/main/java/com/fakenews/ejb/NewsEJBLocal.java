@@ -42,4 +42,5 @@ public abstract interface NewsEJBLocal {
 	public DTRespuesta verificarHechoMecanismo(DTHechoMecanismo hechoMecanismo);
 	public List<MecanismoInterno> getMecanismosInternos();
 	public List<MecanismoExterno> getMecanismosExternos();
+	public DTRespuesta resultadoverificarHechoMecanismo(DTHechoMecanismo hechoMecanismo);
 }

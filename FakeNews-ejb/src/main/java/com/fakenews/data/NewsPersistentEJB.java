@@ -1,6 +1,7 @@
 package com.fakenews.data;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,7 +15,9 @@ import javax.persistence.criteria.CriteriaQuery;
 
 import com.fakenews.datatypes.DTMecanismoVerificacion;
 import com.fakenews.datatypes.DTRespuesta;
+import com.fakenews.datatypes.EnumHechoEstado;
 import com.fakenews.datatypes.EnumRoles;
+import com.fakenews.datatypes.EnumTipoCalificacion;
 import com.fakenews.model.Admin;
 import com.fakenews.model.Checker;
 import com.fakenews.model.Citizen;
@@ -35,6 +38,7 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 
 	@Override
 	public DTRespuesta saveHecho(Hecho hecho) {
+		hecho.setEstado(EnumHechoEstado.NUEVO);
 		em.persist(hecho);
 		return new DTRespuesta("OK", "El hecho se ha agregado correctamente.");
 	}
@@ -114,6 +118,9 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 	public DTRespuesta updateHecho(Hecho hecho) {
 		DTRespuesta respuesta = new DTRespuesta("ERROR", "Ha ocurrido un error al verificar el hecho.");
 		try {
+			hecho.setEstado(EnumHechoEstado.VERIFICADO);
+			Date date = new Date(System.currentTimeMillis());
+			hecho.setFechaFinVerificacion(date);
 			Object object = em.merge(hecho);
 			if (object instanceof Hecho) {
 				Hecho nuevoHecho = (Hecho) object;
@@ -149,6 +156,7 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 		}
 
 		if (hecho != null && checker != null) {
+			hecho.setEstado(EnumHechoEstado.A_COMPROBAR);
 			hecho.setChecker(checker);
 			em.merge(hecho);
 			respuesta.setResultado("OK");
@@ -324,7 +332,42 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 		if (object instanceof Hecho) {
 			hecho = (Hecho) object;
 		}
+		object = em.find(MecanismoVerificacion.class, idMecanismoVerificacion);
+		if (object instanceof MecanismoVerificacion) {
+			mecanismo = (MecanismoVerificacion) object;
+		}
+		
+		if (hecho != null && mecanismo != null) {
+			Date date = new Date(System.currentTimeMillis());
+			hecho.setFechaInicioVerificacion(date);
+			hecho.setEstado(EnumHechoEstado.EN_PROCESO);
+			ResultadoMecanismo resultado = new ResultadoMecanismo(mecanismo);
+			em.persist(resultado);
+			hecho.getResultadosMecanismos().add(resultado);
+			em.merge(hecho);
+			respuesta.setResultado("OK");
+			respuesta.setMensaje("Se ha agregado el mecanismo correctamente.");
+		} else {
+			respuesta.setMensaje("No existe el hecho o mecanismo");
+		}
+		return respuesta;
+	}
+	
+	@Override
+	public DTRespuesta resultadoverificarHechoMecanismo(Long idHecho, Long idMecanismoVerificacion,
+			EnumTipoCalificacion calificacion) 
+	{
+		System.out.println("ResultadoVerificarHechoMecanismo");
+		System.out.println("idHecho: " + idHecho.toString());
+		System.out.println("idMecanismoVerificacion: " + idMecanismoVerificacion.toString());
 
+		DTRespuesta respuesta = new DTRespuesta("ERROR", "Ha ocurrido un error al asignar el resultado al Hecho.");
+		Hecho hecho = null;
+		MecanismoVerificacion mecanismo = null;
+		Object object = em.find(Hecho.class, idHecho);
+		if (object instanceof Hecho) {
+			hecho = (Hecho) object;
+		}
 		object = em.find(MecanismoVerificacion.class, idMecanismoVerificacion);
 		if (object instanceof MecanismoVerificacion) {
 			mecanismo = (MecanismoVerificacion) object;
@@ -332,11 +375,12 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 		
 		if (hecho != null && mecanismo != null) {
 			ResultadoMecanismo resultado = new ResultadoMecanismo(mecanismo);
+			resultado.setCalificacion(calificacion);
 			em.persist(resultado);
 			hecho.getResultadosMecanismos().add(resultado);
 			em.merge(hecho);
 			respuesta.setResultado("OK");
-			respuesta.setMensaje("Se ha agregado el mecanismo correctamente.");
+			respuesta.setMensaje("Se ha calificado el hecho correctamente.");
 		} else {
 			respuesta.setMensaje("No existe el hecho o mecanismo");
 		}

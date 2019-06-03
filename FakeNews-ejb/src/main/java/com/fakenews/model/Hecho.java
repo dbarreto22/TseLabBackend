@@ -108,6 +108,12 @@ public class Hecho implements Serializable {
 		this.checker = checker;
 		this.resultadosMecanismos = resultadosMecanismos;
 	}
+	
+	public Hecho(Long id, EnumTipoCalificacion calificacion, String justificacion) {
+		this.id = id;
+		this.calificacion = calificacion;
+		this.justificacion = justificacion;
+	}
 
 	public Long getId() {
 		return id;

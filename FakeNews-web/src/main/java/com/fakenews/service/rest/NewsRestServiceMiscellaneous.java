@@ -22,6 +22,7 @@ import com.fakenews.model.Checker;
 import com.fakenews.model.Hecho;
 import com.fakenews.model.MecanismoVerificacion;
 import com.fakenews.datatypes.DTAsignarHecho;
+import com.fakenews.datatypes.DTHechoMecanismo;
 import com.fakenews.datatypes.DTLoginBackendRequest;
 
 @Path("/")
@@ -54,6 +55,11 @@ public class NewsRestServiceMiscellaneous {
 		return new DTLoginResponse(token);
 	}
 	
+	@POST
+    @Path("resultadoVerificarHechoMecanismo")
+    public DTRespuesta resultadoVerificarHechoMecanismo(DTHechoMecanismo hechoMecanismo) {
+		return newsEJB.resultadoverificarHechoMecanismo(hechoMecanismo);
+	}
 	
 	
 }

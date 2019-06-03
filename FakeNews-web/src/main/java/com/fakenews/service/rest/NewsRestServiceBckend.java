@@ -169,6 +169,7 @@ public class NewsRestServiceBckend {
 	@POST
 	@Path("admin/modificarMecanismoVerificacion")
 	public DTRespuesta updateMecanismoVerificacion(DTMecanismoVerificacion mecanismo) {
+		System.out.println("Mecanismo: " + mecanismo.getId());
 		return newsEJB.updateMecanismoVerificacion(mecanismo);
 	}
 	

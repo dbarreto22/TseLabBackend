@@ -5,6 +5,8 @@ public class DTHechoMecanismo {
 	private Long idHecho;
 	
 	private Long idMecanismoVerificacion;
+	
+	private EnumTipoCalificacion calificacion;
 
 	public DTHechoMecanismo() {
 		
@@ -13,6 +15,12 @@ public class DTHechoMecanismo {
 	public DTHechoMecanismo(Long idHecho, Long idMecanismoVerificacion) {
 		this.idHecho = idHecho;
 		this.idMecanismoVerificacion = idMecanismoVerificacion;
+	}
+
+	public DTHechoMecanismo(Long idHecho, Long idMecanismoVerificacion, EnumTipoCalificacion calificacion) {
+		this.idHecho = idHecho;
+		this.idMecanismoVerificacion = idMecanismoVerificacion;
+		this.calificacion = calificacion;
 	}
 
 	public Long getIdHecho() {
@@ -29,6 +37,14 @@ public class DTHechoMecanismo {
 
 	public void setIdMecanismoVerificacion(Long idMecanismoVerificacion) {
 		this.idMecanismoVerificacion = idMecanismoVerificacion;
+	}
+
+	public EnumTipoCalificacion getCalificacion() {
+		return calificacion;
+	}
+
+	public void setCalificacion(EnumTipoCalificacion calificacion) {
+		this.calificacion = calificacion;
 	}
 	
 }

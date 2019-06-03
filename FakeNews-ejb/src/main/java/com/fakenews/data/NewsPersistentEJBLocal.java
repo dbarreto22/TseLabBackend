@@ -6,6 +6,7 @@ import javax.ejb.Local;
 import com.fakenews.datatypes.DTMecanismoVerificacion;
 import com.fakenews.datatypes.DTRespuesta;
 import com.fakenews.datatypes.EnumRoles;
+import com.fakenews.datatypes.EnumTipoCalificacion;
 import com.fakenews.model.Admin;
 import com.fakenews.model.Checker;
 import com.fakenews.model.Citizen;
@@ -73,5 +74,8 @@ public abstract interface NewsPersistentEJBLocal
 	public List<MecanismoInterno> getMecanismosInternos();
 
 	public List<MecanismoExterno> getMecanismosExternos();
+
+	public DTRespuesta resultadoverificarHechoMecanismo(Long idHecho, Long idMecanismoVerificacion,
+			EnumTipoCalificacion calificacion);
 
 }

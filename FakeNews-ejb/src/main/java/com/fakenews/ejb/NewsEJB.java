@@ -10,6 +10,7 @@ import com.fakenews.datatypes.DTHechoMecanismo;
 import com.fakenews.datatypes.DTMecanismoVerificacion;
 import com.fakenews.datatypes.DTRespuesta;
 import com.fakenews.datatypes.DTUsuarioBcknd;
+import com.fakenews.datatypes.EnumHechoEstado;
 import com.fakenews.datatypes.EnumRoles;
 import com.fakenews.model.Admin;
 import com.fakenews.model.Checker;
@@ -224,5 +225,11 @@ public class NewsEJB implements NewsEJBRemote, NewsEJBLocal {
 	public DTRespuesta verificarHechoMecanismo(DTHechoMecanismo hechoMecanismo) {
 		return newsDataEJB.verificarHechoMecanismo(hechoMecanismo.getIdHecho(), 
 				hechoMecanismo.getIdMecanismoVerificacion());
+	}
+	
+	@Override
+	public DTRespuesta resultadoverificarHechoMecanismo(DTHechoMecanismo hechoMecanismo) {
+		return newsDataEJB.resultadoverificarHechoMecanismo(hechoMecanismo.getIdHecho(), 
+				hechoMecanismo.getIdMecanismoVerificacion(),hechoMecanismo.getCalificacion());
 	}
 }
