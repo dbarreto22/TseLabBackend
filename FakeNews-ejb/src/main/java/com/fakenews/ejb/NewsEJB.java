@@ -119,8 +119,13 @@ public class NewsEJB implements NewsEJBRemote, NewsEJBLocal {
 	}
 
 	@Override
-	public List<MecanismoVerificacion> getMecanismosVerificacion() {
-		return newsDataEJB.getMecanismosVerificacion();
+	public List<MecanismoInterno> getMecanismosInternos() {
+		return newsDataEJB.getMecanismosInternos();
+	}
+	
+	@Override
+	public List<MecanismoExterno> getMecanismosExternos() {
+		return newsDataEJB.getMecanismosExternos();
 	}
 
 	@Override

@@ -12,6 +12,8 @@ import com.fakenews.datatypes.EnumRoles;
 import com.fakenews.model.Admin;
 import com.fakenews.model.Checker;
 import com.fakenews.model.Hecho;
+import com.fakenews.model.MecanismoExterno;
+import com.fakenews.model.MecanismoInterno;
 import com.fakenews.model.MecanismoPeriferico;
 import com.fakenews.model.MecanismoVerificacion;
 import com.fakenews.model.Submitter;
@@ -32,11 +34,12 @@ public abstract interface NewsEJBLocal {
 	public DTRespuesta suscription(String mail);
 	public MecanismoPeriferico getMecanismoPeriferico(String username);
 	public List<Checker> getCheckers();
-	public List<MecanismoVerificacion> getMecanismosVerificacion();
 	public List<Hecho> getHechosByChecker(String mail);
 	public DTRespuesta registrarUsuarioBackend(DTUsuarioBcknd usuario);
 	public List<MecanismoPeriferico> getMecanismosPerifericos();
 	public DTRespuesta addMecanismoVerificacion(DTMecanismoVerificacion mecanismo);
 	public DTRespuesta updateMecanismoVerificacion(DTMecanismoVerificacion mecanismo);
 	public DTRespuesta verificarHechoMecanismo(DTHechoMecanismo hechoMecanismo);
+	public List<MecanismoInterno> getMecanismosInternos();
+	public List<MecanismoExterno> getMecanismosExternos();
 }

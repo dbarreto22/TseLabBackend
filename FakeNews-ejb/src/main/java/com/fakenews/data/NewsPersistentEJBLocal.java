@@ -48,8 +48,6 @@ public abstract interface NewsPersistentEJBLocal
 
 	public List<Hecho> getHechosByChecker(String mail);
 	
-	public List<MecanismoVerificacion> getMecanismosVerificacion();
-
 	public DTRespuesta saveAdmin(Admin admin);
 
 	public DTRespuesta saveChecker(Checker checker);
@@ -71,5 +69,9 @@ public abstract interface NewsPersistentEJBLocal
 	public DTRespuesta updateMecanismoPeriferico(MecanismoPeriferico mecanismoPeriferico);
 
 	public DTRespuesta verificarHechoMecanismo(Long idHecho, Long idMecanismoVerificacion);
+
+	public List<MecanismoInterno> getMecanismosInternos();
+
+	public List<MecanismoExterno> getMecanismosExternos();
 
 }

@@ -23,6 +23,8 @@ import com.fakenews.ejb.NewsEJBLocal;
 import com.fakenews.ejb.SecurityLocal;
 import com.fakenews.model.Checker;
 import com.fakenews.model.Hecho;
+import com.fakenews.model.MecanismoExterno;
+import com.fakenews.model.MecanismoInterno;
 import com.fakenews.model.MecanismoPeriferico;
 import com.fakenews.model.MecanismoVerificacion;
 import com.google.appengine.repackaged.com.google.common.flogger.backend.system.SystemClock;
@@ -103,12 +105,12 @@ public class NewsRestServiceBckend {
 	}
 	
 	@GET
-	@Path("getHechosByChecker")
-	public List<Hecho> getHechosByChecker(DTMailRequest mail) {
-		System.out.println("mail: " + mail.getMail());
+	@Path("getHechosByChecker/{mail}")
+	public List<Hecho> getHechosByChecker(@PathParam("mail") final String mail) {
+		System.out.println("mail: " + mail);
 		List<Hecho> hechos = null;
 		try {
-			hechos = newsEJB.getHechosByChecker(mail.getMail());
+			hechos = newsEJB.getHechosByChecker(mail);
 		}catch (Exception ex) {
 			System.out.println("getHechosByChecker" + ex.getMessage());
 		}
@@ -128,9 +130,15 @@ public class NewsRestServiceBckend {
 	}
 	
 	@GET
-	@Path("backend/getMecanismosVerificacion")
-	public List<MecanismoVerificacion> getMecanismosVerificacion() {
-		return newsEJB.getMecanismosVerificacion();
+	@Path("backend/getMecanismosInternos")
+	public List<MecanismoInterno> getMecanismosInternos() {
+		return newsEJB.getMecanismosInternos();
+	}
+	
+	@GET
+	@Path("backend/getMecanismosExternos")
+	public List<MecanismoExterno> getMecanismosExternos() {
+		return newsEJB.getMecanismosExternos();
 	}
 	
 	@POST
@@ -148,7 +156,14 @@ public class NewsRestServiceBckend {
 	@POST
 	@Path("admin/addMecanismoVerificacion")
 	public DTRespuesta addMecanismoVerificacion(DTMecanismoVerificacion mecanismo) {
-		return newsEJB.addMecanismoVerificacion(mecanismo);
+		if (mecanismo != null) {
+			  System.out.println("mecanismo: " + mecanismo.getMecanismo());
+			  return newsEJB.addMecanismoVerificacion(mecanismo);
+		}else {
+			  System.out.println("Mecanismo es vacio");
+			  return new DTRespuesta("ERROR", "Mecanismo es vacio o no se puede leer");
+		}
+
 	}
 	
 	@POST

@@ -213,10 +213,18 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 	}
 
 	@Override
-	public List<MecanismoVerificacion> getMecanismosVerificacion(){
+	public List<MecanismoInterno> getMecanismosInternos(){
 		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery<MecanismoVerificacion> cq = cb.createQuery(MecanismoVerificacion.class);
-		cq.select(cq.from(MecanismoVerificacion.class));
+		CriteriaQuery<MecanismoInterno> cq = cb.createQuery(MecanismoInterno.class);
+		cq.select(cq.from(MecanismoInterno.class));
+		return em.createQuery(cq).getResultList();
+	}
+	
+	@Override
+	public List<MecanismoExterno> getMecanismosExternos(){
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<MecanismoExterno> cq = cb.createQuery(MecanismoExterno.class);
+		cq.select(cq.from(MecanismoExterno.class));
 		return em.createQuery(cq).getResultList();
 	}
 	
@@ -307,7 +315,7 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 	public DTRespuesta verificarHechoMecanismo(Long idHecho, Long idMecanismoVerificacion) {
 		System.out.println("VerificarHechoMecanismo");
 		System.out.println("idHecho: " + idHecho.toString());
-		System.out.println("mail: " + idMecanismoVerificacion.toString());
+		System.out.println("idMecanismoVerificacion: " + idMecanismoVerificacion.toString());
 
 		DTRespuesta respuesta = new DTRespuesta("ERROR", "Ha ocurrido un error al asignar el Hecho.");
 		Hecho hecho = null;

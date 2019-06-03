@@ -11,13 +11,23 @@ import com.fakenews.model.Admin;
 import com.fakenews.model.Checker;
 import com.fakenews.model.Submitter;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PushbackInputStream;
+import java.io.StringWriter;
 import java.lang.reflect.Method;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import javax.annotation.Nullable;
 import javax.annotation.Priority;
 
 import javax.annotation.security.DenyAll;
@@ -33,6 +43,9 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.ext.Provider;
 
+import org.apache.http.HttpEntity;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.InputStreamEntity;
 import org.jboss.resteasy.core.Headers;
 import org.jboss.resteasy.core.ResourceMethodInvoker;
 import org.jboss.resteasy.core.ServerResponse;
@@ -55,9 +68,8 @@ public class SecurityFilter implements javax.ws.rs.container.ContainerRequestFil
     private static final ServerResponse ACCESS_FORBIDDEN = new ServerResponse("Nobody can access this resource", 403, new Headers<Object>());
     private static final ServerResponse SERVER_ERROR = new ServerResponse("INTERNAL SERVER ERROR", 500, new Headers<Object>());
 
-
     @Override
-    public void filter(ContainerRequestContext requestContext) {
+    public void filter(ContainerRequestContext requestContext) {   	
         ResourceMethodInvoker methodInvoker = (ResourceMethodInvoker) requestContext.getProperty("org.jboss.resteasy.core.ResourceMethodInvoker");
         Method method = methodInvoker.getMethod();
         //Access allowed for all
@@ -133,5 +145,5 @@ public class SecurityFilter implements javax.ws.rs.container.ContainerRequestFil
     private boolean isUserAllowed(final String username, final String password) throws Exception {
     	return securityMgt.isUserAllowed(username,password);
     }
-
+    
 }
