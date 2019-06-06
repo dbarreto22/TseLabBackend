@@ -8,6 +8,7 @@ import com.fakenews.datatypes.DTHechoMecanismo;
 import com.fakenews.datatypes.DTMecanismoVerificacion;
 import com.fakenews.datatypes.DTRespuesta;
 import com.fakenews.datatypes.DTUsuarioBcknd;
+import com.fakenews.datatypes.EnumHechoEstado;
 import com.fakenews.datatypes.EnumRoles;
 import com.fakenews.model.Admin;
 import com.fakenews.model.Checker;
@@ -43,4 +44,6 @@ public abstract interface NewsEJBLocal {
 	public List<MecanismoInterno> getMecanismosInternos();
 	public List<MecanismoExterno> getMecanismosExternos();
 	public DTRespuesta resultadoverificarHechoMecanismo(DTHechoMecanismo hechoMecanismo);
+	public List<Hecho> getHechosByEstado(EnumHechoEstado estado);
+	public DTRespuesta setEstadoHecho(Hecho hecho);
 }

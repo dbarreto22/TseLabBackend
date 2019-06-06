@@ -22,10 +22,13 @@ import com.fakenews.datatypes.EnumTipoCalificacion;
 @Entity
 @NamedQueries({
     @NamedQuery(name = Hecho.getByChecker, 
-    		query = "SELECT a FROM Hecho a WHERE a.checker = :checker")})
+    		query = "SELECT a FROM Hecho a WHERE a.checker = :checker"),
+    @NamedQuery(name = Hecho.getByEstado, 
+	query = "SELECT a FROM Hecho a WHERE a.estado = :estado")})
 public class Hecho implements Serializable {
 	
 	public final static String getByChecker = "Hecho.getByChecker";
+	public final static String getByEstado = "Hecho.getByEstado";
 	
 	@Id
     @GeneratedValue (strategy=GenerationType.AUTO)
@@ -113,6 +116,11 @@ public class Hecho implements Serializable {
 		this.id = id;
 		this.calificacion = calificacion;
 		this.justificacion = justificacion;
+	}
+	
+	public Hecho(Long id, EnumHechoEstado estado) {
+		this.id = id;
+		this.estado = estado;
 	}
 
 	public Long getId() {

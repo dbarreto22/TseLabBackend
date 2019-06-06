@@ -19,7 +19,7 @@ import com.fakenews.datatypes.DTMailRequest;
 import com.fakenews.datatypes.DTRespuesta;
 import com.fakenews.datatypes.EnumRoles;
 import com.fakenews.ejb.NewsEJBLocal;
-import com.fakenews.ejb.SecurityLocal;
+import com.fakenews.ejb.ToolsLocal;
 import com.fakenews.model.Hecho;
 
 @Path("/citizen")
@@ -31,7 +31,7 @@ public class NewsRestServiceCitizen {
 	private NewsEJBLocal newsEJB;
 	
 	@EJB
-	private SecurityLocal securityMgt;
+	private ToolsLocal toolsEJB;
 	
 	@POST
     @Path("login")
@@ -44,13 +44,13 @@ public class NewsRestServiceCitizen {
 		System.out.println("mail: " + request.getMail() + " token_id: " + request.getToken_id());
 		
 		try { 		    	
-	    	Boolean loginOk = securityMgt.verifyTokenGoogle(request.getToken_id(),nombre);
+	    	Boolean loginOk = toolsEJB.verifyTokenGoogle(request.getToken_id(),nombre);
 	    	System.out.println("loginOk: " + loginOk.toString());
 	    	  
 	    	if (loginOk) {
 	    	  rol = newsEJB.citizenLogin(request.getMail(),nombre);
 	    	  if (rol != EnumRoles.ERROR){
-	    		  token = securityMgt.createAndSignToken(request.getMail(), request.getToken_id());
+	    		  token = toolsEJB.createAndSignToken(request.getMail(), request.getToken_id());
 	    	  }
 	    	}
 	    	

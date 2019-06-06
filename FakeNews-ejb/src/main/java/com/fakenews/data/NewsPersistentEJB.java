@@ -389,5 +389,31 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 		}
 		return respuesta;
 	}
+	
+	@Override
+	public List<Hecho> getHechosByEstado(EnumHechoEstado estado){
+		System.out.println("getHechosByEstado");
+		Query q = em.createNamedQuery(Hecho.getByEstado).setParameter("estado", estado);
+		return q.getResultList();			
+	}
+	
+	@Override
+	public DTRespuesta setEstadoHecho(Long id, EnumHechoEstado estado) {
+		DTRespuesta respuesta = new DTRespuesta("ERROR", "Ha ocurrido un error.");
+		try {
+			Date date = new Date(System.currentTimeMillis());
+			Object object = em.find(Hecho.class, id);
+			if (object instanceof Hecho) {
+				Hecho hecho = (Hecho) object;
+				hecho.setEstado(estado);
+				em.merge(hecho);
+				respuesta.setResultado("OK");
+				respuesta.setMensaje("Se ha publicado/cancelado el hecho correctamente");
+			}
+		} catch (Exception e) {
+			System.out.print(e.getMessage());
+		}
+		return respuesta;
+	}
 
 }

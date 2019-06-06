@@ -13,6 +13,9 @@ public class Citizen extends Usuario implements Serializable {
 	@Basic
 	private Boolean suscripto;
 	
+	@Basic
+	private String deviceToken;
+	
 	@OneToMany(targetEntity = Hecho.class, fetch = FetchType.LAZY)
 	private List<Hecho> hechos; 
 	
@@ -25,9 +28,22 @@ public class Citizen extends Usuario implements Serializable {
 		this.suscripto = suscripto;
 	}
 	
+	public Citizen(String email, String nickname, String telefono, String nombre, 
+			Boolean suscripto, String deviceToken) {
+		super(email, nickname, telefono,nombre);
+		this.suscripto = suscripto;
+		this.deviceToken = deviceToken;
+	}
+	
 	public Citizen(String email, String nombre) {
 		super(email, email, "", nombre);
 		this.suscripto = false;
+	}
+	
+	public Citizen(String email, String nombre, String deviceToken) {
+		super(email, email, "", nombre);
+		this.suscripto = false;
+		this.deviceToken = deviceToken;
 	}
 
 	public Boolean getSuscripto() {

@@ -6,7 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.fakenews.datatypes.EnumRoles;
 import com.fakenews.ejb.NewsEJBLocal;
-import com.fakenews.ejb.SecurityLocal;
+import com.fakenews.ejb.ToolsLocal;
 import com.fakenews.model.Admin;
 import com.fakenews.model.Checker;
 import com.fakenews.model.Submitter;
@@ -60,7 +60,7 @@ import org.jboss.resteasy.util.Base64;
 public class SecurityFilter implements javax.ws.rs.container.ContainerRequestFilter {
  
     @EJB 
-    private SecurityLocal securityMgt;
+    private ToolsLocal securityMgt;
     
     private static final String AUTHORIZATION_PROPERTY = "Authorization";
     private static final String AUTHENTICATION_SCHEME = "Basic";

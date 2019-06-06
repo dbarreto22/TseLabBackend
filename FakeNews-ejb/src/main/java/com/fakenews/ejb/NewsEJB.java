@@ -232,4 +232,14 @@ public class NewsEJB implements NewsEJBRemote, NewsEJBLocal {
 		return newsDataEJB.resultadoverificarHechoMecanismo(hechoMecanismo.getIdHecho(), 
 				hechoMecanismo.getIdMecanismoVerificacion(),hechoMecanismo.getCalificacion());
 	}
+	
+	@Override
+	public List<Hecho> getHechosByEstado(EnumHechoEstado estado){
+		return newsDataEJB.getHechosByEstado(estado);
+	}
+	
+	@Override
+	public DTRespuesta setEstadoHecho(Hecho hecho) {
+		return newsDataEJB.setEstadoHecho(hecho.getId(),hecho.getEstado());
+	}
 }
