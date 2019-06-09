@@ -415,5 +415,30 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 		}
 		return respuesta;
 	}
+	
+	@Override
+	public List<Hecho> getHechosPag(int nroPag, int cantElemPag){
+		System.out.println("getHechosPag");
+		
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Hecho> cq = cb.createQuery(Hecho.class);
+		cq.select(cq.from(Hecho.class));
+		Query q = em.createQuery(cq);
+		
+		q.setFirstResult((nroPag-1)*cantElemPag+1);
+
+		q.setMaxResults(nroPag*cantElemPag);
+		
+		return q.getResultList();		
+	}
+	
+	@Override
+	public List<Hecho> getHechosAsignadosMecanismo(Long idMecanismo){
+		System.out.println("getHechosAsignadosMecanismo");
+		
+		Query q = em.createNamedQuery(Hecho.getByMecanismo).setParameter("idMecanismo", idMecanismo);
+		
+		return q.getResultList();		
+	}
 
 }

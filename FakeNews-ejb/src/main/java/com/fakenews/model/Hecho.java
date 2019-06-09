@@ -24,11 +24,16 @@ import com.fakenews.datatypes.EnumTipoCalificacion;
     @NamedQuery(name = Hecho.getByChecker, 
     		query = "SELECT a FROM Hecho a WHERE a.checker = :checker"),
     @NamedQuery(name = Hecho.getByEstado, 
-	query = "SELECT a FROM Hecho a WHERE a.estado = :estado")})
+	query = "SELECT a FROM Hecho a WHERE a.estado = :estado"),
+    @NamedQuery(name = Hecho.getByMecanismo, 
+	query = "SELECT a FROM Hecho a, ResultadoMecanismo b, MecanismoVerificacion c \n"
+			+ " WHERE b in a.resultadosMecanismos AND \n"
+			+ "b.mecanismo = c AND c.id = :idMecanismo")})
 public class Hecho implements Serializable {
 	
 	public final static String getByChecker = "Hecho.getByChecker";
 	public final static String getByEstado = "Hecho.getByEstado";
+	public final static String getByMecanismo = "Hecho.getByMecanismo";
 	
 	@Id
     @GeneratedValue (strategy=GenerationType.AUTO)

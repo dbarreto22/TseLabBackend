@@ -46,4 +46,7 @@ public abstract interface NewsEJBLocal {
 	public DTRespuesta resultadoverificarHechoMecanismo(DTHechoMecanismo hechoMecanismo);
 	public List<Hecho> getHechosByEstado(EnumHechoEstado estado);
 	public DTRespuesta setEstadoHecho(Hecho hecho);
+	public List<Hecho> getHechosPag(int nroPag, int cantElemPag);
+	public Long getPerifericoId(String username);
+	public List<Hecho> getHechosAsignadosMecanismo(Long idMecanismo);
 }

@@ -39,16 +39,18 @@ public class NewsRestServiceMiscellaneous {
 		System.out.println("username: " + request.getUsername());
 		System.out.println("password: " + request.getPassword());
 		String token = "";
+		Long idPeriferico = 0L;
 		try { 	
 			
 			if (toolsEJB.isUserAllowed(request.getUsername(), request.getPassword())) {
+				idPeriferico = newsEJB.getPerifericoId(request.getUsername());
 				token = toolsEJB.createAndSignToken(request.getUsername(), request.getPassword());
 			}
 		
 		} catch (Exception ex) {
             System.out.println("backend/login " + ex.getMessage());
         }
-		return new DTLoginResponse(token);
+		return new DTLoginResponse(token,idPeriferico);
 	}
 	
 	@POST
@@ -71,12 +73,24 @@ public class NewsRestServiceMiscellaneous {
 	
 	@GET
 	@Path("getHechosByEstado/{estado}")
-	public List<Hecho> getHechosBy(@PathParam("estado") final EnumHechoEstado estado){
+	public List<Hecho> getHechosByEstado(@PathParam("estado") final EnumHechoEstado estado){
 		List<Hecho> hechos = null;
 		try {
 			hechos = newsEJB.getHechosByEstado(estado);
 		}catch (Exception ex) {
-			System.out.println("backend/getHechosByEstado " + ex.getMessage());
+			System.out.println("getHechosByEstado " + ex.getMessage());
+		}
+		return hechos;
+	}
+	
+	@GET
+	@Path("periferico/getHechosAsignadosMecanismo/{idMecanismo}")
+	public List<Hecho> getHechosAsignadosMecanismo(@PathParam("idMecanismo") final Long idMecanismo){
+		List<Hecho> hechos = null;
+		try {
+			hechos = newsEJB.getHechosAsignadosMecanismo(idMecanismo);
+		}catch (Exception ex) {
+			System.out.println("periferico/getHechosAsignadosMecanismo " + ex.getMessage());
 		}
 		return hechos;
 	}

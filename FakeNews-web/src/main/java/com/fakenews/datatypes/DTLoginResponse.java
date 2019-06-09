@@ -6,6 +6,7 @@ public class DTLoginResponse implements Serializable{
 	
 	private String jwt;
 	private EnumRoles rol;
+	private Long idPeriferico;
 	
 	public DTLoginResponse() {
 		
@@ -18,6 +19,12 @@ public class DTLoginResponse implements Serializable{
 	
 	public DTLoginResponse(String jwt) {
 		this.jwt = jwt;
+	}
+
+	public DTLoginResponse(String jwt, Long idPeriferico) {
+		super();
+		this.jwt = jwt;
+		this.idPeriferico = idPeriferico;
 	}
 
 	public String getJwt() {
@@ -36,32 +43,12 @@ public class DTLoginResponse implements Serializable{
 		this.rol = rol;
 	}
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((jwt == null) ? 0 : jwt.hashCode());
-		result = prime * result + ((rol == null) ? 0 : rol.hashCode());
-		return result;
+	public Long getIdPeriferico() {
+		return idPeriferico;
 	}
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		DTLoginResponse other = (DTLoginResponse) obj;
-		if (jwt == null) {
-			if (other.jwt != null)
-				return false;
-		} else if (!jwt.equals(other.jwt))
-			return false;
-		if (rol != other.rol)
-			return false;
-		return true;
+	public void setIdPeriferico(Long idPeriferico) {
+		this.idPeriferico = idPeriferico;
 	}
-	
+
 }

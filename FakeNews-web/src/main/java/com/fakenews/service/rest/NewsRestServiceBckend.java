@@ -171,6 +171,19 @@ public class NewsRestServiceBckend {
 		return newsEJB.setEstadoHecho(hecho);
 	}
 	
-	
+	@GET
+	@Path("getHechosPag/{nroPag}/{cantElemPag}")
+	public List<Hecho> getHechosPag(@PathParam("nroPag") final int nroPag,
+			@PathParam("cantElemPag") final int cantElemPag) {
+		System.out.println("nroPag: " + nroPag);
+		System.out.println("cantElemPag: " + cantElemPag);
+		List<Hecho> hechos = null;
+		try {
+			hechos = newsEJB.getHechosPag(nroPag,cantElemPag);
+		}catch (Exception ex) {
+			System.out.println("getHechosPag" + ex.getMessage());
+		}
+		return hechos;
+	}
 	
 }

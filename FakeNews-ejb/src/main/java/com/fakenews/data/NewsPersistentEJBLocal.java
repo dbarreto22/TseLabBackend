@@ -83,4 +83,8 @@ public abstract interface NewsPersistentEJBLocal
 
 	public DTRespuesta setEstadoHecho(Long id, EnumHechoEstado estado);
 
+	public List<Hecho> getHechosPag(int nroPag, int cantElemPag);
+
+	public List<Hecho> getHechosAsignadosMecanismo(Long idMecanismo);
+
 }
