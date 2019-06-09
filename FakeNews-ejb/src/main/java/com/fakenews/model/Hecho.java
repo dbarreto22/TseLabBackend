@@ -27,7 +27,7 @@ import com.fakenews.datatypes.EnumTipoCalificacion;
 	query = "SELECT a FROM Hecho a WHERE a.estado = :estado"),
     @NamedQuery(name = Hecho.getByMecanismo, 
 	query = "SELECT a FROM Hecho a, ResultadoMecanismo b, MecanismoVerificacion c \n"
-			+ " WHERE b in a.resultadosMecanismos AND \n"
+			+ " WHERE b member of a.resultadosMecanismos AND \n"
 			+ "b.mecanismo = c AND c.id = :idMecanismo")})
 public class Hecho implements Serializable {
 	
