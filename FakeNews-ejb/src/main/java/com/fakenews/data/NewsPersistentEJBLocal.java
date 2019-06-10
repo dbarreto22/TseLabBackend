@@ -87,4 +87,7 @@ public abstract interface NewsPersistentEJBLocal
 
 	public List<Hecho> getHechosAsignadosMecanismo(Long idMecanismo);
 
+	public List<Hecho> getHechosFiltros(int nroPag, int cantElemPag, String titulo, 
+			String url, EnumHechoEstado estado);
+
 }

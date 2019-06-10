@@ -18,6 +18,7 @@ import com.fakenews.datatypes.DTMailRequest;
 import com.fakenews.datatypes.DTMecanismoVerificacion;
 import com.fakenews.datatypes.DTRespuesta;
 import com.fakenews.datatypes.DTUsuarioBcknd;
+import com.fakenews.datatypes.EnumHechoEstado;
 import com.fakenews.datatypes.EnumRoles;
 import com.fakenews.ejb.NewsEJBLocal;
 import com.fakenews.ejb.ToolsLocal;
@@ -182,6 +183,23 @@ public class NewsRestServiceBckend {
 			hechos = newsEJB.getHechosPag(nroPag,cantElemPag);
 		}catch (Exception ex) {
 			System.out.println("getHechosPag" + ex.getMessage());
+		}
+		return hechos;
+	}
+	
+	@GET
+	@Path("getHechosFiltros/{nroPag}/{cantElemPag}/{titulo}/{url}/{estado}")
+	public List<Hecho> getHechosFiltros(@PathParam("nroPag") final int nroPag,
+			@PathParam("cantElemPag") final int cantElemPag,
+			@PathParam("titulo") final String titulo,
+			@PathParam("url") final String url,
+			@PathParam("estado") final EnumHechoEstado estado) {
+		
+		List<Hecho> hechos = null;
+		try {
+			hechos = newsEJB.getHechosFiltros(nroPag,cantElemPag,titulo,url,estado);
+		}catch (Exception ex) {
+			System.out.println("getHechosFiltros" + ex.getMessage());
 		}
 		return hechos;
 	}

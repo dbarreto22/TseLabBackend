@@ -425,8 +425,7 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 		cq.select(cq.from(Hecho.class));
 		Query q = em.createQuery(cq);
 		
-		q.setFirstResult((nroPag-1)*cantElemPag+1);
-
+		q.setFirstResult((nroPag-1)*cantElemPag);
 		q.setMaxResults(nroPag*cantElemPag);
 		
 		return q.getResultList();		
@@ -439,6 +438,38 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 		Query q = em.createNamedQuery(Hecho.getByMecanismo).setParameter("idMecanismo", idMecanismo);
 		
 		return q.getResultList();		
+	}
+	
+	@Override
+	public List<Hecho> getHechosFiltros(int nroPag, int cantElemPag, String titulo, 
+			String url, EnumHechoEstado estado){
+		
+		System.out.println("getHechosFiltros");
+		if (url.equals("null")) {
+			url = null;
+		}else {
+			url = "%" + url + "%";
+		}
+		
+		if (titulo.equals("null")) {
+			titulo = null;
+		}else {
+			titulo = "%" + titulo + "%";
+		}
+		
+		System.out.println("nroPag: " + nroPag);
+		System.out.println("cantElemPag: " + cantElemPag);
+		System.out.println("titulo: " + titulo);
+		System.out.println("url: " + url);
+		System.out.println("estado: " + estado);
+		
+		Query q = em.createNamedQuery(Hecho.getByFiltros).setParameter("titulo", 
+				titulo).setParameter("url", url).setParameter("estado", estado);
+		
+		q.setFirstResult((nroPag-1)*cantElemPag);
+		q.setMaxResults(nroPag*cantElemPag);
+		
+		return q.getResultList();	
 	}
 
 }

@@ -49,4 +49,6 @@ public abstract interface NewsEJBLocal {
 	public List<Hecho> getHechosPag(int nroPag, int cantElemPag);
 	public Long getPerifericoId(String username);
 	public List<Hecho> getHechosAsignadosMecanismo(Long idMecanismo);
+	public List<Hecho> getHechosFiltros(int nroPag, int cantElemPag, String titulo,
+			String url, EnumHechoEstado estado);
 }

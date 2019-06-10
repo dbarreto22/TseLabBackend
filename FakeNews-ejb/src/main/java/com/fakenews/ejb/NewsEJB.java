@@ -257,4 +257,10 @@ public class NewsEJB implements NewsEJBRemote, NewsEJBLocal {
 	public List<Hecho> getHechosAsignadosMecanismo(Long idMecanismo){
 		return newsDataEJB.getHechosAsignadosMecanismo(idMecanismo);
 	}
+	
+	@Override
+	public List<Hecho> getHechosFiltros(int nroPag, int cantElemPag, String titulo,
+			String url, EnumHechoEstado estado){
+		return newsDataEJB.getHechosFiltros(nroPag,cantElemPag,titulo,url,estado);
+	}
 }
