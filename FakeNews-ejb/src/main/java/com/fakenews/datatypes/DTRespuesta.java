@@ -2,7 +2,7 @@ package com.fakenews.datatypes;
 
 import java.io.Serializable;
 
-public class DTRespuesta implements Serializable{
+public class DTRespuesta implements Serializable {
 	
 	private String resultado;
 	private String mensaje;

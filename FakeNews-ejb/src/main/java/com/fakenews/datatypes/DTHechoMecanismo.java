@@ -1,6 +1,8 @@
 package com.fakenews.datatypes;
 
-public class DTHechoMecanismo {
+import java.io.Serializable;
+
+public class DTHechoMecanismo implements Serializable {
 	
 	private Long idHecho;
 	

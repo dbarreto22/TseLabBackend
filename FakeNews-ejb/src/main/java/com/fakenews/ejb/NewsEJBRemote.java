@@ -11,10 +11,5 @@ import com.fakenews.model.Hecho;
 @Remote
 public interface NewsEJBRemote {
 	public List<Hecho> getAllHechos();
-	public DTRespuesta saveHecho(Hecho hecho);
-	public String getParam(String name);
-	public EnumRoles getRol(String email);
-	public DTRespuesta verificarHecho(Hecho hecho);
-	public DTRespuesta asignarHecho(Long idHecho, String mail);
-	public DTRespuesta suscription(String mail);
+	public void cancelaHechosDia();
 }

@@ -3,6 +3,7 @@ package com.fakenews.data;
 import java.util.List;
 import javax.ejb.Local;
 
+import com.fakenews.datatypes.DTHechosPag;
 import com.fakenews.datatypes.DTMecanismoVerificacion;
 import com.fakenews.datatypes.DTRespuesta;
 import com.fakenews.datatypes.EnumHechoEstado;
@@ -83,11 +84,13 @@ public abstract interface NewsPersistentEJBLocal
 
 	public DTRespuesta setEstadoHecho(Long id, EnumHechoEstado estado);
 
-	public List<Hecho> getHechosPag(int nroPag, int cantElemPag);
+	public DTHechosPag getHechosPag(int nroPag, int cantElemPag);
 
 	public List<Hecho> getHechosAsignadosMecanismo(Long idMecanismo);
 
-	public List<Hecho> getHechosFiltros(int nroPag, int cantElemPag, String titulo, 
+	public DTHechosPag getHechosFiltros(int nroPag, int cantElemPag, String titulo, 
 			String url, EnumHechoEstado estado);
+
+	public void cancelaHechosDia();
 
 }

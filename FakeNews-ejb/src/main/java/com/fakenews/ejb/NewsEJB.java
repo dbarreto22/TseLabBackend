@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import com.fakenews.data.NewsPersistentEJBLocal;
 import com.fakenews.datatypes.DTHechoMecanismo;
+import com.fakenews.datatypes.DTHechosPag;
 import com.fakenews.datatypes.DTMecanismoVerificacion;
 import com.fakenews.datatypes.DTRespuesta;
 import com.fakenews.datatypes.DTUsuarioBcknd;
@@ -244,7 +245,7 @@ public class NewsEJB implements NewsEJBRemote, NewsEJBLocal {
 	}
 	
 	@Override
-	public List<Hecho> getHechosPag(int nroPag, int cantElemPag){
+	public DTHechosPag getHechosPag(int nroPag, int cantElemPag){
 		return newsDataEJB.getHechosPag(nroPag,cantElemPag);
 	}
 	
@@ -259,8 +260,14 @@ public class NewsEJB implements NewsEJBRemote, NewsEJBLocal {
 	}
 	
 	@Override
-	public List<Hecho> getHechosFiltros(int nroPag, int cantElemPag, String titulo,
+	public DTHechosPag getHechosFiltros(int nroPag, int cantElemPag, String titulo,
 			String url, EnumHechoEstado estado){
 		return newsDataEJB.getHechosFiltros(nroPag,cantElemPag,titulo,url,estado);
+	}
+	
+	@Override
+	public void cancelaHechosDia() {
+		System.out.println("cancelaHechosDia");
+		newsDataEJB.cancelaHechosDia();
 	}
 }

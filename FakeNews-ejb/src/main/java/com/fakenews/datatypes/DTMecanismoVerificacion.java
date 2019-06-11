@@ -1,6 +1,8 @@
 package com.fakenews.datatypes;
 
-public class DTMecanismoVerificacion {
+import java.io.Serializable;
+
+public class DTMecanismoVerificacion implements Serializable{
 	
 	private Long id;
 	

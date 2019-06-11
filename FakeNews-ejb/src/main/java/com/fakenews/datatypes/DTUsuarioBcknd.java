@@ -1,8 +1,10 @@
 package com.fakenews.datatypes;
 
+import java.io.Serializable;
+
 import javax.persistence.Basic;
 
-public class DTUsuarioBcknd {
+public class DTUsuarioBcknd implements Serializable{
 	
 	private String email;
 

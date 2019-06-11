@@ -1,5 +1,7 @@
 package com.fakenews.data;
 
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -13,6 +15,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 
+import com.fakenews.datatypes.DTHechosPag;
 import com.fakenews.datatypes.DTMecanismoVerificacion;
 import com.fakenews.datatypes.DTRespuesta;
 import com.fakenews.datatypes.EnumHechoEstado;
@@ -118,7 +121,7 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 	public DTRespuesta updateHecho(Hecho hecho) {
 		DTRespuesta respuesta = new DTRespuesta("ERROR", "Ha ocurrido un error al verificar el hecho.");
 		try {
-			Date date = new Date(System.currentTimeMillis());
+			Date date = Date.from(LocalDateTime.now().toInstant(ZoneOffset.ofHours(-3)));
 			Object object = em.find(Hecho.class, hecho.getId());
 			if (object instanceof Hecho) {
 				Hecho nuevoHecho = (Hecho) object;
@@ -341,7 +344,7 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 		}
 		
 		if (hecho != null && mecanismo != null) {
-			Date date = new Date(System.currentTimeMillis());
+			Date date = Date.from(LocalDateTime.now().toInstant(ZoneOffset.ofHours(-3)));
 			hecho.setFechaInicioVerificacion(date);
 			hecho.setEstado(EnumHechoEstado.EN_PROCESO);
 			ResultadoMecanismo resultado = new ResultadoMecanismo(mecanismo);
@@ -401,7 +404,7 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 	public DTRespuesta setEstadoHecho(Long id, EnumHechoEstado estado) {
 		DTRespuesta respuesta = new DTRespuesta("ERROR", "Ha ocurrido un error.");
 		try {
-			Date date = new Date(System.currentTimeMillis());
+			Date date = Date.from(LocalDateTime.now().toInstant(ZoneOffset.ofHours(-3)));
 			Object object = em.find(Hecho.class, id);
 			if (object instanceof Hecho) {
 				Hecho hecho = (Hecho) object;
@@ -417,18 +420,27 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 	}
 	
 	@Override
-	public List<Hecho> getHechosPag(int nroPag, int cantElemPag){
+	public DTHechosPag getHechosPag(int nroPag, int cantElemPag){
 		System.out.println("getHechosPag");
+		DTHechosPag hechosPag = new DTHechosPag();
 		
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Hecho> cq = cb.createQuery(Hecho.class);
 		cq.select(cq.from(Hecho.class));
 		Query q = em.createQuery(cq);
 		
+		if(q.getResultList() != null) {
+			hechosPag.setCantElementos(q.getResultList().size());
+		}else {
+			hechosPag.setCantElementos(0);
+		}
+		
 		q.setFirstResult((nroPag-1)*cantElemPag);
 		q.setMaxResults(nroPag*cantElemPag);
 		
-		return q.getResultList();		
+		hechosPag.setHechos(q.getResultList());
+		
+		return hechosPag;		
 	}
 	
 	@Override
@@ -441,20 +453,21 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 	}
 	
 	@Override
-	public List<Hecho> getHechosFiltros(int nroPag, int cantElemPag, String titulo, 
+	public DTHechosPag getHechosFiltros(int nroPag, int cantElemPag, String titulo, 
 			String url, EnumHechoEstado estado){
-		
 		System.out.println("getHechosFiltros");
+		DTHechosPag hechosPag = new DTHechosPag();
+		
 		if (url.equals("null")) {
 			url = null;
 		}else {
-			url = "%" + url + "%";
+			url = "%" + url.toLowerCase() + "%";
 		}
 		
 		if (titulo.equals("null")) {
 			titulo = null;
 		}else {
-			titulo = "%" + titulo + "%";
+			titulo = "%" + titulo.toLowerCase() + "%";
 		}
 		
 		System.out.println("nroPag: " + nroPag);
@@ -466,10 +479,38 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 		Query q = em.createNamedQuery(Hecho.getByFiltros).setParameter("titulo", 
 				titulo).setParameter("url", url).setParameter("estado", estado);
 		
+		if(q.getResultList() != null) {
+			hechosPag.setCantElementos(q.getResultList().size());
+		}else {
+			hechosPag.setCantElementos(0);
+		}
+		
 		q.setFirstResult((nroPag-1)*cantElemPag);
 		q.setMaxResults(nroPag*cantElemPag);
 		
-		return q.getResultList();	
+		hechosPag.setHechos(q.getResultList());
+		
+		return hechosPag;	
+	}
+	
+	@Override
+	public void cancelaHechosDia() {
+		int dias = Integer.parseInt(this.getParam("CANT_DIAS_CANCEL_HECHO"));
+		Date fecha = Date.from(LocalDateTime.now().minusDays(dias).toInstant(ZoneOffset.ofHours(-3)));
+		
+		System.out.println("fecha: " + fecha.toString());
+
+		Query q = em.createNamedQuery(Hecho.getHechosACancelar).setParameter("fecha", 
+				fecha).setParameter("estado", EnumHechoEstado.CANCELADO);
+		
+		List <Hecho> hechos = q.getResultList();
+		
+		if (hechos != null) {
+			hechos.forEach(hecho -> {
+				System.out.println("HechoId: " + hecho.getId());
+	            this.setEstadoHecho(hecho.getId(), EnumHechoEstado.CANCELADO);
+	        });
+		}
 	}
 
 }

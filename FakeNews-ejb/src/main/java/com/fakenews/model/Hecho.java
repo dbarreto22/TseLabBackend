@@ -26,19 +26,23 @@ import com.fakenews.datatypes.EnumTipoCalificacion;
     @NamedQuery(name = Hecho.getByEstado, 
 	query = "SELECT a FROM Hecho a WHERE a.estado = :estado"),
     @NamedQuery(name = Hecho.getByMecanismo, 
-	query = "SELECT a FROM Hecho a, ResultadoMecanismo b, MecanismoVerificacion c \n"
+	query = "SELECT DISTINCT(a) FROM Hecho a, ResultadoMecanismo b, MecanismoVerificacion c \n"
 			+ " WHERE b member of a.resultadosMecanismos AND \n"
 			+ "b.mecanismo = c AND c.id = :idMecanismo"),
     @NamedQuery(name = Hecho.getByFiltros, 
 	query = "SELECT a FROM Hecho a WHERE (:estado is null or a.estado = :estado) \n"
-			+ "AND (:url is null or lower(a.url) LIKE lower(:url)) \n"
-			+ "AND (:titulo is null or lower(a.titulo) LIKE lower(:titulo))")})
+			+ "AND (:url is null or lower(a.url) LIKE :url) \n"
+			+ "AND (:titulo is null or lower(a.titulo) LIKE :titulo)"),
+    @NamedQuery(name = Hecho.getHechosACancelar, 
+	query = "SELECT a FROM Hecho a WHERE (a.estado <> :estado) \n"
+			+ "AND (a.fechaInicioVerificacion < :fecha)")})
 public class Hecho implements Serializable {
 	
 	public final static String getByChecker = "Hecho.getByChecker";
 	public final static String getByEstado = "Hecho.getByEstado";
 	public final static String getByMecanismo = "Hecho.getByMecanismo";
 	public final static String getByFiltros = "Hecho.getByFiltros";
+	public static final String getHechosACancelar = "Hecho.getHechosACancelar";
 	
 	@Id
     @GeneratedValue (strategy=GenerationType.AUTO)

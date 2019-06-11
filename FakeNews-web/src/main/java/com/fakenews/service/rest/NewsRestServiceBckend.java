@@ -29,6 +29,7 @@ import com.fakenews.model.MecanismoInterno;
 import com.fakenews.model.MecanismoPeriferico;
 import com.fakenews.datatypes.DTAsignarHecho;
 import com.fakenews.datatypes.DTHechoMecanismo;
+import com.fakenews.datatypes.DTHechosPag;
 import com.fakenews.datatypes.DTLoginBackendRequest;
 
 @Path("/")
@@ -174,34 +175,35 @@ public class NewsRestServiceBckend {
 	
 	@GET
 	@Path("getHechosPag/{nroPag}/{cantElemPag}")
-	public List<Hecho> getHechosPag(@PathParam("nroPag") final int nroPag,
+	public DTHechosPag getHechosPag(@PathParam("nroPag") final int nroPag,
 			@PathParam("cantElemPag") final int cantElemPag) {
 		System.out.println("nroPag: " + nroPag);
 		System.out.println("cantElemPag: " + cantElemPag);
-		List<Hecho> hechos = null;
+		DTHechosPag hechosPag = new DTHechosPag();
+		
 		try {
-			hechos = newsEJB.getHechosPag(nroPag,cantElemPag);
+			hechosPag = newsEJB.getHechosPag(nroPag,cantElemPag);
 		}catch (Exception ex) {
 			System.out.println("getHechosPag" + ex.getMessage());
 		}
-		return hechos;
+		return hechosPag;
 	}
 	
 	@GET
 	@Path("getHechosFiltros/{nroPag}/{cantElemPag}/{titulo}/{url}/{estado}")
-	public List<Hecho> getHechosFiltros(@PathParam("nroPag") final int nroPag,
+	public DTHechosPag getHechosFiltros(@PathParam("nroPag") final int nroPag,
 			@PathParam("cantElemPag") final int cantElemPag,
 			@PathParam("titulo") final String titulo,
 			@PathParam("url") final String url,
 			@PathParam("estado") final EnumHechoEstado estado) {
 		
-		List<Hecho> hechos = null;
+		DTHechosPag hechosPag = new DTHechosPag();
 		try {
-			hechos = newsEJB.getHechosFiltros(nroPag,cantElemPag,titulo,url,estado);
+			hechosPag = newsEJB.getHechosFiltros(nroPag,cantElemPag,titulo,url,estado);
 		}catch (Exception ex) {
 			System.out.println("getHechosFiltros" + ex.getMessage());
 		}
-		return hechos;
+		return hechosPag;
 	}
 	
 }

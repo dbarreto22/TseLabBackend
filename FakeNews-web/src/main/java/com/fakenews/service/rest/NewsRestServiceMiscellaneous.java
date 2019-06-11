@@ -61,6 +61,7 @@ public class NewsRestServiceMiscellaneous {
 	
 	@GET
 	@Path("getHechos")
+	@PermitAll
 	public List<Hecho> getAllHechos(){
 		List<Hecho> hechos = null;
 		try {

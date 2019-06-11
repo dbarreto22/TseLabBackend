@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ejb.Local;
 
 import com.fakenews.datatypes.DTHechoMecanismo;
+import com.fakenews.datatypes.DTHechosPag;
 import com.fakenews.datatypes.DTMecanismoVerificacion;
 import com.fakenews.datatypes.DTRespuesta;
 import com.fakenews.datatypes.DTUsuarioBcknd;
@@ -46,9 +47,9 @@ public abstract interface NewsEJBLocal {
 	public DTRespuesta resultadoverificarHechoMecanismo(DTHechoMecanismo hechoMecanismo);
 	public List<Hecho> getHechosByEstado(EnumHechoEstado estado);
 	public DTRespuesta setEstadoHecho(Hecho hecho);
-	public List<Hecho> getHechosPag(int nroPag, int cantElemPag);
+	public DTHechosPag getHechosPag(int nroPag, int cantElemPag);
 	public Long getPerifericoId(String username);
 	public List<Hecho> getHechosAsignadosMecanismo(Long idMecanismo);
-	public List<Hecho> getHechosFiltros(int nroPag, int cantElemPag, String titulo,
+	public DTHechosPag getHechosFiltros(int nroPag, int cantElemPag, String titulo,
 			String url, EnumHechoEstado estado);
 }
