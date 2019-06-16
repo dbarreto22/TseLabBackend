@@ -3,6 +3,7 @@ package com.fakenews.data;
 import java.util.List;
 import javax.ejb.Local;
 
+import com.fakenews.datatypes.DTCantHechosEstado;
 import com.fakenews.datatypes.DTHechosPag;
 import com.fakenews.datatypes.DTMecanismoVerificacion;
 import com.fakenews.datatypes.DTRespuesta;
@@ -92,5 +93,7 @@ public abstract interface NewsPersistentEJBLocal
 			String url, EnumHechoEstado estado);
 
 	public void cancelaHechosDia();
+
+	public List<DTCantHechosEstado> getCantHechosPorEstado();
 
 }

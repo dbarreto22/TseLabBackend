@@ -15,6 +15,7 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 
+import com.fakenews.datatypes.DTCantHechosEstado;
 import com.fakenews.datatypes.DTHechosPag;
 import com.fakenews.datatypes.DTMecanismoVerificacion;
 import com.fakenews.datatypes.DTRespuesta;
@@ -511,6 +512,20 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 	            this.setEstadoHecho(hecho.getId(), EnumHechoEstado.CANCELADO);
 	        });
 		}
+	}
+	
+	@Override
+	public List<DTCantHechosEstado> getCantHechosPorEstado(){
+		List<DTCantHechosEstado> cantHechosEstado = new ArrayList<>();
+		Query q = em.createNamedQuery(Hecho.getCantHechosPorEstado);
+		List<Object[]> objects = q.getResultList();
+		objects.forEach(object -> {
+			DTCantHechosEstado cantHecho = new DTCantHechosEstado((EnumHechoEstado) object[0], ((Number) object[1]).intValue());
+			System.out.println("estado: " + cantHecho.getEstado());
+			System.out.println("cantidad: " + cantHecho.getCantidad());
+			cantHechosEstado.add(cantHecho);
+		});
+		return cantHechosEstado;	
 	}
 
 }

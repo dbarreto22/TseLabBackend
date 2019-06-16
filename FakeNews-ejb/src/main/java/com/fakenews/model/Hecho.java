@@ -34,15 +34,18 @@ import com.fakenews.datatypes.EnumTipoCalificacion;
 			+ "AND (:url is null or lower(a.url) LIKE :url) \n"
 			+ "AND (:titulo is null or lower(a.titulo) LIKE :titulo)"),
     @NamedQuery(name = Hecho.getHechosACancelar, 
-	query = "SELECT a FROM Hecho a WHERE (a.estado <> :estado) \n"
-			+ "AND (a.fechaInicioVerificacion < :fecha)")})
+	query = "SELECT a FROM Hecho a WHERE (a.estado <> 'CANCELADO' AND a.estado <> 'VERIFICADO') \n"
+			+ "AND (a.fechaInicioVerificacion < :fecha)"),
+    @NamedQuery(name = Hecho.getCantHechosPorEstado, 
+	query = "SELECT estado, count(*) AS cantidad FROM Hecho GROUP BY estado")})
 public class Hecho implements Serializable {
 	
 	public final static String getByChecker = "Hecho.getByChecker";
 	public final static String getByEstado = "Hecho.getByEstado";
 	public final static String getByMecanismo = "Hecho.getByMecanismo";
 	public final static String getByFiltros = "Hecho.getByFiltros";
-	public static final String getHechosACancelar = "Hecho.getHechosACancelar";
+	public final static String getHechosACancelar = "Hecho.getHechosACancelar";
+	public final static String getCantHechosPorEstado = "Hecho.getCantHechosPorEstado";
 	
 	@Id
     @GeneratedValue (strategy=GenerationType.AUTO)

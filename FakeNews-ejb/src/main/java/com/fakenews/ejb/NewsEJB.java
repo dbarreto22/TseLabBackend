@@ -6,6 +6,7 @@ import javax.ejb.Stateless;
 import java.util.logging.Logger;
 
 import com.fakenews.data.NewsPersistentEJBLocal;
+import com.fakenews.datatypes.DTCantHechosEstado;
 import com.fakenews.datatypes.DTHechoMecanismo;
 import com.fakenews.datatypes.DTHechosPag;
 import com.fakenews.datatypes.DTMecanismoVerificacion;
@@ -269,5 +270,10 @@ public class NewsEJB implements NewsEJBRemote, NewsEJBLocal {
 	public void cancelaHechosDia() {
 		System.out.println("cancelaHechosDia");
 		newsDataEJB.cancelaHechosDia();
+	}
+
+	@Override
+	public List<DTCantHechosEstado> getCantHechosPorEstado() {
+		return newsDataEJB.getCantHechosPorEstado();
 	}
 }

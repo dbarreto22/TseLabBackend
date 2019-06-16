@@ -20,6 +20,7 @@ import com.fakenews.datatypes.DTRespuesta;
 import com.fakenews.datatypes.DTUsuarioBcknd;
 import com.fakenews.datatypes.EnumHechoEstado;
 import com.fakenews.datatypes.EnumRoles;
+import com.fakenews.ejb.NewsEJB;
 import com.fakenews.ejb.NewsEJBLocal;
 import com.fakenews.ejb.ToolsLocal;
 import com.fakenews.model.Checker;
@@ -28,6 +29,7 @@ import com.fakenews.model.MecanismoExterno;
 import com.fakenews.model.MecanismoInterno;
 import com.fakenews.model.MecanismoPeriferico;
 import com.fakenews.datatypes.DTAsignarHecho;
+import com.fakenews.datatypes.DTCantHechosEstado;
 import com.fakenews.datatypes.DTHechoMecanismo;
 import com.fakenews.datatypes.DTHechosPag;
 import com.fakenews.datatypes.DTLoginBackendRequest;
@@ -204,6 +206,12 @@ public class NewsRestServiceBckend {
 			System.out.println("getHechosFiltros" + ex.getMessage());
 		}
 		return hechosPag;
+	}
+	
+	@GET
+	@Path("getCantHechosPorEstado")
+	public List<DTCantHechosEstado> getCantHechosPorEstado() {
+		return newsEJB.getCantHechosPorEstado();
 	}
 	
 }

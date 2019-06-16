@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.ejb.Local;
 
+import com.fakenews.datatypes.DTCantHechosEstado;
 import com.fakenews.datatypes.DTHechoMecanismo;
 import com.fakenews.datatypes.DTHechosPag;
 import com.fakenews.datatypes.DTMecanismoVerificacion;
@@ -52,4 +53,5 @@ public abstract interface NewsEJBLocal {
 	public List<Hecho> getHechosAsignadosMecanismo(Long idMecanismo);
 	public DTHechosPag getHechosFiltros(int nroPag, int cantElemPag, String titulo,
 			String url, EnumHechoEstado estado);
+	public List<DTCantHechosEstado> getCantHechosPorEstado();
 }
