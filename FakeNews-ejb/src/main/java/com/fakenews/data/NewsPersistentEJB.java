@@ -533,5 +533,21 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 		});
 		return cantHechosEstado;	
 	}
-
+	
+	@Override
+	public List<Citizen> getSuscriptedCitizens(){
+		Query q = em.createNamedQuery(Citizen.getSuscriptedCitizens);
+		return q.getResultList();
+	}
+	
+	@Override
+	public void saveAndroidToken(String mail, String token_firebase) {
+		try {
+			Citizen citizen = em.find(Citizen.class, mail);
+			citizen.setDeviceToken(token_firebase);
+			em.merge(citizen);
+		} catch (Exception e) {
+			System.out.print(e.getMessage());
+		}
+	}
 }

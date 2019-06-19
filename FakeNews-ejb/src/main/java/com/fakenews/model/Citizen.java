@@ -5,10 +5,17 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 @Entity
+@NamedQueries({
+    @NamedQuery(name = Citizen.getSuscriptedCitizens, 
+    		query = "SELECT a FROM Citizen a WHERE a.suscripto = TRUE")})
 public class Citizen extends Usuario implements Serializable {
+	
+	public final static String getSuscriptedCitizens = "Citizen.getSuscriptedCitizens";
 	
 	@Basic
 	private Boolean suscripto;
@@ -60,6 +67,14 @@ public class Citizen extends Usuario implements Serializable {
 
 	public void setHechos(List<Hecho> hechos) {
 		this.hechos = hechos;
+	}
+
+	public String getDeviceToken() {
+		return deviceToken;
+	}
+
+	public void setDeviceToken(String deviceToken) {
+		this.deviceToken = deviceToken;
 	}
 			
 }

@@ -281,4 +281,14 @@ public class NewsEJB implements NewsEJBRemote, NewsEJBLocal {
 	public Hecho getHechoById(Long idHecho) {
 		return newsDataEJB.getHechoById(idHecho);
 	}
+	
+	@Override
+	public List<Citizen> getSuscriptedCitizens(){
+		return newsDataEJB.getSuscriptedCitizens();
+	}
+	
+	@Override
+	public void saveAndroidToken(String mail, String token_firebase) {
+		newsDataEJB.saveAndroidToken(mail, token_firebase);
+	}
 }

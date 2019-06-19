@@ -14,6 +14,7 @@ import com.fakenews.datatypes.EnumHechoEstado;
 import com.fakenews.datatypes.EnumRoles;
 import com.fakenews.model.Admin;
 import com.fakenews.model.Checker;
+import com.fakenews.model.Citizen;
 import com.fakenews.model.Hecho;
 import com.fakenews.model.MecanismoExterno;
 import com.fakenews.model.MecanismoInterno;
@@ -55,4 +56,6 @@ public abstract interface NewsEJBLocal {
 			String url, EnumHechoEstado estado);
 	public List<DTCantHechosEstado> getCantHechosPorEstado();
 	public Hecho getHechoById(Long idHecho);
+	public List<Citizen> getSuscriptedCitizens();
+	public void saveAndroidToken(String mail, String token_firebase);
 }

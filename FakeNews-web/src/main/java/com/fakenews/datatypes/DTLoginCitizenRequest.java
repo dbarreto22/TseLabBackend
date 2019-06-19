@@ -6,6 +6,7 @@ public class DTLoginCitizenRequest implements Serializable{
 	
 	private String mail;
 	private String token_id;
+	private String token_firebase;
 	
 	public DTLoginCitizenRequest() {
 		
@@ -14,6 +15,12 @@ public class DTLoginCitizenRequest implements Serializable{
 	public DTLoginCitizenRequest(String mail, String token_id) {
 		this.mail = mail;
 		this.token_id = token_id;
+	}
+	
+	public DTLoginCitizenRequest(String mail, String token_id, String token_firebase) {
+		this.mail = mail;
+		this.token_id = token_id;
+		this.token_firebase = token_firebase;
 	}
 
 	public String getMail() {
@@ -30,6 +37,14 @@ public class DTLoginCitizenRequest implements Serializable{
 
 	public void setToken_id(String token_id) {
 		this.token_id = token_id;
+	}
+
+	public String getToken_firebase() {
+		return token_firebase;
+	}
+
+	public void setToken_firebase(String token_firebase) {
+		this.token_firebase = token_firebase;
 	}
 
 	@Override

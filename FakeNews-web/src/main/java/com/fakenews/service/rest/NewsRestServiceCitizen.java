@@ -50,15 +50,18 @@ public class NewsRestServiceCitizen {
 	    	if (loginOk) {
 	    	  rol = newsEJB.citizenLogin(request.getMail(),nombre);
 	    	  if (rol != EnumRoles.ERROR){
+	    		  toolsEJB.saveAndroidToken(request);
 	    		  token = toolsEJB.createAndSignToken(request.getMail(), request.getToken_id());
 	    	  }
 	    	}
+	    	
 	    	
 		} catch (Exception ex) {
             System.out.println("citizen/login " + ex.getMessage());
         }
 		return new DTLoginResponse(token, rol);
 	}
+	
 	
 	@POST
 	@Path("addHecho")

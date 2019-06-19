@@ -98,4 +98,8 @@ public abstract interface NewsPersistentEJBLocal
 
 	public Hecho getHechoById(Long idHecho);
 
+	public List<Citizen> getSuscriptedCitizens();
+
+	public void saveAndroidToken(String mail, String token_firebase);
+
 }

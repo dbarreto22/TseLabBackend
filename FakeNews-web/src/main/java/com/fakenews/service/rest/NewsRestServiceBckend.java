@@ -70,6 +70,11 @@ public class NewsRestServiceBckend {
 	public DTRespuesta verificarHecho(Hecho hecho) {
 		DTRespuesta respuesta = new DTRespuesta("ERROR", "Ha ocurrido un error al verificar el hecho.");
 		respuesta = newsEJB.verificarHecho(hecho);
+		System.out.println(respuesta.getResultado());
+		if (respuesta.getResultado().equals("OK")) {
+			System.out.println("verificarHecho OK");
+    	    	toolsEJB.sendNotifications(hecho.getId());
+		}
 		return respuesta;
 	}
 	

@@ -3,12 +3,14 @@ package com.fakenews.ejb;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.fakenews.datatypes.DTLoginCitizenRequest;
 import com.fakenews.datatypes.DTLoginResponse;
 import com.fakenews.datatypes.EnumRoles;
 import com.fakenews.ejb.NewsEJBLocal;
 import com.fakenews.ejb.ToolsLocal;
 import com.fakenews.model.Admin;
 import com.fakenews.model.Checker;
+import com.fakenews.model.Citizen;
 import com.fakenews.model.Hecho;
 import com.fakenews.model.MecanismoPeriferico;
 import com.fakenews.model.Submitter;
@@ -29,6 +31,7 @@ import java.time.ZoneOffset;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -45,6 +48,7 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import org.jboss.resteasy.util.Base64;
+import java.util.Properties;
 
 /**
  *
@@ -82,6 +86,11 @@ public class Tools implements ToolsLocal {
     @Override
     public String getSecret(){
         return secret;
+    }
+    
+    @Override
+    public void saveAndroidToken(DTLoginCitizenRequest request) {
+    	newsEJB.saveAndroidToken(request.getMail(),request.getToken_firebase());
     }
     
     @Override
@@ -208,30 +217,61 @@ public class Tools implements ToolsLocal {
         
     }
     
-//    @Override
-//    public Boolean sendNotification(Hecho hecho) {
-//        String title = "Se ha verificado un hecho";
-//        String message = "Usted ha obtenido un ";
-//        String deviceToken = "";
-//        String tipo = "";
-//        int response = 0;
-//        if (notaObj instanceof Estudiante_Curso) {
-//            Estudiante_Curso curso = (Estudiante_Curso) notaObj;
-//            deviceToken = curso.getUsuario().getDeviceToken();
-//            tipo = "curso";
-//            message += curso.getCalificacion();
-//            message += " en el curso de " + curso.getCurso().getAsignatura_Carrera().getAsignatura().getNombre() + ".";
-//        } else {
-//            if (notaObj instanceof Estudiante_Examen) {
-//                Estudiante_Examen examen = (Estudiante_Examen) notaObj;
-//                deviceToken = examen.getUsuario().getDeviceToken();
-//                tipo = "examen";
-//                message += examen.getCalificacion();
-//                message += " en el examen de " + examen.getExamen().getAsignatura_Carrera().getAsignatura().getNombre() + ".";
-//            }
-//        }  
-//    	return false;
-//    }
+    @Override
+    public void sendNotifications(Long idHecho) {
+    	System.out.println("sendNotifications entra");
+    	Hecho hecho = newsEJB.getHechoById(idHecho);
+        String title = "Se ha verificado un hecho";
+        String message = "Se ha verificado el hecho: " + hecho.getTitulo() + " con calificacion " + 
+        hecho.getCalificacion().tipoCalificacionStr() + ".";
+        
+        newsEJB.getSuscriptedCitizens().forEach(usuario -> {
+        	System.out.println("usuarioSuscripto: " + usuario.getEmail());
+        	Thread t1 = new Thread(new Runnable() {
+        	    public void run()
+        	    {
+        	    	sendMail(title, message, usuario);
+        	    }});  
+        	    t1.start();
+        });
+        
+    }
+ 
+    private void sendMail(String title, String msg, Citizen usuario) {
+        System.out.println("sendMail");
+        try {
+            final String username = "tecnoinf2016@gmail.com";
+            final String password = "tecnoinf.2015";
+
+            Properties props = new Properties();
+            props.put("mail.smtp.auth", "true");
+            props.put("mail.smtp.starttls.enable", "true");
+            props.put("mail.smtp.host", "smtp.gmail.com");
+            props.put("mail.smtp.port", "587");
+
+            Session session = Session.getInstance(props,
+                    new javax.mail.Authenticator() {
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    return new PasswordAuthentication(username, password);
+                }
+            });
+
+            Message message = new MimeMessage(session);
+            message.setFrom(new InternetAddress("tecnoinf2016@gmail.com"));
+            message.setSubject(title);
+            message.setText(msg
+                    + "\n\n\n\n FakeNews");
+            message.setRecipients(Message.RecipientType.TO,
+                        InternetAddress.parse(usuario.getEmail()));
+            javax.mail.Transport.send(message);
+          
+            System.out.println("Done");
+
+        } catch (MessagingException ex) {
+            System.out.println(ex);
+        }
+    }
+    
     
 //    public Boolean sendPushWithSimpleAndroid(String title, String message, String deviceToken) {
 //  	
