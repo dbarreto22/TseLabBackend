@@ -50,8 +50,10 @@ public class NewsRestServiceCitizen {
 	    	if (loginOk) {
 	    	  rol = newsEJB.citizenLogin(request.getMail(),nombre);
 	    	  if (rol != EnumRoles.ERROR){
-	    		  toolsEJB.saveAndroidToken(request);
 	    		  token = toolsEJB.createAndSignToken(request.getMail(), request.getToken_id());
+	    		  if (!request.getToken_firebase().isEmpty()) {
+	    			  toolsEJB.saveAndroidToken(request);
+	    		  }
 	    	  }
 	    	}
 	    	

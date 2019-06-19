@@ -20,6 +20,7 @@ import com.fakenews.model.MecanismoExterno;
 import com.fakenews.model.MecanismoInterno;
 import com.fakenews.model.MecanismoPeriferico;
 import com.fakenews.model.MecanismoVerificacion;
+import com.fakenews.model.Parametro;
 import com.fakenews.model.Submitter;
 
 @Local
@@ -58,4 +59,7 @@ public abstract interface NewsEJBLocal {
 	public Hecho getHechoById(Long idHecho);
 	public List<Citizen> getSuscriptedCitizens();
 	public void saveAndroidToken(String mail, String token_firebase);
+	public List<MecanismoVerificacion> getMecanismosVerificacion();
+	public DTRespuesta parametroAction(Parametro param, String modo);
+	public List<Parametro> getParametros();
 }

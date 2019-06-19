@@ -550,4 +550,65 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 			System.out.print(e.getMessage());
 		}
 	}
+	
+	@Override
+	public List<MecanismoVerificacion> getMecanismosVerificacion() {
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<MecanismoVerificacion> cq = cb.createQuery(MecanismoVerificacion.class);
+		cq.select(cq.from(MecanismoVerificacion.class));
+		return em.createQuery(cq).getResultList();
+	}
+	
+	@Override
+	public DTRespuesta addParametro(Parametro param) {
+		DTRespuesta respuesta = new DTRespuesta("ERROR", "Error al agregar el parámetro");
+		try {
+			em.persist(param);
+			respuesta.setResultado("OK");
+			respuesta.setMensaje("El parámetro se ha agregado correctamente.");
+		} catch (Exception e) {
+			System.out.print(e.getMessage());
+			respuesta.setMensaje(e.getMessage());
+		}
+		
+		return respuesta;
+	}
+
+	@Override
+	public DTRespuesta updateParametro(Parametro param) {
+		DTRespuesta respuesta = new DTRespuesta("ERROR", "Error al modificar el parámetro");
+		try {
+			em.merge(param);
+			respuesta.setResultado("OK");
+			respuesta.setMensaje("El parámetro se ha modificado correctamente.");
+		} catch (Exception e) {
+			System.out.print(e.getMessage());
+			respuesta.setMensaje(e.getMessage());
+		}
+		
+		return respuesta;
+	}
+
+	@Override
+	public DTRespuesta deleteParametro(Parametro param) {
+		DTRespuesta respuesta = new DTRespuesta("ERROR", "Error al eliminar el parámetro");
+		try {
+			em.remove(param);
+			respuesta.setResultado("OK");
+			respuesta.setMensaje("El parámetro se ha eliminado correctamente.");
+		} catch (Exception e) {
+			System.out.print(e.getMessage());
+			respuesta.setMensaje(e.getMessage());
+		}
+		
+		return respuesta;
+	}
+	
+	@Override
+	public List<Parametro> getParametros(){
+		CriteriaBuilder cb = em.getCriteriaBuilder();
+		CriteriaQuery<Parametro> cq = cb.createQuery(Parametro.class);
+		cq.select(cq.from(Parametro.class));
+		return em.createQuery(cq).getResultList();
+	}
 }

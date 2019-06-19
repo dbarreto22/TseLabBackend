@@ -22,6 +22,7 @@ import com.fakenews.model.MecanismoExterno;
 import com.fakenews.model.MecanismoInterno;
 import com.fakenews.model.MecanismoPeriferico;
 import com.fakenews.model.MecanismoVerificacion;
+import com.fakenews.model.Parametro;
 import com.fakenews.model.Submitter;
 
 import java.util.logging.Level;
@@ -290,5 +291,34 @@ public class NewsEJB implements NewsEJBRemote, NewsEJBLocal {
 	@Override
 	public void saveAndroidToken(String mail, String token_firebase) {
 		newsDataEJB.saveAndroidToken(mail, token_firebase);
+	}
+	
+	@Override
+	public List<MecanismoVerificacion> getMecanismosVerificacion(){
+		return newsDataEJB.getMecanismosVerificacion();
+	}
+	
+	@Override
+	public DTRespuesta parametroAction(Parametro param, String modo) {
+		switch (modo) {
+
+			case "INS":
+				return newsDataEJB.addParametro(param);
+	
+			case "UPD":
+				return newsDataEJB.updateParametro(param);
+	
+			case "DEL":
+				return newsDataEJB.deleteParametro(param);
+			
+			default:
+				return new DTRespuesta("ERROR", "Nunca deberías ver esto. Saludos.");
+			
+		}
+	}
+	
+	@Override
+	public List<Parametro> getParametros(){
+		return newsDataEJB.getParametros();
 	}
 }

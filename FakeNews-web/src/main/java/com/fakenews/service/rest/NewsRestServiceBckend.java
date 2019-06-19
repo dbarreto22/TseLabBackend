@@ -28,6 +28,8 @@ import com.fakenews.model.Hecho;
 import com.fakenews.model.MecanismoExterno;
 import com.fakenews.model.MecanismoInterno;
 import com.fakenews.model.MecanismoPeriferico;
+import com.fakenews.model.MecanismoVerificacion;
+import com.fakenews.model.Parametro;
 import com.fakenews.datatypes.DTAsignarHecho;
 import com.fakenews.datatypes.DTCantHechosEstado;
 import com.fakenews.datatypes.DTHechoMecanismo;
@@ -135,6 +137,12 @@ public class NewsRestServiceBckend {
 		return newsEJB.getMecanismosPerifericos();
 	}
 	
+	@GET
+	@Path("admin/getMecanismosVerificacion")
+	public List<MecanismoVerificacion> getMecanismosVerificacion(){
+		return newsEJB.getMecanismosVerificacion();
+	}
+	
 	@POST
 	@Path("admin/addMecanismoVerificacion")
 	public DTRespuesta addMecanismoVerificacion(DTMecanismoVerificacion mecanismo) {
@@ -210,6 +218,33 @@ public class NewsRestServiceBckend {
 	@Path("getHechoById/{idHecho}")
 	public Hecho getHechoById(@PathParam("idHecho") final Long idHecho) {
 		return newsEJB.getHechoById(idHecho);
+	}
+	
+	@POST
+	@Path("admin/addParametro")
+	public DTRespuesta addParametro(Parametro param) {
+		System.out.println("Parametro: " + param.getName());
+		return newsEJB.parametroAction(param,"INS");
+	}
+	
+	@POST
+	@Path("admin/updateParametro")
+	public DTRespuesta updateParametro(Parametro param) {
+		System.out.println("Parametro: " + param.getName());
+		return newsEJB.parametroAction(param,"UPD");
+	}
+	
+	@POST
+	@Path("admin/deleteParametro")
+	public DTRespuesta deleteParametro(Parametro param) {
+		System.out.println("Parametro: " + param.getName());
+		return newsEJB.parametroAction(param,"DEL");
+	}
+	
+	@GET
+	@Path("admin/getParametros")
+	public List<Parametro> getParametros() {
+		return newsEJB.getParametros();
 	}
 	
 }
