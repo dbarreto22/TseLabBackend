@@ -34,7 +34,7 @@ import com.fakenews.datatypes.EnumTipoCalificacion;
 			+ "AND (:url is null or lower(a.url) LIKE :url) \n"
 			+ "AND (:titulo is null or lower(a.titulo) LIKE :titulo)"),
     @NamedQuery(name = Hecho.getHechosACancelar, 
-	query = "SELECT a FROM Hecho a WHERE (a.estado <> 'CANCELADO' AND a.estado <> 'VERIFICADO') \n"
+	query = "SELECT a FROM Hecho a WHERE (a.estado <> :estado1 AND a.estado <> :estado2) \n"
 			+ "AND (a.fechaInicioVerificacion < :fecha)"),
     @NamedQuery(name = Hecho.getCantHechosPorEstado, 
 	query = "SELECT estado, count(*) AS cantidad FROM Hecho GROUP BY estado")})

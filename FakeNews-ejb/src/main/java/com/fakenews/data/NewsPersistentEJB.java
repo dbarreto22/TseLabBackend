@@ -502,7 +502,8 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 		System.out.println("fecha: " + fecha.toString());
 
 		Query q = em.createNamedQuery(Hecho.getHechosACancelar).setParameter("fecha", 
-				fecha).setParameter("estado", EnumHechoEstado.CANCELADO);
+				fecha).setParameter("estado1", EnumHechoEstado.CANCELADO).setParameter("estado2", 
+						EnumHechoEstado.VERIFICADO);
 		
 		List <Hecho> hechos = q.getResultList();
 		
@@ -512,6 +513,11 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 	            this.setEstadoHecho(hecho.getId(), EnumHechoEstado.CANCELADO);
 	        });
 		}
+	}
+	
+	@Override
+	public Hecho getHechoById(Long idHecho) {
+		return em.find(Hecho.class, idHecho);
 	}
 	
 	@Override

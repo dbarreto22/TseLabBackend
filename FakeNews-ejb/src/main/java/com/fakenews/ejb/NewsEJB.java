@@ -276,4 +276,9 @@ public class NewsEJB implements NewsEJBRemote, NewsEJBLocal {
 	public List<DTCantHechosEstado> getCantHechosPorEstado() {
 		return newsDataEJB.getCantHechosPorEstado();
 	}
+	
+	@Override
+	public Hecho getHechoById(Long idHecho) {
+		return newsDataEJB.getHechoById(idHecho);
+	}
 }

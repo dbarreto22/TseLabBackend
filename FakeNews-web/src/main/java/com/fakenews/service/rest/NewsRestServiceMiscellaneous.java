@@ -74,6 +74,7 @@ public class NewsRestServiceMiscellaneous {
 	
 	@GET
 	@Path("getHechosByEstado/{estado}")
+	@PermitAll
 	public List<Hecho> getHechosByEstado(@PathParam("estado") final EnumHechoEstado estado){
 		List<Hecho> hechos = null;
 		try {

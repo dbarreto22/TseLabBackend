@@ -96,4 +96,6 @@ public abstract interface NewsPersistentEJBLocal
 
 	public List<DTCantHechosEstado> getCantHechosPorEstado();
 
+	public Hecho getHechoById(Long idHecho);
+
 }

@@ -44,20 +44,7 @@ public class NewsRestServiceBckend {
 
 	@EJB
 	private ToolsLocal toolsEJB;
-	
-	@GET
-	@Path("prueba")
-	@PermitAll
-	public String prueba() {
-		return "Todos trabajando";
-	}
-	
-	@GET
-	@Path("pruebaToken")
-	public String pruebaToken() {
-		return "EL TOKEN EN TU CARA";
-	}
-	
+		
 	@POST
     @Path("backend/login")
     @PermitAll
@@ -212,6 +199,12 @@ public class NewsRestServiceBckend {
 	@Path("getCantHechosPorEstado")
 	public List<DTCantHechosEstado> getCantHechosPorEstado() {
 		return newsEJB.getCantHechosPorEstado();
+	}
+	
+	@GET
+	@Path("getHechoById/{idHecho}")
+	public Hecho getHechoById(@PathParam("idHecho") final Long idHecho) {
+		return newsEJB.getHechoById(idHecho);
 	}
 	
 }

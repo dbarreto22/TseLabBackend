@@ -54,4 +54,5 @@ public abstract interface NewsEJBLocal {
 	public DTHechosPag getHechosFiltros(int nroPag, int cantElemPag, String titulo,
 			String url, EnumHechoEstado estado);
 	public List<DTCantHechosEstado> getCantHechosPorEstado();
+	public Hecho getHechoById(Long idHecho);
 }
