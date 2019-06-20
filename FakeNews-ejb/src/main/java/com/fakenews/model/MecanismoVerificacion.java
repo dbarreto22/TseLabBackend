@@ -7,9 +7,16 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 @Entity
+@NamedQueries({
+    @NamedQuery(name = MecanismoVerificacion.getMecanismosVerificacionHabilitados, 
+    		query = "SELECT a FROM MecanismoVerificacion a WHERE a.habilitado = TRUE")})
 public abstract class MecanismoVerificacion implements Serializable {
+	
+	public final static String getMecanismosVerificacionHabilitados = "MecanismoVerificacion.getMecanismosVerificacionHabilitados";
 	
 	@Id
     @GeneratedValue(strategy=GenerationType.AUTO)

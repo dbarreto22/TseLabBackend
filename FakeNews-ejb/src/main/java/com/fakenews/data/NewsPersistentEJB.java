@@ -1,5 +1,6 @@
 package com.fakenews.data;
 
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -553,20 +554,22 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 	
 	@Override
 	public List<MecanismoVerificacion> getMecanismosVerificacion() {
-		CriteriaBuilder cb = em.getCriteriaBuilder();
-		CriteriaQuery<MecanismoVerificacion> cq = cb.createQuery(MecanismoVerificacion.class);
-		cq.select(cq.from(MecanismoVerificacion.class));
-		return em.createQuery(cq).getResultList();
+		Query q = em.createNamedQuery(MecanismoVerificacion.getMecanismosVerificacionHabilitados);
+		return q.getResultList();
 	}
 	
 	@Override
 	public DTRespuesta addParametro(Parametro param) {
 		DTRespuesta respuesta = new DTRespuesta("ERROR", "Error al agregar el parámetro");
 		try {
-			em.persist(param);
-			respuesta.setResultado("OK");
-			respuesta.setMensaje("El parámetro se ha agregado correctamente.");
-		} catch (Exception e) {
+			if (em.find(Parametro.class, param.getName()) == null) {
+				em.persist(param);
+				respuesta.setResultado("OK");
+				respuesta.setMensaje("El parámetro se ha agregado correctamente.");
+			}else {
+				respuesta.setMensaje("El parámetro ya existe");
+			}
+		} catch (javax.persistence.PersistenceException e) {
 			System.out.print(e.getMessage());
 			respuesta.setMensaje(e.getMessage());
 		}
@@ -593,7 +596,7 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 	public DTRespuesta deleteParametro(Parametro param) {
 		DTRespuesta respuesta = new DTRespuesta("ERROR", "Error al eliminar el parámetro");
 		try {
-			em.remove(param);
+			em.remove(em.contains(param) ? param : em.merge(param));
 			respuesta.setResultado("OK");
 			respuesta.setMensaje("El parámetro se ha eliminado correctamente.");
 		} catch (Exception e) {
