@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ejb.Local;
 
 import com.fakenews.datatypes.DTCantHechosEstado;
+import com.fakenews.datatypes.DTCheckerCalificacion;
 import com.fakenews.datatypes.DTHechoMecanismo;
 import com.fakenews.datatypes.DTHechosPag;
 import com.fakenews.datatypes.DTMecanismoVerificacion;
@@ -12,6 +13,7 @@ import com.fakenews.datatypes.DTRespuesta;
 import com.fakenews.datatypes.DTUsuarioBcknd;
 import com.fakenews.datatypes.EnumHechoEstado;
 import com.fakenews.datatypes.EnumRoles;
+import com.fakenews.datatypes.EnumTipoCalificacion;
 import com.fakenews.model.Admin;
 import com.fakenews.model.Checker;
 import com.fakenews.model.Citizen;
@@ -62,4 +64,8 @@ public abstract interface NewsEJBLocal {
 	public List<MecanismoVerificacion> getMecanismosVerificacion();
 	public DTRespuesta parametroAction(Parametro param, String modo);
 	public List<Parametro> getParametros();
+	public DTMecanismoVerificacion getDTMecanismoVerificacion(DTHechoMecanismo hechoMecanismo);
+	public void verificarMecanismoIntAsync(DTHechoMecanismo hechoMecanismo);
+	public EnumTipoCalificacion verificarMecanismoIntSync(DTHechoMecanismo hechoMecanismo);
+	public List<DTCheckerCalificacion> getCalificacionesChecker(String mail, int cantDias);
 }

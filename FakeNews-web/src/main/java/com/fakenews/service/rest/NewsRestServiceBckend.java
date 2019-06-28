@@ -2,11 +2,16 @@ package com.fakenews.service.rest;
 
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.annotation.security.PermitAll;
 import javax.ejb.EJB;
+import javax.inject.Inject;
+import javax.jms.JMSContext;
+import javax.jms.JMSDestinationDefinition;
+import javax.jms.JMSDestinationDefinitions;
+import javax.jms.Queue;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.HeaderParam;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -14,13 +19,13 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
 import com.fakenews.datatypes.DTLoginResponse;
-import com.fakenews.datatypes.DTMailRequest;
 import com.fakenews.datatypes.DTMecanismoVerificacion;
 import com.fakenews.datatypes.DTRespuesta;
+import com.fakenews.datatypes.DTResultadoMecanismo;
 import com.fakenews.datatypes.DTUsuarioBcknd;
 import com.fakenews.datatypes.EnumHechoEstado;
 import com.fakenews.datatypes.EnumRoles;
-import com.fakenews.ejb.NewsEJB;
+import com.fakenews.datatypes.EnumTipoCalificacion;
 import com.fakenews.ejb.NewsEJBLocal;
 import com.fakenews.ejb.ToolsLocal;
 import com.fakenews.model.Checker;
@@ -36,6 +41,17 @@ import com.fakenews.datatypes.DTHechoMecanismo;
 import com.fakenews.datatypes.DTHechosPag;
 import com.fakenews.datatypes.DTLoginBackendRequest;
 
+@JMSDestinationDefinitions(
+	    value = {
+	        @JMSDestinationDefinition(
+	            name = "java:/queue/QueueVerificarMecanismoInt",
+	            interfaceName = "javax.jms.Queue",
+	            destinationName = "QueueVerificarMecanismoInt"
+	        )
+	    }
+	)
+
+
 @Path("/")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
@@ -46,6 +62,13 @@ public class NewsRestServiceBckend {
 
 	@EJB
 	private ToolsLocal toolsEJB;
+	
+	@Inject
+    private JMSContext context;
+
+    @Resource(lookup = "java:/queue/QueueVerificarMecanismoInt")
+    private Queue queue;
+
 		
 	@POST
     @Path("backend/login")
@@ -73,10 +96,11 @@ public class NewsRestServiceBckend {
 		DTRespuesta respuesta = new DTRespuesta("ERROR", "Ha ocurrido un error al verificar el hecho.");
 		respuesta = newsEJB.verificarHecho(hecho);
 		System.out.println(respuesta.getResultado());
-		if (respuesta.getResultado().equals("OK")) {
-			System.out.println("verificarHecho OK");
-    	    	toolsEJB.sendNotifications(hecho.getId());
-		}
+		//Se notifica cuando se publica el hecho
+//		if (respuesta.getResultado().equals("OK")) {
+//			System.out.println("verificarHecho OK");
+//    	    	toolsEJB.sendNotifications(hecho.getId());
+//		}
 		return respuesta;
 	}
 	
@@ -165,14 +189,47 @@ public class NewsRestServiceBckend {
 	
 	@POST
 	@Path("checker/verificarHechoMecanismo")
-	public DTRespuesta verificarHechoMecanismo(DTHechoMecanismo hechoMecanismo) {
-		return newsEJB.verificarHechoMecanismo(hechoMecanismo);
+	public DTResultadoMecanismo verificarHechoMecanismo(DTHechoMecanismo hechoMecanismo) {
+		DTMecanismoVerificacion mecanismo = newsEJB.getDTMecanismoVerificacion(hechoMecanismo);
+		if (mecanismo != null) {
+			switch (mecanismo.getMecanismo()) {
+				case INTERNO:
+					if (mecanismo.getCodigoInterno().equals("ASYNC_INT")) {
+						sendMessageJMS(hechoMecanismo.getIdHecho()+"|"+
+						hechoMecanismo.getIdMecanismoVerificacion()+"|"+mecanismo.getCodigoInterno());
+						return new DTResultadoMecanismo(EnumTipoCalificacion.ASYNC) ;
+					}else{
+						hechoMecanismo.setCodigoInterno(mecanismo.getCodigoInterno());
+						return new DTResultadoMecanismo(newsEJB.verificarMecanismoIntSync(hechoMecanismo)) ;
+					}
+				case EXTERNO:
+					/* TODO */
+//					return newsDataEJB.updateParametro(param);
+					return new DTResultadoMecanismo(EnumTipoCalificacion.ENGANOSO);
+	
+				case PERIFERICO:
+					newsEJB.verificarHechoMecanismo(hechoMecanismo);
+					return new DTResultadoMecanismo(EnumTipoCalificacion.ASYNC);
+					
+				default:
+					return new DTResultadoMecanismo(EnumTipoCalificacion.ERROR);
+				
+			}
+		}else {
+			return new DTResultadoMecanismo(EnumTipoCalificacion.ERROR);
+		}
+		
 	}
 	
 	@POST
 	@Path("submitter/setEstadoHecho")
 	public DTRespuesta setEstadoHecho(Hecho hecho) {
-		return newsEJB.setEstadoHecho(hecho);
+		DTRespuesta respuesta = newsEJB.setEstadoHecho(hecho);
+		if (hecho.getEstado().equals(EnumHechoEstado.PUBLICADO) 
+				&& respuesta.getResultado().equals("OK")) {
+					toolsEJB.sendNotifications(hecho.getId());
+		}
+		return respuesta;
 	}
 	
 	@GET
@@ -246,5 +303,11 @@ public class NewsRestServiceBckend {
 	public List<Parametro> getParametros() {
 		return newsEJB.getParametros();
 	}
+	
+	private void sendMessageJMS(String msg) {
+		System.out.println("msg: " + msg);
+    	context.createProducer().send(queue, msg);
+	}
+
 	
 }

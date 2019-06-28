@@ -8,6 +8,8 @@ public class DTHechoMecanismo implements Serializable {
 	
 	private Long idMecanismoVerificacion;
 	
+	private String codigoInterno;
+	
 	private EnumTipoCalificacion calificacion;
 
 	public DTHechoMecanismo() {
@@ -19,9 +21,23 @@ public class DTHechoMecanismo implements Serializable {
 		this.idMecanismoVerificacion = idMecanismoVerificacion;
 	}
 
+	public DTHechoMecanismo(Long idHecho, Long idMecanismoVerificacion, String codigoInterno) {
+		this.idHecho = idHecho;
+		this.idMecanismoVerificacion = idMecanismoVerificacion;
+		this.codigoInterno = codigoInterno;
+	}
+
 	public DTHechoMecanismo(Long idHecho, Long idMecanismoVerificacion, EnumTipoCalificacion calificacion) {
 		this.idHecho = idHecho;
 		this.idMecanismoVerificacion = idMecanismoVerificacion;
+		this.calificacion = calificacion;
+	}
+
+	public DTHechoMecanismo(Long idHecho, Long idMecanismoVerificacion, String codigoInterno,
+			EnumTipoCalificacion calificacion) {
+		this.idHecho = idHecho;
+		this.idMecanismoVerificacion = idMecanismoVerificacion;
+		this.codigoInterno = codigoInterno;
 		this.calificacion = calificacion;
 	}
 
@@ -47,6 +63,14 @@ public class DTHechoMecanismo implements Serializable {
 
 	public void setCalificacion(EnumTipoCalificacion calificacion) {
 		this.calificacion = calificacion;
+	}
+
+	public String getCodigoInterno() {
+		return codigoInterno;
+	}
+
+	public void setCodigoInterno(String codigoInterno) {
+		this.codigoInterno = codigoInterno;
 	}
 	
 }

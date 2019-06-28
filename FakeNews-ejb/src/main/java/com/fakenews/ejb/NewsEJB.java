@@ -1,12 +1,16 @@
 package com.fakenews.ejb;
 
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
+
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import java.util.logging.Logger;
 
 import com.fakenews.data.NewsPersistentEJBLocal;
 import com.fakenews.datatypes.DTCantHechosEstado;
+import com.fakenews.datatypes.DTCheckerCalificacion;
 import com.fakenews.datatypes.DTHechoMecanismo;
 import com.fakenews.datatypes.DTHechosPag;
 import com.fakenews.datatypes.DTMecanismoVerificacion;
@@ -14,6 +18,7 @@ import com.fakenews.datatypes.DTRespuesta;
 import com.fakenews.datatypes.DTUsuarioBcknd;
 import com.fakenews.datatypes.EnumHechoEstado;
 import com.fakenews.datatypes.EnumRoles;
+import com.fakenews.datatypes.EnumTipoCalificacion;
 import com.fakenews.model.Admin;
 import com.fakenews.model.Checker;
 import com.fakenews.model.Citizen;
@@ -320,5 +325,67 @@ public class NewsEJB implements NewsEJBRemote, NewsEJBLocal {
 	@Override
 	public List<Parametro> getParametros(){
 		return newsDataEJB.getParametros();
+	}
+	
+	@Override
+	public DTMecanismoVerificacion getDTMecanismoVerificacion(DTHechoMecanismo hechoMecanismo) {
+		return newsDataEJB.getDTMecanismoVerificacion(hechoMecanismo);
+	}
+	
+	@Override
+	public void verificarMecanismoIntAsync(DTHechoMecanismo hechoMecanismo) {
+
+		EnumTipoCalificacion resultado = randomResultadoHecho();
+
+		try {
+			TimeUnit.SECONDS.sleep(50);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		newsDataEJB.resultadoverificarHechoMecanismo(hechoMecanismo.getIdHecho(), 
+			hechoMecanismo.getIdMecanismoVerificacion(), resultado);
+	}
+	
+	@Override
+	public EnumTipoCalificacion verificarMecanismoIntSync(DTHechoMecanismo hechoMecanismo) { 
+		EnumTipoCalificacion resultado = randomResultadoHecho();
+		newsDataEJB.resultadoverificarHechoMecanismo(hechoMecanismo.getIdHecho(), 
+			hechoMecanismo.getIdMecanismoVerificacion(), resultado);
+		return resultado;
+	}
+
+	private final EnumTipoCalificacion randomResultadoHecho() {
+		Random rand = new Random();
+		int n = rand.nextInt(6);
+		EnumTipoCalificacion resultado = EnumTipoCalificacion.ERROR;
+		switch (n) {
+			case 0:
+				resultado = EnumTipoCalificacion.VERDADERO;
+				break;
+			case 1:
+				resultado = EnumTipoCalificacion.VERD_A_MEDIAS;
+				break;
+			case 2:
+				resultado = EnumTipoCalificacion.INFLADO;
+				break;
+			case 3:
+				resultado = EnumTipoCalificacion.ENGANOSO;
+				break;
+			case 4:
+				resultado = EnumTipoCalificacion.FALSO;
+				break;
+			case 5:
+				resultado = EnumTipoCalificacion.RIDICULO;
+				break;	
+		}	
+		return resultado;
+		
+	}
+	
+	@Override
+	public List<DTCheckerCalificacion> getCalificacionesChecker(String mail, int cantDias){
+		return newsDataEJB.getCalificacionesChecker(mail, cantDias);
 	}
 }

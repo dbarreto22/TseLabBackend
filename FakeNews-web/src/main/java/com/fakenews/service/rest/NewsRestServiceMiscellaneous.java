@@ -18,6 +18,7 @@ import com.fakenews.datatypes.EnumHechoEstado;
 import com.fakenews.ejb.NewsEJBLocal;
 import com.fakenews.ejb.ToolsLocal;
 import com.fakenews.model.Hecho;
+import com.fakenews.datatypes.DTCheckerCalificacion;
 import com.fakenews.datatypes.DTHechoMecanismo;
 import com.fakenews.datatypes.DTLoginBackendRequest;
 
@@ -95,6 +96,13 @@ public class NewsRestServiceMiscellaneous {
 			System.out.println("periferico/getHechosAsignadosMecanismo " + ex.getMessage());
 		}
 		return hechos;
+	}
+	
+	@GET
+	@Path("backend/getCalificacionesChecker/{mail}/{cantDias}")
+	public List <DTCheckerCalificacion> getCalificacionesChecker(@PathParam("mail") 
+	final String mail, @PathParam("cantDias") final int cantDias){
+		return newsEJB.getCalificacionesChecker(mail, cantDias);
 	}
 	
 }

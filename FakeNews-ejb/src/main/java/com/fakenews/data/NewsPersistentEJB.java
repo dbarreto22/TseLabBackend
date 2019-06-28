@@ -1,6 +1,7 @@
 package com.fakenews.data;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
@@ -17,6 +18,8 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 
 import com.fakenews.datatypes.DTCantHechosEstado;
+import com.fakenews.datatypes.DTCheckerCalificacion;
+import com.fakenews.datatypes.DTHechoMecanismo;
 import com.fakenews.datatypes.DTHechosPag;
 import com.fakenews.datatypes.DTMecanismoVerificacion;
 import com.fakenews.datatypes.DTRespuesta;
@@ -149,7 +152,7 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 		System.out.println("AsignarHecho");
 		System.out.println("idHecho: " + idHecho.toString());
 		System.out.println("mail: " + mail);
-
+		
 		DTRespuesta respuesta = new DTRespuesta("ERROR", "Ha ocurrido un error al asignar el Hecho.");
 		Hecho hecho = null;
 		Checker checker = null;
@@ -164,6 +167,8 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 		}
 
 		if (hecho != null && checker != null) {
+			Date date = Date.from(LocalDateTime.now().toInstant(ZoneOffset.ofHours(-3)));
+			hecho.setFechaInicioVerificacion(date);
 			hecho.setEstado(EnumHechoEstado.A_COMPROBAR);
 			hecho.setChecker(checker);
 			em.merge(hecho);
@@ -346,8 +351,6 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 		}
 		
 		if (hecho != null && mecanismo != null) {
-			Date date = Date.from(LocalDateTime.now().toInstant(ZoneOffset.ofHours(-3)));
-			hecho.setFechaInicioVerificacion(date);
 			hecho.setEstado(EnumHechoEstado.EN_PROCESO);
 			ResultadoMecanismo resultado = new ResultadoMecanismo(mecanismo);
 			em.persist(resultado);
@@ -613,5 +616,37 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 		CriteriaQuery<Parametro> cq = cb.createQuery(Parametro.class);
 		cq.select(cq.from(Parametro.class));
 		return em.createQuery(cq).getResultList();
+	}
+	
+	@Override
+	public DTMecanismoVerificacion getDTMecanismoVerificacion(DTHechoMecanismo hechoMecanismo) {
+		DTMecanismoVerificacion dtMecanismo = null;
+		Object objeto = em.find(MecanismoInterno.class, hechoMecanismo.getIdMecanismoVerificacion());
+		if (objeto != null) {
+			if (objeto instanceof MecanismoInterno) {
+				dtMecanismo = new DTMecanismoVerificacion((MecanismoInterno) objeto);
+			} else {
+				if (objeto instanceof MecanismoExterno) {
+					dtMecanismo = new DTMecanismoVerificacion((MecanismoExterno) objeto);
+				} else {
+					dtMecanismo = new DTMecanismoVerificacion((MecanismoPeriferico) objeto);
+				}
+			}
+		}
+		return dtMecanismo;
+	}
+	
+	@Override
+	public List<DTCheckerCalificacion> getCalificacionesChecker(String mail, int cantDias){
+		LocalDate date = LocalDate.from(LocalDateTime.now().toInstant(ZoneOffset.ofHours(-3)));
+		Date fecha = null;
+		if (cantDias != 0){
+			fecha = Date.from(date.minusDays(cantDias).atStartOfDay(ZoneOffset.ofHours(-3)).toInstant());	
+		}
+		Checker checker = getChecker(mail);
+		
+		Query q = em.createNamedQuery(Hecho.getCalificacionesChecker).setParameter("checker", 
+				checker).setParameter("fecha", fecha);
+		return q.getResultList();	
 	}
 }

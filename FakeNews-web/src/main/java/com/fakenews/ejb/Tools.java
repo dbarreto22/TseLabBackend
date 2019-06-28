@@ -39,14 +39,19 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.mail.BodyPart;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.Multipart;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
+
 import org.jboss.resteasy.util.Base64;
 import java.util.Properties;
 
@@ -255,9 +260,18 @@ public class Tools implements ToolsLocal {
 			});
 
 			Message message = new MimeMessage(session);
+			message.setHeader("Content-Type", "text/plain; charset=UTF-8");
 			message.setFrom(new InternetAddress("tecnoinf2016@gmail.com"));
 			message.setSubject(title);
-			message.setText(msg + "\n\n\n\n FakeNews");
+			BodyPart messageBodyPart = new MimeBodyPart(); 
+			messageBodyPart.setContent(msg + "\n\n\n\n FakeNews", "text/html; charset=utf-8" );
+			Multipart multipart = new MimeMultipart(); 
+
+			// add the message body to the mime message 
+			multipart.addBodyPart( messageBodyPart ); 
+
+			// Put all message parts in the message 
+			message.setContent( multipart ); 
 			message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(usuario.getEmail()));
 			javax.mail.Transport.send(message);
 

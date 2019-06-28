@@ -2,6 +2,10 @@ package com.fakenews.datatypes;
 
 import java.io.Serializable;
 
+import com.fakenews.model.MecanismoExterno;
+import com.fakenews.model.MecanismoInterno;
+import com.fakenews.model.MecanismoPeriferico;
+
 public class DTMecanismoVerificacion implements Serializable{
 	
 	private Long id;
@@ -15,6 +19,8 @@ public class DTMecanismoVerificacion implements Serializable{
 	private String password;
 	
 	private String url;
+	
+	private String codigoInterno;
 	
 	private EnumTipoMecanismo mecanismo;
 	
@@ -37,6 +43,31 @@ public class DTMecanismoVerificacion implements Serializable{
 		this.password = password;
 		this.url = url;
 		this.mecanismo = mecanismo;
+	}
+	
+	public DTMecanismoVerificacion(MecanismoPeriferico mecanismo) {
+		this.id = mecanismo.getId();
+		this.descripcion = mecanismo.getDescripcion();
+		this.habilitado = mecanismo.getHabilitado();
+		this.usuario = mecanismo.getUsuario();
+		this.password = mecanismo.getPassword();
+		this.mecanismo = EnumTipoMecanismo.PERIFERICO;
+	}
+	
+	public DTMecanismoVerificacion(MecanismoExterno mecanismo) {
+		this.id = mecanismo.getId();
+		this.descripcion = mecanismo.getDescripcion();
+		this.habilitado = mecanismo.getHabilitado();
+		this.url = mecanismo.getUrl();
+		this.mecanismo = EnumTipoMecanismo.EXTERNO;
+	}
+
+	public DTMecanismoVerificacion(MecanismoInterno mecanismo) {
+		this.id = mecanismo.getId();
+		this.descripcion = mecanismo.getDescripcion();
+		this.habilitado = mecanismo.getHabilitado();
+		this.codigoInterno = mecanismo.getCodigoInterno();
+		this.mecanismo = EnumTipoMecanismo.INTERNO;
 	}
 
 	public DTMecanismoVerificacion() {
@@ -98,5 +129,13 @@ public class DTMecanismoVerificacion implements Serializable{
 	public void setId(Long id) {
 		this.id = id;
 	}
-		
+
+	public String getCodigoInterno() {
+		return codigoInterno;
+	}
+
+	public void setCodigoInterno(String codigoInterno) {
+		this.codigoInterno = codigoInterno;
+	}
+			
 }

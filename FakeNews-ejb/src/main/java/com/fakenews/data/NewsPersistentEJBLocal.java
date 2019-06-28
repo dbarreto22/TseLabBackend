@@ -4,6 +4,8 @@ import java.util.List;
 import javax.ejb.Local;
 
 import com.fakenews.datatypes.DTCantHechosEstado;
+import com.fakenews.datatypes.DTCheckerCalificacion;
+import com.fakenews.datatypes.DTHechoMecanismo;
 import com.fakenews.datatypes.DTHechosPag;
 import com.fakenews.datatypes.DTMecanismoVerificacion;
 import com.fakenews.datatypes.DTRespuesta;
@@ -112,5 +114,9 @@ public abstract interface NewsPersistentEJBLocal
 	public DTRespuesta deleteParametro(Parametro param);
 
 	public List<Parametro> getParametros();
+
+	public DTMecanismoVerificacion getDTMecanismoVerificacion(DTHechoMecanismo hechoMecanismo);
+
+	public List<DTCheckerCalificacion> getCalificacionesChecker(String mail, int cantDias);
 
 }

@@ -1,8 +1,10 @@
 package com.fakenews.model;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import javax.persistence.Basic;
 import javax.persistence.Entity;
@@ -37,7 +39,11 @@ import com.fakenews.datatypes.EnumTipoCalificacion;
 	query = "SELECT a FROM Hecho a WHERE (a.estado <> :estado1 AND a.estado <> :estado2) \n"
 			+ "AND (a.fechaInicioVerificacion < :fecha)"),
     @NamedQuery(name = Hecho.getCantHechosPorEstado, 
-	query = "SELECT estado, count(*) AS cantidad FROM Hecho GROUP BY estado")})
+	query = "SELECT estado, count(*) AS cantidad FROM Hecho GROUP BY estado"),
+		@NamedQuery(name = Hecho.getCalificacionesChecker, 
+		query = "SELECT calificacion, count(*) AS cantidad FROM Hecho \n"
+		+ "WHERE (fechaInicioVerificacion > :fecha OR fecha is null) AND \n"
+		+ "checker = :checker GROUP BY calificacion")})
 public class Hecho implements Serializable {
 	
 	public final static String getByChecker = "Hecho.getByChecker";
@@ -46,6 +52,7 @@ public class Hecho implements Serializable {
 	public final static String getByFiltros = "Hecho.getByFiltros";
 	public final static String getHechosACancelar = "Hecho.getHechosACancelar";
 	public final static String getCantHechosPorEstado = "Hecho.getCantHechosPorEstado";
+	public final static String getCalificacionesChecker = "Hecho.getCalificacionesChecker";
 	
 	@Id
     @GeneratedValue (strategy=GenerationType.AUTO)
@@ -71,6 +78,10 @@ public class Hecho implements Serializable {
 	
 	@Basic
 	private EnumHechoEstado estado;
+	
+	private String fechaInicioVerificacionStr;
+	
+	private String fechaFinVerificacionStr;
 		
 	@ManyToOne(targetEntity = Submitter.class)
 	private Submitter submitter;
@@ -107,6 +118,8 @@ public class Hecho implements Serializable {
 		this.calificacion = calificacion;
 		this.fechaInicioVerificacion = fechaInicioVerificacion;
 		this.fechaFinVerificacion = fechaFinVerificacion;
+		this.fechaInicioVerificacionStr = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(fechaInicioVerificacion);
+		this.fechaFinVerificacionStr = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(fechaFinVerificacion);
 		this.justificacion = justificacion;
 		this.estado = estado;
 		this.submitter = submitter;
@@ -122,6 +135,8 @@ public class Hecho implements Serializable {
 		this.calificacion = calificacion;
 		this.fechaInicioVerificacion = fechaInicioVerificacion;
 		this.fechaFinVerificacion = fechaFinVerificacion;
+		this.fechaInicioVerificacionStr = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(fechaInicioVerificacion);
+		this.fechaFinVerificacionStr = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(fechaFinVerificacion);
 		this.justificacion = justificacion;
 		this.estado = estado;
 		this.submitter = submitter;
@@ -162,6 +177,23 @@ public class Hecho implements Serializable {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+	
+
+	public String getFechaInicioVerificacionStr() {
+		return fechaInicioVerificacionStr;
+	}
+
+	public void setFechaInicioVerificacionStr(String fechaInicioVerificacionStr) {
+		this.fechaInicioVerificacionStr = fechaInicioVerificacionStr;
+	}	
+
+	public String getFechaFinVerificacionStr() {
+		return fechaFinVerificacionStr;
+	}
+
+	public void setFechaFinVerificacionStr(String fechaFinVerificacionStr) {
+		this.fechaFinVerificacionStr = fechaFinVerificacionStr;
 	}
 
 	public EnumTipoCalificacion getCalificacion() {
