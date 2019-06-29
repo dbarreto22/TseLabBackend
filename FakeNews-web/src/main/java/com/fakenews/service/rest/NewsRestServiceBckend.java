@@ -40,6 +40,7 @@ import com.fakenews.datatypes.DTCantHechosEstado;
 import com.fakenews.datatypes.DTHechoMecanismo;
 import com.fakenews.datatypes.DTHechosPag;
 import com.fakenews.datatypes.DTLoginBackendRequest;
+import com.fakenews.service.rest.RestServiceConsumer;
 
 @JMSDestinationDefinitions(
 	    value = {
@@ -65,6 +66,9 @@ public class NewsRestServiceBckend {
 	
 	@Inject
     private JMSContext context;
+	
+	@EJB
+	private RestServiceConsumer consumer;
 
     @Resource(lookup = "java:/queue/QueueVerificarMecanismoInt")
     private Queue queue;
@@ -204,8 +208,8 @@ public class NewsRestServiceBckend {
 					}
 				case EXTERNO:
 					/* TODO */
-//					return newsDataEJB.updateParametro(param);
-					return new DTResultadoMecanismo(EnumTipoCalificacion.ENGANOSO);
+					return new DTResultadoMecanismo(verificarHechoMecanismoExterno(mecanismo.getUrl(), 
+							hechoMecanismo.getIdHecho()));
 	
 				case PERIFERICO:
 					newsEJB.verificarHechoMecanismo(hechoMecanismo);
@@ -308,6 +312,15 @@ public class NewsRestServiceBckend {
 		System.out.println("msg: " + msg);
     	context.createProducer().send(queue, msg);
 	}
-
+	
+	private final EnumTipoCalificacion verificarHechoMecanismoExterno(String urlMecanismo, Long idHecho) {
+		Hecho hecho = newsEJB.getHechoById(idHecho);
+		if (hecho != null) {
+			System.out.println("no es null");
+			return consumer.callVerificarHechoMecanismoExterno(urlMecanismo, hecho.getUrl());
+		}else {
+			return EnumTipoCalificacion.ERROR;
+		}
+	}
 	
 }
