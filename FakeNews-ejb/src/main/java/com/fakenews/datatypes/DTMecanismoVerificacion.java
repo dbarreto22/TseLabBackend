@@ -46,6 +46,7 @@ public class DTMecanismoVerificacion implements Serializable{
 	}
 	
 	public DTMecanismoVerificacion(MecanismoPeriferico mecanismo) {
+		System.out.println("DTMecanismo Verificacion periferico");
 		this.id = mecanismo.getId();
 		this.descripcion = mecanismo.getDescripcion();
 		this.habilitado = mecanismo.getHabilitado();

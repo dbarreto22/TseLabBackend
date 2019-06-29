@@ -42,7 +42,7 @@ import com.fakenews.datatypes.EnumTipoCalificacion;
 	query = "SELECT estado, count(*) AS cantidad FROM Hecho GROUP BY estado"),
 		@NamedQuery(name = Hecho.getCalificacionesChecker, 
 		query = "SELECT calificacion, count(*) AS cantidad FROM Hecho \n"
-		+ "WHERE (fechaInicioVerificacion > :fecha OR fecha is null) AND \n"
+		+ "WHERE (CAST(:fecha AS date) is null OR fechaInicioVerificacion > :fecha) AND \n"
 		+ "checker = :checker GROUP BY calificacion")})
 public class Hecho implements Serializable {
 	
@@ -92,7 +92,6 @@ public class Hecho implements Serializable {
 	
 	@OneToMany(fetch = FetchType.EAGER, targetEntity = ResultadoMecanismo.class)
 	private List<ResultadoMecanismo> resultadosMecanismos;
-	
 
 	public Hecho() {
 		
@@ -118,8 +117,10 @@ public class Hecho implements Serializable {
 		this.calificacion = calificacion;
 		this.fechaInicioVerificacion = fechaInicioVerificacion;
 		this.fechaFinVerificacion = fechaFinVerificacion;
-		this.fechaInicioVerificacionStr = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(fechaInicioVerificacion);
-		this.fechaFinVerificacionStr = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(fechaFinVerificacion);
+		System.out.println("fechaInicioVerificacion1: " + fechaInicioVerificacion);
+		System.out.println("fechaFinVerificacion1: " + fechaFinVerificacion);
+		this.fechaInicioVerificacionStr = new SimpleDateFormat("dd/MM/yyyy").format(fechaInicioVerificacion);
+		this.fechaFinVerificacionStr = new SimpleDateFormat("dd/MM/yyyy").format(fechaFinVerificacion);
 		this.justificacion = justificacion;
 		this.estado = estado;
 		this.submitter = submitter;
@@ -135,8 +136,10 @@ public class Hecho implements Serializable {
 		this.calificacion = calificacion;
 		this.fechaInicioVerificacion = fechaInicioVerificacion;
 		this.fechaFinVerificacion = fechaFinVerificacion;
-		this.fechaInicioVerificacionStr = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(fechaInicioVerificacion);
-		this.fechaFinVerificacionStr = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault()).format(fechaFinVerificacion);
+		System.out.println("fechaInicioVerificacion2: " + fechaInicioVerificacion);
+		System.out.println("fechaFinVerificacion2: " + fechaFinVerificacion);
+		this.fechaInicioVerificacionStr = new SimpleDateFormat("dd/MM/yyyy").format(fechaInicioVerificacion);
+		this.fechaFinVerificacionStr = new SimpleDateFormat("dd/MM/yyyy").format(fechaFinVerificacion);
 		this.justificacion = justificacion;
 		this.estado = estado;
 		this.submitter = submitter;
@@ -179,21 +182,12 @@ public class Hecho implements Serializable {
 		this.url = url;
 	}
 	
-
 	public String getFechaInicioVerificacionStr() {
 		return fechaInicioVerificacionStr;
 	}
 
-	public void setFechaInicioVerificacionStr(String fechaInicioVerificacionStr) {
-		this.fechaInicioVerificacionStr = fechaInicioVerificacionStr;
-	}	
-
 	public String getFechaFinVerificacionStr() {
 		return fechaFinVerificacionStr;
-	}
-
-	public void setFechaFinVerificacionStr(String fechaFinVerificacionStr) {
-		this.fechaFinVerificacionStr = fechaFinVerificacionStr;
 	}
 
 	public EnumTipoCalificacion getCalificacion() {
@@ -208,7 +202,7 @@ public class Hecho implements Serializable {
 		return fechaInicioVerificacion;
 	}
 
-	public void setFechaInicioVerificacion(Date fechaInicioVerificacion) {
+	public void setFechaInicioVerificacion(Date fechaInicioVerificacion) {	
 		this.fechaInicioVerificacion = fechaInicioVerificacion;
 	}
 
@@ -217,7 +211,25 @@ public class Hecho implements Serializable {
 	}
 
 	public void setFechaFinVerificacion(Date fechaFinVerificacion) {
-		this.fechaFinVerificacion = fechaFinVerificacion;
+		this.fechaFinVerificacion = fechaFinVerificacion;		
+	}
+	
+	public void setFechaInicioVerificacionStr(Date fechaInicioVerificacion) {
+		if (fechaInicioVerificacion != null) {
+			this.fechaInicioVerificacionStr = new SimpleDateFormat("dd/MM/yyyy").format(fechaInicioVerificacion);
+		}else {
+			this.fechaInicioVerificacionStr = "";
+		}
+		
+	}
+
+	public void setFechaFinVerificacionStr(Date fechaFinVerificacion) {
+		if(fechaFinVerificacion != null) {
+			this.fechaFinVerificacionStr = new SimpleDateFormat("dd/MM/yyyy").format(fechaFinVerificacion);
+		}else {
+			this.fechaFinVerificacionStr = "";
+		}
+		
 	}
 
 	public String getJustificacion() {

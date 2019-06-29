@@ -56,7 +56,8 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 		CriteriaBuilder cb = em.getCriteriaBuilder();
 		CriteriaQuery<Hecho> cq = cb.createQuery(Hecho.class);
 		cq.select(cq.from(Hecho.class));
-		return em.createQuery(cq).getResultList();
+		List<Hecho> hechos = em.createQuery(cq).getResultList();
+		return addDateStr(hechos);
 	}
 
 	@Override
@@ -226,11 +227,10 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 	@Override
 	public List<Hecho> getHechosByChecker(String mail){
 		System.out.println("getHechosByChecker");
-	
 		Checker checker = this.getChecker(mail);
-	
 		Query q = em.createNamedQuery(Hecho.getByChecker).setParameter("checker", checker);
-		return q.getResultList();			
+		List<Hecho> hechos = q.getResultList();
+		return addDateStr(hechos);			
 	}
 
 	@Override
@@ -402,7 +402,8 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 	public List<Hecho> getHechosByEstado(EnumHechoEstado estado){
 		System.out.println("getHechosByEstado");
 		Query q = em.createNamedQuery(Hecho.getByEstado).setParameter("estado", estado);
-		return q.getResultList();			
+		List<Hecho> hechos = q.getResultList();		 
+		return addDateStr(hechos);
 	}
 	
 	@Override
@@ -443,7 +444,7 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 		q.setFirstResult((nroPag-1)*cantElemPag);
 		q.setMaxResults(nroPag*cantElemPag);
 		
-		hechosPag.setHechos(q.getResultList());
+		hechosPag.setHechos(addDateStr(q.getResultList()));
 		
 		return hechosPag;		
 	}
@@ -454,7 +455,7 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 		
 		Query q = em.createNamedQuery(Hecho.getByMecanismo).setParameter("idMecanismo", idMecanismo);
 		
-		return q.getResultList();		
+		return addDateStr(q.getResultList());	
 	}
 	
 	@Override
@@ -493,7 +494,7 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 		q.setFirstResult((nroPag-1)*cantElemPag);
 		q.setMaxResults(nroPag*cantElemPag);
 		
-		hechosPag.setHechos(q.getResultList());
+		hechosPag.setHechos(addDateStr(q.getResultList()));
 		
 		return hechosPag;	
 	}
@@ -621,7 +622,7 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 	@Override
 	public DTMecanismoVerificacion getDTMecanismoVerificacion(DTHechoMecanismo hechoMecanismo) {
 		DTMecanismoVerificacion dtMecanismo = null;
-		Object objeto = em.find(MecanismoInterno.class, hechoMecanismo.getIdMecanismoVerificacion());
+		Object objeto = em.find(MecanismoVerificacion.class, hechoMecanismo.getIdMecanismoVerificacion());
 		if (objeto != null) {
 			if (objeto instanceof MecanismoInterno) {
 				dtMecanismo = new DTMecanismoVerificacion((MecanismoInterno) objeto);
@@ -638,7 +639,8 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 	
 	@Override
 	public List<DTCheckerCalificacion> getCalificacionesChecker(String mail, int cantDias){
-		LocalDate date = LocalDate.from(LocalDateTime.now().toInstant(ZoneOffset.ofHours(-3)));
+		List<DTCheckerCalificacion> calificacionHechos = new ArrayList<>();
+		LocalDate date = LocalDate.from(LocalDateTime.now());
 		Date fecha = null;
 		if (cantDias != 0){
 			fecha = Date.from(date.minusDays(cantDias).atStartOfDay(ZoneOffset.ofHours(-3)).toInstant());	
@@ -647,6 +649,21 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 		
 		Query q = em.createNamedQuery(Hecho.getCalificacionesChecker).setParameter("checker", 
 				checker).setParameter("fecha", fecha);
-		return q.getResultList();	
+		List<Object[]> objects = q.getResultList();
+		objects.forEach(object -> {
+			DTCheckerCalificacion calificacionHecho = new DTCheckerCalificacion((EnumTipoCalificacion) object[0], ((Number) object[1]).intValue());
+			System.out.println("calificacion: " + calificacionHecho.getCalificacion());
+			System.out.println("cantidad: " + calificacionHecho.getCantidad());
+			calificacionHechos.add(calificacionHecho);
+		});
+		return calificacionHechos;	
+	}
+	
+	private final List<Hecho> addDateStr(List<Hecho> hechos) {
+		hechos.forEach(hecho -> {
+			hecho.setFechaInicioVerificacionStr(hecho.getFechaInicioVerificacion());
+			hecho.setFechaFinVerificacionStr(hecho.getFechaFinVerificacion());
+		});
+		return hechos;
 	}
 }
