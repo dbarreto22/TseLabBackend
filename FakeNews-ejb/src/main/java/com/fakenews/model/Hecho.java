@@ -24,7 +24,8 @@ import com.fakenews.datatypes.EnumTipoCalificacion;
 @Entity
 @NamedQueries({
     @NamedQuery(name = Hecho.getByChecker, 
-    		query = "SELECT a FROM Hecho a WHERE a.checker = :checker"),
+    		query = "SELECT a FROM Hecho a WHERE a.checker = :checker \n" 
+    + "AND (a.estado = :estado1 OR a.estado = :estado2)"),
     @NamedQuery(name = Hecho.getByEstado, 
 	query = "SELECT a FROM Hecho a WHERE a.estado = :estado"),
     @NamedQuery(name = Hecho.getByMecanismo, 

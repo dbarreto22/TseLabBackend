@@ -228,7 +228,9 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 	public List<Hecho> getHechosByChecker(String mail){
 		System.out.println("getHechosByChecker");
 		Checker checker = this.getChecker(mail);
-		Query q = em.createNamedQuery(Hecho.getByChecker).setParameter("checker", checker);
+		Query q = em.createNamedQuery(Hecho.getByChecker).setParameter("checker", checker)
+				.setParameter("estado1", EnumHechoEstado.A_COMPROBAR)
+				.setParameter("estado2", EnumHechoEstado.EN_PROCESO);
 		List<Hecho> hechos = q.getResultList();
 		return addDateStr(hechos);			
 	}
