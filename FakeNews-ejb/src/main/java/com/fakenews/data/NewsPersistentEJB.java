@@ -377,6 +377,7 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 		DTRespuesta respuesta = new DTRespuesta("ERROR", "Ha ocurrido un error al asignar el resultado al Hecho.");
 		Hecho hecho = null;
 		MecanismoVerificacion mecanismo = null;
+		ResultadoMecanismo resultado = null;
 		Object object = em.find(Hecho.class, idHecho);
 		if (object instanceof Hecho) {
 			hecho = (Hecho) object;
@@ -386,12 +387,27 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 			mecanismo = (MecanismoVerificacion) object;
 		}
 		
+		Query q = em.createNamedQuery(ResultadoMecanismo.getResultadoByMecanismoHecho)
+				.setParameter("idHecho", idHecho)
+				.setParameter("idMecanismo", idMecanismoVerificacion);
+		List<ResultadoMecanismo> resultados = q.getResultList();
+		if (resultados != null) {
+			System.out.println("Hay resultados");
+			resultado = resultados.get(0);
+		}
+		
 		if (hecho != null && mecanismo != null) {
-			ResultadoMecanismo resultado = new ResultadoMecanismo(mecanismo);
-			resultado.setCalificacion(calificacion);
-			em.persist(resultado);
-			hecho.getResultadosMecanismos().add(resultado);
-			em.merge(hecho);
+			if (resultado != null) {
+				resultado.setCalificacion(calificacion);
+				em.merge(resultado);
+			}else {
+				resultado = new ResultadoMecanismo(mecanismo);
+				resultado.setCalificacion(calificacion);
+				em.persist(resultado);
+				hecho.getResultadosMecanismos().add(resultado);
+				em.merge(hecho);
+			}
+			
 			respuesta.setResultado("OK");
 			respuesta.setMensaje("Se ha calificado el hecho correctamente.");
 		} else {

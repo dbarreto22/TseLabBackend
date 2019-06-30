@@ -10,12 +10,20 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 
 import com.fakenews.datatypes.EnumTipoCalificacion;
 
 @Entity
+@NamedQuery(name = ResultadoMecanismo.getResultadoByMecanismoHecho, 
+query = "SELECT b FROM Hecho a, ResultadoMecanismo b, MecanismoVerificacion c \n" 
+		+ " WHERE b member of a.resultadosMecanismos AND \n"
+		+ "b.mecanismo = c AND c.id = :idMecanismo AND \n "
+		+ "a.id = :idHecho")
 public class ResultadoMecanismo implements Serializable {
+	
+	public final static String getResultadoByMecanismoHecho = "ResultadoMecanismo.getResultadoByMecanismoHecho";
 	
 	@Id
     @GeneratedValue(strategy=GenerationType.AUTO)
