@@ -175,7 +175,6 @@ public class Tools implements ToolsLocal {
 
 			default:
 				return false;
-
 			}
 		}
 
@@ -222,17 +221,18 @@ public class Tools implements ToolsLocal {
 
 	@Override
 	public void sendNotifications(Long idHecho) {
-		System.out.println("sendNotifications entra");
+		System.out.println("NOTIFICACION: idHecho " + idHecho);
 		Hecho hecho = newsEJB.getHechoById(idHecho);
 		String title = "Se ha verificado un hecho";
 		String message = "Se ha verificado el hecho: " + hecho.getTitulo() + " con calificacion "
 				+ hecho.getCalificacion().tipoCalificacionStr() + ".";
-
+		String messageMail = "<h4>" + message + "\t\n <a href="+hecho.getUrl()+ 
+				"> Noticia </a> </h4>";
 		newsEJB.getSuscriptedCitizens().forEach(usuario -> {
 			System.out.println("usuarioSuscripto: " + usuario.getEmail());
 			Thread t1 = new Thread(new Runnable() {
 				public void run() {
-					sendMail(title, message, usuario);
+					sendMail(title, messageMail, usuario);
 					sendPushWithSimpleAndroid(title, message, usuario.getDeviceToken());
 				}
 			});
@@ -264,7 +264,7 @@ public class Tools implements ToolsLocal {
 			message.setFrom(new InternetAddress("tecnoinf2016@gmail.com"));
 			message.setSubject(title);
 			BodyPart messageBodyPart = new MimeBodyPart(); 
-			messageBodyPart.setContent(msg + "\n\n\n\n FakeNews", "text/html; charset=utf-8" );
+			messageBodyPart.setContent(msg + "\t\n\t\n\t\n <h3>FakeNews</h3>", "text/html; charset=utf-8" );
 			Multipart multipart = new MimeMultipart(); 
 
 			// add the message body to the mime message 

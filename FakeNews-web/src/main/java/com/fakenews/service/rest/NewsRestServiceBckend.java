@@ -317,7 +317,7 @@ public class NewsRestServiceBckend {
 		Hecho hecho = newsEJB.getHechoById(idHecho);
 		if (hecho != null) {
 			System.out.println("no es null");
-			return consumer.callVerificarHechoMecanismoExterno(urlMecanismo, hecho.getUrl());
+			return consumer.callVerificarHechoMecanismoExterno(urlMecanismo, hecho.getTitulo());
 		}else {
 			return EnumTipoCalificacion.ERROR;
 		}

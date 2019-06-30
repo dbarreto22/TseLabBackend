@@ -416,10 +416,16 @@ public class NewsPersistentEJB implements NewsPersistentEJBLocal {
 			Object object = em.find(Hecho.class, id);
 			if (object instanceof Hecho) {
 				Hecho hecho = (Hecho) object;
-				hecho.setEstado(estado);
-				em.merge(hecho);
-				respuesta.setResultado("OK");
-				respuesta.setMensaje("Se ha publicado/cancelado el hecho correctamente");
+				
+				if (hecho.getCalificacion() != null) {
+					hecho.setEstado(estado);
+					em.merge(hecho);
+					respuesta.setResultado("OK");
+					respuesta.setMensaje("Se ha publicado/cancelado el hecho correctamente");
+				}else {
+					respuesta.setMensaje("El hecho no se encuentra verificado.");
+				}
+				
 			}
 		} catch (Exception e) {
 			System.out.print(e.getMessage());
