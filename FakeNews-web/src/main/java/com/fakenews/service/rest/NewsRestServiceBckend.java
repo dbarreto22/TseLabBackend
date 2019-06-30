@@ -207,9 +207,8 @@ public class NewsRestServiceBckend {
 						return new DTResultadoMecanismo(newsEJB.verificarMecanismoIntSync(hechoMecanismo)) ;
 					}
 				case EXTERNO:
-					/* TODO */
 					return new DTResultadoMecanismo(verificarHechoMecanismoExterno(mecanismo.getUrl(), 
-							hechoMecanismo.getIdHecho()));
+							hechoMecanismo));
 	
 				case PERIFERICO:
 					newsEJB.verificarHechoMecanismo(hechoMecanismo);
@@ -313,11 +312,14 @@ public class NewsRestServiceBckend {
     	context.createProducer().send(queue, msg);
 	}
 	
-	private final EnumTipoCalificacion verificarHechoMecanismoExterno(String urlMecanismo, Long idHecho) {
-		Hecho hecho = newsEJB.getHechoById(idHecho);
+	private final EnumTipoCalificacion verificarHechoMecanismoExterno(String urlMecanismo, DTHechoMecanismo hechoMecanismo) {
+		Hecho hecho = newsEJB.getHechoById(hechoMecanismo.getIdHecho());
 		if (hecho != null) {
 			System.out.println("no es null");
-			return consumer.callVerificarHechoMecanismoExterno(urlMecanismo, hecho.getTitulo());
+			EnumTipoCalificacion respuesta = consumer.callVerificarHechoMecanismoExterno(urlMecanismo, hecho.getTitulo());
+			hechoMecanismo.setCalificacion(respuesta);
+			newsEJB.resultadoverificarHechoMecanismo(hechoMecanismo);
+			return respuesta;
 		}else {
 			return EnumTipoCalificacion.ERROR;
 		}
